@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This web.xml file is not required when using Servlet 3.0 container,
-     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <display-name>Cargo Archetype Web Application Single Module</display-name>
+
+    <persistence-context-ref>
+        <persistence-context-ref-name>persistence/EntityManager</persistence-context-ref-name>
+        <persistence-unit-name>FMIN362_PU</persistence-unit-name>
+    </persistence-context-ref>
+
     <servlet>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <servlet-name>SomeServletName</servlet-name>
+        <servlet-class>fmin362.SomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SomeServletName</servlet-name>
+        <url-pattern>/some</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SomeJDBCServletName</servlet-name>
+        <servlet-class>fmin362.SomeJDBCServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SomeJDBCServletName</servlet-name>
+        <url-pattern>/some-jdbc</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SomeJPAServletName</servlet-name>
+        <servlet-class>fmin362.SomeJPAServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SomeJPAServletName</servlet-name>
+        <url-pattern>/some-jpa</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JerseyServletName</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>fmin362</param-value>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>fmin362.resources</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>JerseyServletName</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
+
 </web-app>
