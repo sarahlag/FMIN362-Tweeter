@@ -12,33 +12,6 @@
     </persistence-context-ref>
 
     <servlet>
-        <servlet-name>SomeServletName</servlet-name>
-        <servlet-class>fmin362.SomeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SomeServletName</servlet-name>
-        <url-pattern>/some</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SomeJDBCServletName</servlet-name>
-        <servlet-class>fmin362.SomeJDBCServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SomeJDBCServletName</servlet-name>
-        <url-pattern>/some-jdbc</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SomeJPAServletName</servlet-name>
-        <servlet-class>fmin362.SomeJPAServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SomeJPAServletName</servlet-name>
-        <url-pattern>/some-jpa</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>JerseyServletName</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
