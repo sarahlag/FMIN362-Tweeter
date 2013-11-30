@@ -35,11 +35,13 @@ public class TweetResource
             Tweet newtweet = new Tweet( );
             newtweet.setUsername("toto");
             newtweet.setComment("hello world!");
+            newtweet.setTags("ready, go");
             em.persist( newtweet );
 
             Tweet newtweet2 = new Tweet( );
             newtweet2.setUsername("titi");
             newtweet2.setComment("bouh");
+            newtweet2.setTags("hey, ho");
             em.persist( newtweet2 );
             
             List<Tweet> listtweets = em.createQuery( "select m from Tweet m" ).getResultList(); 
