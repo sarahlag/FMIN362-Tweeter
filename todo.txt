@@ -1,0 +1,5 @@
+- persistence de la bdd -> remplacer par ebean ?
+- formulaire post tweet
+- modèles user et tags
+- upload images photos
+- jquery pour au moins les graphiques

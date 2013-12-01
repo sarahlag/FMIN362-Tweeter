@@ -1,0 +1,2 @@
+ebean mvn config:
+http://teamflawless.org/tag/maven-2/ 

@@ -26,7 +26,7 @@ public class Tweet implements Serializable{
     @GeneratedValue( strategy = GenerationType.SEQUENCE )
     private Long id;
     
-    @Column
+    @Column(unique=true, nullable=false)
     private String username; // @TODO Add a User model
     @Column
     private String tags; // @TODO Add a Tag model
@@ -55,6 +55,24 @@ public class Tweet implements Serializable{
     /* ====================
         Getters and Setters
        ==================== */
+    
+    public Long getId() { // obligée d'avoir getter et setter pour id et date : autrement, erreur : Bean property fmin362.model.Tweet.id/date has  missing readMethod  missing writeMethod
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public Date getDate() { // obligée d'avoir getter et setter pour id et date : autrement, erreur : Bean property fmin362.model.Tweet.id/date has  missing readMethod  missing writeMethod
+        return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    //////
     
     public String getUsername() {
         return username;

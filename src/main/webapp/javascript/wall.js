@@ -7,11 +7,11 @@ function FetchTweets()
 		return;
 	xmlHttpRequest.open("GET", "resources/tweets", true);
 	xmlHttpRequest.overrideMimeType("application/json");
-	xmlHttpRequest.onreadystatechange = StateChangeForJSON;
+	xmlHttpRequest.onreadystatechange = ListTweets;
 	xmlHttpRequest.send(null);
 }
 
-function StateChangeForJSON()
+function ListTweets()
 {
 	var listtweets = "";
         console.log('readyState == '+xmlHttpRequest.readyState+', status == '+xmlHttpRequest.status)

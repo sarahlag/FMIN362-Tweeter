@@ -36,6 +36,18 @@
             <version>10.8.1.2</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- Ebean -->
+        <dependency>
+	<groupId>org.avaje</groupId>
+	<artifactId>ebean</artifactId>
+	<version>2.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.1.115</version>
+        </dependency>
 
         <!-- Dépendances application -->
         <dependency>
@@ -82,6 +94,9 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <useSystemClassLoader>false</useSystemClassLoader>
+                    </configuration>
                     <version>2.8</version>
                 </plugin>
                 <plugin>
@@ -97,13 +112,20 @@
                         <configuration>
                             <properties>
                                 <cargo.servlet.port>${servlet.port}</cargo.servlet.port>
-                                <cargo.datasource.datasource.derby>
+                                <cargo.datasource.datasource.h2>
+                                    
+                                    cargo.datasource.driver=org.h2.Driver|
+                                    cargo.datasource.url=jdbc:h2:db/database;create=true|
+                                    <!-- cargo.datasource.jndi=jdbc/DSfmin362| <- ? -->
+                                    cargo.datasource.username=APP|
+                                    cargo.datasource.password=APP
+                                    <!--
                                     cargo.datasource.driver=org.apache.derby.jdbc.EmbeddedDriver|
                                     cargo.datasource.url=jdbc:derby:derbyDB;create=true|
                                     cargo.datasource.jndi=jdbc/DSfmin362|
                                     cargo.datasource.username=APP|
-                                    cargo.datasource.password=APP
-                                </cargo.datasource.datasource.derby>
+                                    cargo.datasource.password=APP-->
+                                </cargo.datasource.datasource.h2>
                             </properties>
                         </configuration>
                         <deployables>
@@ -130,7 +152,8 @@
                             </dependencies>
                         </container>
                     </configuration>
-                </plugin>
+                </plugin>               
+                
             </plugins>
         </pluginManagement>
         <plugins>
