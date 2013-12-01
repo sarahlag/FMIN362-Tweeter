@@ -30,12 +30,6 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.8.1.2</version>
-            <scope>provided</scope>
-        </dependency>
         
         <!-- Ebean -->
         <dependency>
@@ -46,7 +40,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.1.115</version>
+            <version>1.3.174</version>
         </dependency>
 
         <!-- Dépendances application -->
@@ -112,20 +106,13 @@
                         <configuration>
                             <properties>
                                 <cargo.servlet.port>${servlet.port}</cargo.servlet.port>
-                                <cargo.datasource.datasource.h2>
-                                    
+                                <cargo.datasource.datasource.h2database>
                                     cargo.datasource.driver=org.h2.Driver|
-                                    cargo.datasource.url=jdbc:h2:db/database;create=true|
-                                    <!-- cargo.datasource.jndi=jdbc/DSfmin362| <- ? -->
-                                    cargo.datasource.username=APP|
-                                    cargo.datasource.password=APP
-                                    <!--
-                                    cargo.datasource.driver=org.apache.derby.jdbc.EmbeddedDriver|
-                                    cargo.datasource.url=jdbc:derby:derbyDB;create=true|
+                                    cargo.datasource.url=jdbc:h2:mem:db|
                                     cargo.datasource.jndi=jdbc/DSfmin362|
-                                    cargo.datasource.username=APP|
-                                    cargo.datasource.password=APP-->
-                                </cargo.datasource.datasource.h2>
+                                    cargo.datasource.username=sa|
+                                    cargo.datasource.password=""
+                                </cargo.datasource.datasource.h2database>
                             </properties>
                         </configuration>
                         <deployables>
@@ -143,14 +130,7 @@
                                 </properties>
                             </deployable>
                         </deployables>
-                        <container>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>org.apache.derby</groupId>
-                                    <artifactId>derby</artifactId>
-                                </dependency>
-                            </dependencies>
-                        </container>
+                        
                     </configuration>
                 </plugin>               
                 

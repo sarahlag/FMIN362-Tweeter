@@ -26,7 +26,7 @@ public class Tweet implements Serializable{
     @GeneratedValue( strategy = GenerationType.SEQUENCE )
     private Long id;
     
-    @Column(unique=true, nullable=false)
+    @Column //(unique=true, nullable=false)
     private String username; // @TODO Add a User model
     @Column
     private String tags; // @TODO Add a Tag model

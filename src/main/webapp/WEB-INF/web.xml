@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>Cargo Archetype Web Application Single Module</display-name>
-    <persistence-context-ref>
-        <persistence-context-ref-name>persistence/EntityManager</persistence-context-ref-name>
-        <persistence-unit-name>FMIN362_PU</persistence-unit-name>
-    </persistence-context-ref>
+    
+    <context-param>
+    <param-name>db.url</param-name>
+    <param-value>jdbc:h2:mem:db</param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.user</param-name>
+    <param-value>sa</param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.password</param-name>
+    <param-value></param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.tcpServer</param-name>
+    <param-value>-tcpAllowOthers</param-value>
+    </context-param>
     
     <servlet>
         <servlet-name>JerseyServletName</servlet-name>

@@ -1,2 +1,8 @@
 ebean mvn config:
 http://teamflawless.org/tag/maven-2/ 
+http://www.avaje.org/ebean/getstarted_props.html
+https://mail-archives.apache.org/mod_mbox/maven-users/200408.mbox/%3CMPEGKOPHCDMCCHJDLAOJMECHCIAA.cjd4@yahoo.com%3E
+https://rave.apache.org/documentation/configure-database.html
+http://www.h2database.com/html/cheatSheet.html
+http://stackoverflow.com/questions/2205126/starting-an-h2-database-server-from-maven
+http://www.h2database.com/html/tutorial.html#using_eclipselink

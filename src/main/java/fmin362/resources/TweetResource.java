@@ -1,6 +1,7 @@
 package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
 import fmin362.model.Tweet;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,10 +35,7 @@ public class TweetResource
             Ebean.save(newtweet);
             Ebean.save(newtweet2);
             
-            List<Tweet> listtweets = new ArrayList();
-            listtweets.add(newtweet);
-            listtweets.add(newtweet2);
-            
-        return listtweets;
+            Query<Tweet> find = Ebean.find(Tweet.class);
+        return find.findList();
     }
 }

@@ -36,7 +36,7 @@ public class EbeanTest extends TestCase{
 		
 		// find the inserted entity by its id
 	Tweet e2 = Ebean.find(Tweet.class, e.getId());
-        
+                
         assertEquals(e2.getComment(), "changed");
 	System.out.println("[EBEAN TEST RESULT]Got "+e2.getComment());
 		
