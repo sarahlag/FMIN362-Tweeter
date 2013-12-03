@@ -1,8 +1,11 @@
-- persistence de la bdd -> remplacer par ebean
-	-> code compile, mais http://localhost:9000/FMIN362-Tweeter/resources/tweets
-	donne java.lang.ClassNotFoundException: com.avaje.ebean.Ebean
-
-- formulaire post tweet
+- persistence de la bdd -> remplacer par ebean -> en mémoire ?
+- formulaire html post tweet
 - modèles user et tags
 - upload images photos
 - jquery pour au moins les graphiques
+
+!redirection vers page wall.html - création wall servlet
+!methode get des tweet, affichage en javascript par ajax
+!persistence de la bdd -> remplacer par ebean
+!methode post -> url form encoded -> curl
+

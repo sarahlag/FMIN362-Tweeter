@@ -5,7 +5,7 @@ function FetchTweets()
 	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
         if (xmlHttpRequest === null)
 		return;
-	xmlHttpRequest.open("GET", "resources/tweets", true);
+	xmlHttpRequest.open("GET", "resources/tweets/get", true);
 	xmlHttpRequest.overrideMimeType("application/json");
 	xmlHttpRequest.onreadystatechange = ListTweets;
 	xmlHttpRequest.send(null);

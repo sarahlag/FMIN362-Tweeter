@@ -1,0 +1,11 @@
+u: username
+p: password
+c: commentaire
+url: photo-url !! doit être absolue !!
+pdate: date de prise de la photo
+ploc: lieu de prise de la photo
+tags: tag1,tag2,..
+
+curl -X POST -d "u=username&p=passwd&c=comment&url=filepath&pdate=dd/MM/yy&ploc=location&tags=tag1,tag2,.." http://localhost:9000/FMIN362-Tweeter/resources/tweets/post_urlencoded
+
+curl -X POST --data "u=mikasa&c=good day&pdate=25/11/13&ploc=Wall Rose&tags=snk,aot" http://localhost:9000/FMIN362-Tweeter/resources/tweets/post_urlencoded
