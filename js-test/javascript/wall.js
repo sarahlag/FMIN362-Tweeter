@@ -43,7 +43,7 @@ function listTweets()
 
 function postTweet()
 {
-	/*document.getElementById('form-tweet').form.reset();
+	document.getElementById('form-tweet').form.reset();
 	username = document.getElementById('formfield-username').value;
 	comment = document.getElementById('formfield-comment').value;
 	photourl = document.getElementById('formfield-photourl').value;
@@ -57,7 +57,7 @@ function postTweet()
 
 	xmlHttpRequest.open("POST", "resources/tweets/post_urlencoded", true);
 	xmlHttpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xmlHttpRequest.send("u="+username+"&c="+comment+"&url="+photourl+"&pdate="+pdate+"&ploc="+ploc+"&tags="+tags);*/
+	xmlHttpRequest.send("u="+username+"&c="+comment+"&url="+photourl+"&pdate="+pdate+"&ploc="+ploc+"&tags="+tags);
 	window.location.reload();
 	document.getElementById('form-tweet').reset();
 }

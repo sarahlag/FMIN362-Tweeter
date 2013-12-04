@@ -1,7 +1,6 @@
 - persistence de la bdd -> remplacer par ebean -> en mémoire ?
-- formulaire html post tweet
-- modèles user et tags
 - upload images photos
+- modèles user et tags
 - jquery pour au moins les graphiques
 
 !redirection vers page wall.html - création wall servlet

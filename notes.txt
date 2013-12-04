@@ -10,3 +10,5 @@ http://www.h2database.com/html/tutorial.html#using_eclipselink
 post:
 http://www.ibm.com/developerworks/library/wa-aj-tomcat/
 
+file upload:
+http://examples.javacodegeeks.com/enterprise-java/rest/jersey/jersey-file-upload-example/

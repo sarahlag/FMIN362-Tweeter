@@ -2,8 +2,11 @@ package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
+import com.sun.jersey.api.view.Viewable;
+import com.sun.jersey.core.header.ContentDisposition;
 import fmin362.model.Tweet;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,44 +26,77 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.FormDataParam;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import org.h2.store.fs.FileUtils;
+//import org.apache.commons.io.FileUtils;
 
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
-
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "/home/dem/public/images/";
+    
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
     public List<Tweet> get()
             //throws Exception
-    {
-            /*
-            Tweet newtweet = new Tweet( );
-            newtweet.setUsername("toto");
-            newtweet.setComment("hello world!");
-            newtweet.setTags("ready, go");
-
-            Tweet newtweet2 = new Tweet( );
-            newtweet2.setUsername("titi");
-            newtweet2.setComment("bouh");
-            newtweet2.setTags("hey, ho");
-
-            Ebean.save(newtweet);
-            Ebean.save(newtweet2);//*/
-            
+    {           
             Query<Tweet> find = Ebean.find(Tweet.class);
             return find.findList();
     }
-    
-    /*@POST
-    @Path( "/post_json" )
-    @Consumes( MediaType.APPLICATION_JSON )
-    public Response post_json(Tweet t)
-    {
-	String result = "Tweet saved : " + t;
-	return Response.status(201).entity(result).build();
- 
-    }*/
+
+    @POST
+    @Path("/post_multipart")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(FormDataMultiPart form) {
+		 FormDataBodyPart filePart = form.getField("photofile");
+                 
+		 ContentDisposition headerOfFilePart =  filePart.getContentDisposition();
+
+		 InputStream fileInputStream = filePart.getValueAs(InputStream.class);
+
+		 String filePath = SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
+
+		// save the file to the server
+		saveFile(fileInputStream, filePath);
+                //FileUtils.copyFile(file, photofile);
+                 
+                 
+		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
+
+                Response.status(Response.Status.OK).entity(output).build();
+		//return Response.status(200).entity(new Viewable("/wall")).build();
+
+	}
+
+	// save uploaded file to a defined location on the server
+	private void saveFile(InputStream uploadedInputStream, String serverLocation) {
+
+		try {
+			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = uploadedInputStream.read(bytes)) != -1) {
+				outpuStream.write(bytes, 0, read);
+			}
+                        
+			outpuStream.flush();
+			outpuStream.close();
+
+			uploadedInputStream.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
     
     @POST
     @Path( "/post_urlencoded" )
