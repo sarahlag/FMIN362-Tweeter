@@ -106,13 +106,6 @@
                         <configuration>
                             <properties>
                                 <cargo.servlet.port>${servlet.port}</cargo.servlet.port>
-                                <cargo.datasource.datasource.h2database>
-                                    cargo.datasource.driver=org.h2.Driver|
-                                    cargo.datasource.url=jdbc:h2:db:database|
-                                    cargo.datasource.jndi=jdbc/DSfmin362|
-                                    cargo.datasource.username=""|
-                                    cargo.datasource.password=""
-                                </cargo.datasource.datasource.h2database>
                             </properties>
                         </configuration>
                         <deployables>

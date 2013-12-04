@@ -1,0 +1,123 @@
+ <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>process-ebean-enhancement</id>
+            <phase>process-classes</phase>
+            <configuration>
+                <tasks>
+                    <property name="compile_classpath" refid="maven.compile.classpath" />
+                    <echo message="------ Ebean enhancing test classes debug level ------" />
+                    <echo message="Classpath: ${compile_classpath}" />
+                    <taskdef name="ebeanEnhance" 
+                        classname="com.avaje.ebean.enhance.ant.AntEnhanceTask"
+                        classpath="${compile_classpath}" />
+                    <ebeanEnhance classSource="${project.build.outputDirectory}" 
+                        packages="fmin362.model.*" transformArgs="debug=1" />
+                </tasks>
+                <encoding>UTF-8</encoding>
+            </configuration>
+            <goals>
+                <goal>run</goal>
+            </goals>
+        </execution>
+    </executions>
+                </plugin>
+
+<cargo.datasource.datasource.h2>
+                                    
+                                    cargo.datasource.driver=org.h2.Driver|
+                                    cargo.datasource.url=jdbc:h2:db/database;create=true|
+                                    cargo.datasource.username=APP|
+                                    cargo.datasource.password=APP
+                                    <!--
+                                    cargo.datasource.driver=org.apache.derby.jdbc.EmbeddedDriver|
+                                    cargo.datasource.url=jdbc:derby:derbyDB;create=true|
+                                    cargo.datasource.jndi=jdbc/DSfmin362|
+                                    cargo.datasource.username=APP|
+                                    cargo.datasource.password=APP-->
+                                </cargo.datasource.datasource.h2>
+
+
+<!--
+                                    cargo.datasource.driver=org.apache.derby.jdbc.EmbeddedDriver|
+                                    cargo.datasource.url=jdbc:derby:derbyDB;create=true|
+                                    cargo.datasource.jndi=jdbc/DSfmin362|
+                                    cargo.datasource.username=APP|
+                                    cargo.datasource.password=APP-->
+
+ <configuration>
+                            <properties>
+                                <cargo.servlet.port>${servlet.port}</cargo.servlet.port>
+                                <cargo.datasource.datasource>
+                                    cargo.datasource.driver=org.h2.Driver|
+                                    cargo.datasource.url=jdbc:h2:mem:tests|
+                                    cargo.datasource.type=javax.sql.DataSource
+                                </cargo.datasource.datasource>
+                            </properties>
+                        </configuration>
+
+
+<persistence-context-ref>
+        <persistence-context-ref-name>persistence/EntityManager</persistence-context-ref-name>
+        <persistence-unit-name>FMIN362_PU</persistence-unit-name>
+</persistence-context-ref>
+
+
+
+
+
+
+
+cargo.datasource.jndi=jdbc/DSfmin362|
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+    <persistence-unit name="FMIN362_PU">
+        <jta-data-source>jdbc/DSfmin362</jta-data-source>
+        <properties>
+            <!-- Glassfish's EclipseLink should create the database schema automatically -->
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+        </properties>
+    </persistence-unit>
+</persistence>
+
+
+<configuration>
+                            <properties>
+                                <cargo.servlet.port>${servlet.port}</cargo.servlet.port>
+                                <cargo.datasource.datasource.h2database>
+                                    cargo.datasource.driver=org.h2.Driver|
+                                    cargo.datasource.url=jdbc:h2:db/database|
+                                    cargo.datasource.jndi=jdbc/DefaultDS|
+                                    cargo.datasource.username=""|
+                                    cargo.datasource.password=""
+                                </cargo.datasource.datasource.h2database>
+                            </properties>
+                        </configuration>
+
+
+<context-param>
+    <param-name>db.url</param-name>
+    <param-value>jdbc:h2:database</param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.user</param-name>
+    <param-value>sa</param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.password</param-name>
+    <param-value></param-value>
+    </context-param>
+    <context-param>
+    <param-name>db.tcpServer</param-name>
+    <param-value>-tcpAllowOthers</param-value>
+    </context-param>
+
+# You can expose this datasource via JNDI if needed (Useful for JPA)
+datasource.h2.jndiName=DefaultDS
+
+

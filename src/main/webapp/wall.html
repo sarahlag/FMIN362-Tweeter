@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <!-- http://localhost:9000/FMIN362-Tweeter/wall -->
+
 <html>
     <head>
         <title>Tweety</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
     </head>
     
     <body>
         <p>This is The Wall</p>
-        
+
+	<p>
+	<form id="form-tweet" method="post">
+        	<label for="formfield-username">Nom</label> 			<input type="text" id="formfield-username" value="" />
+		<label for="formfield-comment">Commentaire</label> 		<input type="text" id="formfield-comment" value="" />
+		<label for="formfield-tags">Tags</label> 			<input type="text" id="formfield-tags" class="tags" /> <br/>
+		<label for="formfield-photourl">Photo</label>			<input type="file" id ="formfield-photourl" onchange="checkPhoto()" /> <br/>
+		<label for="formfield-pdate">Date de prise de la photo</label>	<input type="date" id="formfield-pdate" value="04/12/13"/> 
+		<label for="formfield-ploc">Lieu de prise de la photo</label>	<input type="text" id="formfield-ploc" value="Marseille, France" /> <br/>
+            <input type="button" id="btn-posttweet" onclick="postTweet()" value="Envoyer" />
+        </form>
+	</p>
+
         <table id="tableTweets">
             <tr>
 		<th>Username</th>
@@ -20,7 +32,8 @@
 		<th>Tags</th>
             </tr>
 	</table>
-        
-        <script src="javascript/wall.js"></script>
+
+	<script src="javascript/wall.js"></script>
     </body>
 </html>
+

@@ -3,8 +3,10 @@
 package fmin362;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
 import com.avaje.ebean.SqlRow;
 import fmin362.model.Tweet;
+import java.util.List;
 import junit.framework.TestCase;
 
 public class EbeanTest extends TestCase{
@@ -23,7 +25,7 @@ public class EbeanTest extends TestCase{
 	}
     
     public void testQuery() {
-        Tweet e = new Tweet();
+        /*Tweet e = new Tweet();
 	e.setUsername("test");
 	e.setComment("something");
 		
@@ -38,9 +40,13 @@ public class EbeanTest extends TestCase{
 	Tweet e2 = Ebean.find(Tweet.class, e.getId());
                 
         assertEquals(e2.getComment(), "changed");
-	System.out.println("[EBEAN TEST RESULT]Got "+e2.getComment());
+	System.out.println("[EBEAN TEST RESULT]Got "+e2.getComment());*/
+        
+        List<Tweet> find = Ebean.find(Tweet.class).findList();
+        for (int i=0; i<find.size(); i++)
+            System.out.println("c="+find.get(i).getComment());
 		
-	Ebean.delete(e);
+	//Ebean.delete(e);
 		// can use delete by id when you don't have the bean
 		//Ebean.delete(ESimple.class, e.getId());
     }
