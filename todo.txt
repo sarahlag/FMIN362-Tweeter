@@ -1,10 +1,9 @@
-- persistence de la bdd -> remplacer par ebean -> en mémoire ?
 - upload images photos
 - modèles user et tags
 - jquery pour au moins les graphiques
 
-!redirection vers page wall.html - création wall servlet
-!methode get des tweet, affichage en javascript par ajax
-!persistence de la bdd -> remplacer par ebean
-!methode post -> url form encoded -> curl
-
+!-redirection vers page wall.html - création wall servlet
+!-methode get des tweet, affichage en javascript par ajax
+!-persistence de la bdd -> remplacer par ebean
+!-methode post -> url form encoded -> curl
+!-persistence de la bdd -> remplacer par ebean -> en mémoire ?

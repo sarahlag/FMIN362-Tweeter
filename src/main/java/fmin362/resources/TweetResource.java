@@ -64,7 +64,7 @@ public class TweetResource
 		 String filePath = SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
 
 		// save the file to the server
-		saveFile(fileInputStream, filePath);
+		copyFile(fileInputStream, filePath);
                 //FileUtils.copyFile(file, photofile);
                  
                  
@@ -76,7 +76,7 @@ public class TweetResource
 	}
 
 	// save uploaded file to a defined location on the server
-	private void saveFile(InputStream uploadedInputStream, String serverLocation) {
+	public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
 
 		try {
 			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
@@ -118,6 +118,10 @@ public class TweetResource
         newtweet.setPhoto_place(photoloc);
         newtweet.setTags(tags);
         Ebean.save(newtweet);
+        
+        //File photofile = new File(photourl);
+        
+        
 	return Response.status(201).entity(result).build();
     }
     

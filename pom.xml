@@ -61,14 +61,12 @@
         </dependency>
 
         <!-- manip de fichiers -->
-
         <dependency>
 		<groupId>com.sun.jersey.contribs</groupId>
 		<artifactId>jersey-multipart</artifactId>
 		<version>1.8</version>
 	</dependency>
-        
-        
+
 
         <!-- Dépendences de test -->
         <dependency>
