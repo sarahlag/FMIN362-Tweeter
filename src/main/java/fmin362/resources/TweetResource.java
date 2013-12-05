@@ -70,7 +70,7 @@ public class TweetResource
                  
 		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
 
-                Response.status(Response.Status.OK).entity(output).build();
+                return Response.status(Response.Status.OK).entity(output).build();
 		//return Response.status(200).entity(new Viewable("/wall")).build();
 
 	}
