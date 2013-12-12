@@ -20,13 +20,4 @@ public class TweetResourceTest extends TestCase {
         assertNotNull(tr.get());
     }
     
-    public void testCopyFile() throws IOException {              
-        Date date = new Date();
-        InputStream uploadedInputStream = FileUtils.newInputStream("~/test.jpg");
-        TweetResource.copyFile(uploadedInputStream, "public/images/"+date+"test.jpg");
-        
-        assertTrue(FileUtils.exists("public/images/"+date+"test.jpg"));
-    }
-
-    
 }

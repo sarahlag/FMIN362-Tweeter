@@ -39,7 +39,7 @@ import org.h2.store.fs.FileUtils;
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "/home/dem/public/images/";
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "";
     
     @GET
     @Path( "/get" )
@@ -47,12 +47,15 @@ public class TweetResource
     public List<Tweet> get()
             //throws Exception
     {           
+        
+            System.out.println("get");
+        
             Query<Tweet> find = Ebean.find(Tweet.class);
             return find.findList();
     }
 
     @POST
-    @Path("/post_multipart")
+    @Path("/post")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(FormDataMultiPart form) {
 		 FormDataBodyPart filePart = form.getField("photofile");
@@ -69,37 +72,12 @@ public class TweetResource
                  
                  
 		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
-
+                
                 return Response.status(Response.Status.OK).entity(output).build();
-		//return Response.status(200).entity(new Viewable("/wall")).build();
-
-	}
-
-	// save uploaded file to a defined location on the server
-	public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
-
-		try {
-			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = uploadedInputStream.read(bytes)) != -1) {
-				outpuStream.write(bytes, 0, read);
-			}
-                        
-			outpuStream.flush();
-			outpuStream.close();
-
-			uploadedInputStream.close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-
 	}
     
     @POST
-    @Path( "/post_urlencoded" )
+    @Path( "/post" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
     public Response post_urlencoded(@FormParam("u") String username,
                                 @FormParam("c") String comment,
@@ -124,5 +102,28 @@ public class TweetResource
         
 	return Response.status(201).entity(result).build();
     }
+    
+    // save uploaded file to a defined location on the server
+	public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
+
+		try {
+			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = uploadedInputStream.read(bytes)) != -1) {
+				outpuStream.write(bytes, 0, read);
+			}
+                        
+			outpuStream.flush();
+			outpuStream.close();
+
+			uploadedInputStream.close();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
     
 }

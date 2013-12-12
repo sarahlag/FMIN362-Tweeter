@@ -33,7 +33,7 @@ function getTweets()
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
                 listTweets(xmlHttpRequest.responseText);
         }
-	xmlHttpRequest.send(null);
+	xmlHttpRequest.send("null");
 }
 
 function postTweet()
@@ -42,9 +42,8 @@ function postTweet()
         if (xmlHttpRequest == null)
 		return;
             
-        xmlHttpRequest.open("POST", "resources/tweets/post_multipart", true);
+        xmlHttpRequest.open("POST", "resources/tweets/post", true);
         xmlHttpRequest.setRequestHeader("Content-Type", "multipart/form-data");
-        //xmlHttpRequest.setRequestHeader("Content-Disposition", "form-data");
         xmlHttpRequest.setRequestHeader("Cache-Control", "no-cache");
 
         var file = document.getElementById('formfield-photourl');
@@ -55,27 +54,6 @@ function postTweet()
         }
         xmlHttpRequest.send(file);
 }
-
-/*function postTweet_urlformencoded()
-{
-	document.getElementById('form-tweet').form.reset();
-	username = document.getElementById('formfield-username').value;
-	comment = document.getElementById('formfield-comment').value;
-	photourl = document.getElementById('formfield-photourl').value;
-	pdate = document.getElementById('formfield-pdate').value;
-	ploc = document.getElementById('formfield-ploc').value;
-	tags = document.getElementById('formfield-tags').value;
-
-	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
-        if (xmlHttpRequest == null)
-		return;
-
-	xmlHttpRequest.open("POST", "resources/tweets/post_urlencoded", true);
-	xmlHttpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xmlHttpRequest.send("u="+username+"&c="+comment+"&url="+photourl+"&pdate="+pdate+"&ploc="+ploc+"&tags="+tags);
-	window.location.reload();
-	document.getElementById('form-tweet').reset();
-}*/
 
 /* ====================	*/
 /* Modification Wall    */
