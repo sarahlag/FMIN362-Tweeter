@@ -28,9 +28,7 @@ function getTweets()
         if (xmlHttpRequest === null)
 		return;
 	xmlHttpRequest.open("GET", "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get", true);
-	//xmlHttpRequest.setRequestHeader("Access-Control-Request-Methods", "GET");
-	xmlHttpRequest.setRequestHeader("Accept", "application/json");
-	//xmlHttpRequest.setRequestHeader("Content-Type", "application/xml");
+	//xmlHttpRequest.setRequestHeader("Accept", "application/json");
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
                 listTweets(xmlHttpRequest.responseText);

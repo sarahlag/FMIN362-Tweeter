@@ -12,3 +12,9 @@ http://www.ibm.com/developerworks/library/wa-aj-tomcat/
 
 file upload:
 http://examples.javacodegeeks.com/enterprise-java/rest/jersey/jersey-file-upload-example/
+
+
+chercher maven conf pour avoir h2-browser
+org.h2.tools
+
+

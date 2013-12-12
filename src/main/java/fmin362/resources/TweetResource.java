@@ -39,7 +39,7 @@ import org.h2.store.fs.FileUtils;
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "";
+    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "./";
     
     @GET
     @Path( "/get" )
@@ -47,16 +47,13 @@ public class TweetResource
     public List<Tweet> get()
             //throws Exception
     {           
-        
-            System.out.println("get");
-        
             Query<Tweet> find = Ebean.find(Tweet.class);
             return find.findList();
     }
 
     @POST
     @Path("/post")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes( MediaType.MULTIPART_FORM_DATA )
     public Response uploadFile(FormDataMultiPart form) {
 		 FormDataBodyPart filePart = form.getField("photofile");
                  
@@ -70,8 +67,10 @@ public class TweetResource
 		copyFile(fileInputStream, filePath);
                 //FileUtils.copyFile(file, photofile);
                  
-                 
-		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
+		String output = "File "+filePart.getName()+"\nsaved <b>to</b> server location using FormDataMultiPart : " + filePath;
+                //output += "\n <img src=\"";
+                
+                //<img src="@routes.Assets.at("images/" + tweet.photoURL)"/>
                 
                 return Response.status(Response.Status.OK).entity(output).build();
 	}
@@ -91,14 +90,14 @@ public class TweetResource
         Tweet newtweet = new Tweet( );
         newtweet.setUsername(username);
         newtweet.setComment(comment);
+        
         newtweet.setPhoto_url(photourl);
+        
         newtweet.setPhoto_date(photodate);
         newtweet.setPhoto_place(photoloc);
         newtweet.setTags(tags);
         Ebean.save(newtweet);
-        
-        //File photofile = new File(photourl);
-        
+              
         
 	return Response.status(201).entity(result).build();
     }

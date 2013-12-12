@@ -8,6 +8,7 @@ tags: tag1,tag2,..
 
 curl -H "Accept: application/json" http://localhost:9000/FMIN362-Tweeter/resources/tweets/get
 
-curl -X POST -d "u=username&p=passwd&c=comment&url=filepath&pdate=dd/MM/yy&ploc=location&tags=tag1,tag2,.." http://localhost:9000/FMIN362-Tweeter/resources/tweets/post_urlencoded
+curl -X POST -d "u=username&p=passwd&c=comment&url=filepath&pdate=dd/MM/yy&ploc=location&tags=tag1,tag2,.." http://localhost:9000/FMIN362-Tweeter/resources/tweets/post
 
-curl -X POST --data "u=mikasa&c=good day&pdate=25/11/13&ploc=Wall Rose&tags=snk,aot" http://localhost:9000/FMIN362-Tweeter/resources/tweets/post_urlencoded
+curl -X POST --data "u=mikasa&c=good day&pdate=25/11/13&ploc=Wall Rose&tags=snk,aot" http://localhost:9000/FMIN362-Tweeter/resources/tweets/post
+
