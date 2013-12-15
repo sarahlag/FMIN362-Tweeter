@@ -76,11 +76,11 @@ public class TweetResource
         newtweet.setPhoto_place(photoloc.getValueAs(String.class));
         newtweet.setTags(tags.getValueAs(String.class));
         
-        Ebean.save(newtweet);
-        if (filePart == null) // !TODO si pas image ? à tester
-            return Response.status(Response.Status.NO_CONTENT).build();
-        
+        Ebean.save(newtweet);        
         String photourl = uploadFile(filePart, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
+        if (photourl.isEmpty())
+            return Response.status(205).build();
+        
         newtweet.setPhoto_url(photourl);
         Ebean.update(newtweet);
                
@@ -123,6 +123,8 @@ public class TweetResource
     private String uploadFile(FormDataBodyPart filePart, String filename)
     {
         String realFilename = filePart.getContentDisposition().getFileName();
+        if (realFilename.isEmpty())
+            return "";
         InputStream fileInputStream = filePart.getValueAs(InputStream.class);
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
         copyFile(fileInputStream, filePath);
