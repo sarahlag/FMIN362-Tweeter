@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
 @Entity
@@ -22,8 +23,9 @@ public class Tweet implements Serializable{
 	@JoinColumn(name="USER_ID")
 	public User author;*/
     
+    @SequenceGenerator(name="seq_tweet_name", sequenceName="tweet_seq") 
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tweet_name")
     @Id
-    @GeneratedValue( strategy = GenerationType.SEQUENCE )
     private Long id;
     
     @Column //(unique=true, nullable=false)

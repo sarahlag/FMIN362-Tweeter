@@ -23,4 +23,12 @@ public class WebappIT extends TestCase {
         connection.connect();
         assertEquals(200, connection.getResponseCode());
     }
+    
+    /*public void testCallUpload() throws Exception
+    {
+        URL url = new URL(this.baseUrl+"/upload");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+        assertEquals(1, connection.getResponseCode());
+    }*/
 }

@@ -33,14 +33,16 @@ import com.sun.jersey.multipart.FormDataParam;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import org.h2.store.fs.FileUtils;
 //import org.apache.commons.io.FileUtils;
 
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "./";
-    
+    private final String SERVER_UPLOAD_LOCATION_FOLDER = getUploadPath();
+        
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
@@ -55,8 +57,8 @@ public class TweetResource
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     public Response uploadFile(FormDataMultiPart form) {
+                    
 		 FormDataBodyPart filePart = form.getField("photofile");
-                 
 		 ContentDisposition headerOfFilePart =  filePart.getContentDisposition();
 
 		 InputStream fileInputStream = filePart.getValueAs(InputStream.class);
@@ -66,9 +68,10 @@ public class TweetResource
 		// save the file to the server
 		copyFile(fileInputStream, filePath);
                 //FileUtils.copyFile(file, photofile);
-                 
-		String output = "File "+filePart.getName()+"\nsaved <b>to</b> server location using FormDataMultiPart : " + filePath;
-                //output += "\n <img src=\"";
+                                 
+		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
+                output += "</br> <img src='"+filePath+"'/>"; // http://localhost:9000/home/dem/lab/java/FMIN362-Tweeter/src/main/webapp/images/1487707.png
+                output += "</br> ";
                 
                 //<img src="@routes.Assets.at("images/" + tweet.photoURL)"/>
                 
@@ -87,7 +90,7 @@ public class TweetResource
     {
 	String result = "Tweet saved\n";
         
-        Tweet newtweet = new Tweet( );
+        Tweet newtweet = new Tweet();
         newtweet.setUsername(username);
         newtweet.setComment(comment);
         
@@ -103,7 +106,7 @@ public class TweetResource
     }
     
     // save uploaded file to a defined location on the server
-	public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
+    public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
 
 		try {
 			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
@@ -123,6 +126,21 @@ public class TweetResource
 			e.printStackTrace();
 		}
 
-	}
+    }
+    
+    private String getUploadPath()
+    {
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+                URL[] urls = ((URLClassLoader)cl).getURLs();
+        if (urls == null || urls.length < 1)
+            return "./";
+        String folder = urls[0].toString(); // [path]/FMIN362-Tweeter/target/cargo/installs/glassfish-3.1.2.2/glassfish3/glassfish/modules/glassfish.jar 
+        if (folder.startsWith("file:"))
+            folder = folder.substring(5);
+        int i = folder.indexOf("target");
+        folder = folder.substring(0, i);
+        
+        return folder + "src/main/webapp/images/";
+    }
     
 }
