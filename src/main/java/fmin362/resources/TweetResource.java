@@ -31,6 +31,8 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.FormDataParam;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -56,28 +58,30 @@ public class TweetResource
     @POST
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
-    public Response uploadFile(FormDataMultiPart form) {
-                    
-		 FormDataBodyPart filePart = form.getField("photofile");
-		 ContentDisposition headerOfFilePart =  filePart.getContentDisposition();
-
-		 InputStream fileInputStream = filePart.getValueAs(InputStream.class);
-
-		 String filePath = SERVER_UPLOAD_LOCATION_FOLDER + headerOfFilePart.getFileName();
-
-		// save the file to the server
-		copyFile(fileInputStream, filePath);
-                //FileUtils.copyFile(file, photofile);
-                                 
-		String output = "File "+filePart.getName()+"\nsaved to server location using FormDataMultiPart : " + filePath;
-                output += "</br> <img src='"+filePath+"'/>"; // http://localhost:9000/home/dem/lab/java/FMIN362-Tweeter/src/main/webapp/images/1487707.png
-                output += "</br> ";
-                
-                //<img src="@routes.Assets.at("images/" + tweet.photoURL)"/>
-                
-                return Response.status(Response.Status.OK).entity(output).build();
-	}
-    
+    public Response post_multipart(FormDataMultiPart form) {
+        FormDataBodyPart filePart = form.getField("photofile");
+        
+        Tweet newtweet = new Tweet();
+       
+        
+        /*newtweet.setUsername(username);
+        newtweet.setComment(comment);
+        newtweet.setPhoto_url(photourl);
+        newtweet.setPhoto_date(photodate);
+        newtweet.setPhoto_place(photoloc);
+        newtweet.setTags(tags);*/
+        
+        Ebean.save(newtweet);
+        String photourl = uploadFile(filePart, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_"));
+        newtweet.setPhoto_url(photourl);
+        Ebean.update(newtweet);
+        
+        String result = "Tweet saved\n";
+        
+        
+        return Response.status(201).entity(result).build();
+    }
+       
     @POST
     @Path( "/post" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
@@ -86,46 +90,70 @@ public class TweetResource
                                 @FormParam("url") String photourl,
                                 @FormParam("pdate") String photodate,
                                 @FormParam("ploc") String photoloc,
-                                @FormParam("tags") String tags)
+                                @FormParam("tags") String tags) throws FileNotFoundException
     {
 	String result = "Tweet saved\n";
         
         Tweet newtweet = new Tweet();
         newtweet.setUsername(username);
         newtweet.setComment(comment);
-        
-        newtweet.setPhoto_url(photourl);
-        
         newtweet.setPhoto_date(photodate);
         newtweet.setPhoto_place(photoloc);
         newtweet.setTags(tags);
         Ebean.save(newtweet);
-              
+        
+        String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_"));
+        newtweet.setPhoto_url(real_photourl);
+        Ebean.update(newtweet);
         
 	return Response.status(201).entity(result).build();
     }
     
-    // save uploaded file to a defined location on the server
-    public static void copyFile(InputStream uploadedInputStream, String serverLocation) {
+    /* ================ */
+    /* UPLOAD           */
+    /* ================ */
+    
+    private String uploadFile(FormDataBodyPart filePart, String filename)
+    {
+        String realFilename = filePart.getContentDisposition().getFileName();
+        InputStream fileInputStream = filePart.getValueAs(InputStream.class);
+        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
+        copyFile(fileInputStream, filePath);
+        return filePath;
+    }
+    
+    private String uploadFile(String realFilename, String filename) throws FileNotFoundException
+    {
+        InputStream fileInputStream = new FileInputStream(realFilename);
+        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
+        copyFile(fileInputStream, filePath);
+        return filePath;
+    }
 
-		try {
-			OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-			int read = 0;
-			byte[] bytes = new byte[1024];
+    private static void copyFile(InputStream uploadedInputStream, String serverLocation) {
+        try {
+		OutputStream outputStream = new FileOutputStream(new File(serverLocation));
+		int read = 0;
+		byte[] bytes = new byte[1024];
 
-			while ((read = uploadedInputStream.read(bytes)) != -1) {
-				outpuStream.write(bytes, 0, read);
-			}
-                        
-			outpuStream.flush();
-			outpuStream.close();
-
-			uploadedInputStream.close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
+		while ((read = uploadedInputStream.read(bytes)) != -1) {
+			outputStream.write(bytes, 0, read);
 		}
+                        
+		outputStream.flush();
+		outputStream.close();
 
+		uploadedInputStream.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+    }
+    
+    private String getExt(String filename)
+    {
+        int index_ext = filename.lastIndexOf('.');
+        return filename.substring(index_ext, filename.length());
     }
     
     private String getUploadPath()
@@ -140,7 +168,7 @@ public class TweetResource
         int i = folder.indexOf("target");
         folder = folder.substring(0, i);
         
-        return folder + "src/main/webapp/images/";
+        return folder + "src/main/webapp/upload/";
     }
     
 }

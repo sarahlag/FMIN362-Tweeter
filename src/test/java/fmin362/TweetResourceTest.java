@@ -16,6 +16,11 @@ import org.h2.store.fs.FileUtils;
 public class TweetResourceTest extends TestCase {
     
     public void testget() {
+        String t = "qjgsjqkgjsqkfjsdlfkqj.jpg";
+        int index_ext = t.lastIndexOf('.');
+        String ext = t.substring(index_ext, t.length());
+        assertEquals(ext, ".jpg");
+        
         //TweetResource tr = new TweetResource();
         //assertNotNull(tr.get());
     }

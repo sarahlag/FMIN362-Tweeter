@@ -4,6 +4,7 @@
     <head>
         <title>Tweety</title>
         <meta charset="UTF-8">
+	<link rel="stylesheet" media="screen" href="stylesheets/main.css">
     </head>
     
     <body>
@@ -18,7 +19,7 @@
         	<label for="formfield-username">Nom</label> 			<input type="text" id="formfield-username" value="" />
 		<label for="formfield-comment">Commentaire</label> 		<input type="text" id="formfield-comment" value="" />
 		<label for="formfield-tags">Tags</label> 			<input type="text" id="formfield-tags" class="tags" /> <br/>
-		<label for="formfield-photourl">Photo</label>			<input type="file" id ="formfield-photourl" onchange="checkPhoto()" /> <br/>
+		<label for="formfield-photourl">Photo</label>			<input type="file" id ="formfield-photourl" name="photofile" onchange="checkPhoto()" /> <br/>
 		<label for="formfield-pdate">Date de prise de la photo</label>	<input type="date" id="formfield-pdate" value="04/13/13" /> 
 		<label for="formfield-ploc">Lieu de prise de la photo</label>	<input type="text" id="formfield-ploc" value="Paris, France" /> <br/>
             <input type="button" id="btn-posttweet" onclick="postTweet()" value="Envoyer" />

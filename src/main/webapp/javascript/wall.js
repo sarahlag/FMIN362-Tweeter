@@ -68,7 +68,7 @@ function listTweets(data)
 		output = '<tr>';
 		output += '<th>'+json[i].username+'</th>';
 		output += '<th>'+json[i].comment+'</th>';
-		output += '<th>'+json[i].photo_url+'</th>';
+		output += '<th><a href="'+json[i].photo_url+'"> <img src="'+json[i].photo_url+'" class="icon" /></a></th>';
 		output += '<th>'+json[i].photo_date+'</th>';
 		output += '<th>'+json[i].photo_place+'</th>';
 		output += '<th>'+json[i].tags+'</th>';
