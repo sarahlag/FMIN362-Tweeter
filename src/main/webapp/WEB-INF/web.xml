@@ -19,16 +19,6 @@
         <servlet-name>JerseyServletName</servlet-name>
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
-   
-   <!-- url images -->
-    <servlet>
-        <servlet-name>UploadServlet</servlet-name>
-        <servlet-class>fmin362.UploadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UploadServlet</servlet-name>
-        <url-pattern>/upload/*</url-pattern>
-    </servlet-mapping>
     
    <!-- pour faire du cross-domain avec cors -->
    <filter>

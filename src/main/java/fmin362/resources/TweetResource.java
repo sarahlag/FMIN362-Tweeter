@@ -37,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Map;
 import org.h2.store.fs.FileUtils;
 //import org.apache.commons.io.FileUtils;
 
@@ -58,34 +59,34 @@ public class TweetResource
     @POST
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
-    public Response post_multipart(FormDataMultiPart form) {
+    public Response post(FormDataMultiPart form) {
         FormDataBodyPart filePart = form.getField("photofile");
-        
+        FormDataBodyPart username = form.getField("username");
+        FormDataBodyPart comment = form.getField("comment");
+        FormDataBodyPart photodate = form.getField("photodate");
+        FormDataBodyPart photoloc = form.getField("photoloc");
+        FormDataBodyPart tags = form.getField("tags");
+
         Tweet newtweet = new Tweet();
-       
-        
-        /*newtweet.setUsername(username);
-        newtweet.setComment(comment);
-        newtweet.setPhoto_url(photourl);
-        newtweet.setPhoto_date(photodate);
-        newtweet.setPhoto_place(photoloc);
-        newtweet.setTags(tags);*/
+        newtweet.setUsername(username.getValueAs(String.class));
+        newtweet.setComment(comment.getValueAs(String.class));
+        newtweet.setPhoto_date(photodate.getValueAs(String.class));
+        newtweet.setPhoto_place(photoloc.getValueAs(String.class));
+        newtweet.setTags(tags.getValueAs(String.class));
         
         Ebean.save(newtweet);
-        String photourl = uploadFile(filePart, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_"));
+        String photourl = uploadFile(filePart, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         newtweet.setPhoto_url(photourl);
         Ebean.update(newtweet);
         
-        String result = "Tweet saved\n";
-        
-        
+        String result = "Tweet saved";
         return Response.status(201).entity(result).build();
     }
        
     @POST
     @Path( "/post" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-    public Response post_urlencoded(@FormParam("u") String username,
+    public Response post(@FormParam("u") String username,
                                 @FormParam("c") String comment,
                                 @FormParam("url") String photourl,
                                 @FormParam("pdate") String photodate,
@@ -102,7 +103,7 @@ public class TweetResource
         newtweet.setTags(tags);
         Ebean.save(newtweet);
         
-        String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_"));
+        String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         newtweet.setPhoto_url(real_photourl);
         Ebean.update(newtweet);
         
@@ -168,7 +169,7 @@ public class TweetResource
         int i = folder.indexOf("target");
         folder = folder.substring(0, i);
         
-        return folder + "src/main/webapp/upload/";
+        return folder + "upload/";
     }
     
 }
