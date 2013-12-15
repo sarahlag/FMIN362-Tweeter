@@ -35,9 +35,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
+import javax.ws.rs.core.Request;
 import org.h2.store.fs.FileUtils;
 //import org.apache.commons.io.FileUtils;
 
@@ -59,7 +61,7 @@ public class TweetResource
     @POST
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
-    public Response post(FormDataMultiPart form) {
+    public Response post(FormDataMultiPart form) throws URISyntaxException {
         FormDataBodyPart filePart = form.getField("photofile");
         FormDataBodyPart username = form.getField("username");
         FormDataBodyPart comment = form.getField("comment");
@@ -75,12 +77,16 @@ public class TweetResource
         newtweet.setTags(tags.getValueAs(String.class));
         
         Ebean.save(newtweet);
+        if (filePart == null) // !TODO si pas image ? à tester
+            return Response.status(Response.Status.NO_CONTENT).build();
+        
         String photourl = uploadFile(filePart, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         newtweet.setPhoto_url(photourl);
         Ebean.update(newtweet);
-        
-        String result = "Tweet saved";
-        return Response.status(201).entity(result).build();
+               
+        //URI resp_url = new URI("http://localhost:9000/index.html");
+        //return Response.status(Response.Status.SEE_OTHER).contentLocation(resp_url).build();
+        return Response.status(205).build(); // 205 Reset Content ? marche pas - Response.Status.NO_CONTENT ?
     }
        
     @POST
@@ -107,7 +113,7 @@ public class TweetResource
         newtweet.setPhoto_url(real_photourl);
         Ebean.update(newtweet);
         
-	return Response.status(201).entity(result).build();
+	return Response.status(201).entity(result).build(); // 201: created
     }
     
     /* ================ */
@@ -153,8 +159,12 @@ public class TweetResource
     
     private String getExt(String filename)
     {
+        if (filename == null || filename.equals(""))
+            return "";
         int index_ext = filename.lastIndexOf('.');
-        return filename.substring(index_ext, filename.length());
+        if (index_ext >= 0)
+            return filename.substring(index_ext, filename.length());
+        return "";
     }
     
     private String getUploadPath()

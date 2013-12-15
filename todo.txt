@@ -1,7 +1,9 @@
-- upload images photos
-- modèles user et tags
-- jquery pour au moins les graphiques
+-refresh après post tweet
+-tester si images existe avant de copier
+-modèles user et tags
+-jquery pour au moins les graphiques
 
+!-upload images photos
 !-methode get des tweet, affichage en javascript par ajax
 !-persistence de la bdd -> remplacer par ebean
 !-methode post -> url form encoded -> curl

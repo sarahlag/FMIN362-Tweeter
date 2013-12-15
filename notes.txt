@@ -9,6 +9,7 @@ http://www.h2database.com/html/tutorial.html#using_eclipselink
 
 post:
 http://www.ibm.com/developerworks/library/wa-aj-tomcat/
+http://blog.rectorsquid.com/more-ajax-and-multipartform-data/
 
 file upload:
 http://examples.javacodegeeks.com/enterprise-java/rest/jersey/jersey-file-upload-example/
@@ -17,4 +18,6 @@ http://examples.javacodegeeks.com/enterprise-java/rest/jersey/jersey-file-upload
 chercher maven conf pour avoir h2-browser
 org.h2.tools
 
-
+http://www.w3.org/TR/html401/interact/forms.html
+onmouseup
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
