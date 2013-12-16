@@ -62,10 +62,13 @@ public class TweetResource
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     @Produces( MediaType.APPLICATION_JSON )
+
+//FormDataMultiPart form
+
     public List<Tweet> post(	@FormDataParam("username") String username,
                                 //@FormDataParam("c") String comment,
-                                @FormDataParam("photofile") InputStream photofile,
-				@FormDataParam("photofile") FormDataContentDisposition fileDetail)
+                                @FormDataParam("photofile") FormDataBodyPart photofile)
+				//@FormDataParam("photofile") FormDataContentDisposition fileDetail)
                                 //@FormDataParam("pdate") String photodate,
                                 //@FormDataParam("ploc") String photoloc,
                                 //@FormDataParam("tags") String tags) 
@@ -78,14 +81,14 @@ public class TweetResource
         FormDataBodyPart tags = form.getField("tags");*/
 
         Tweet newtweet = new Tweet();
-        newtweet.setUsername(username);
+        newtweet.setUsername(username); //.getValueAs(String.class));
         /*newtweet.setComment(comment.getValueAs(String.class));
         newtweet.setPhoto_date(photodate.getValueAs(String.class));
         newtweet.setPhoto_place(photoloc.getValueAs(String.class));
         newtweet.setTags(tags.getValueAs(String.class));*/
         
         Ebean.save(newtweet);        
-        String photourl = uploadFile(photofile, fileDetail.getFileName(), newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
+        String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         if (photourl.isEmpty())
             return Ebean.find(Tweet.class).findList();
         
@@ -129,12 +132,12 @@ public class TweetResource
     /* UPLOAD           */
     /* ================ */
     
-    private String uploadFile(InputStream fileInputStream, String realFilename, String filename)
+    private String uploadFile(FormDataBodyPart filePart, String filename)
     {
-        //String realFilename = filePart.getContentDisposition().getFileName();
+        String realFilename = filePart.getContentDisposition().getFileName();
         if (realFilename.isEmpty())
             return "";
-        //InputStream fileInputStream = filePart.getValueAs(InputStream.class);
+        InputStream fileInputStream = filePart.getValueAs(InputStream.class);
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
         copyFile(fileInputStream, filePath);
         return filePath;

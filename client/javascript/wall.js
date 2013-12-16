@@ -12,10 +12,7 @@ function checkPhoto()
 	if ( !( /\.JPG$/.test(str) || /\.JPEG$/.test(str) || /\.PNG$/.test(str) || /\.GIF$/.test(str) ))
 		alert('Vous devez selectionner une image !');
 	else
-	{
-		var file = document.getElementById('formfield-photourl').files[0];
-		dataToBinary(file);
-	}
+		dataToBinary(document.getElementById('formfield-photourl').files[0]);
 }
 
 function resetForm()
@@ -41,25 +38,30 @@ function write_multipart_text(boundary, name, value, end)
 	return text;
 }
 
+function write_reader_result() {
+	reader_result = reader.result;
+}
+
 function dataToBinary(file){
     reader = new FileReader(); 
-    reader.onload = function() {
+    reader.onload = write_reader_result;/*function() {
 	reader_result = reader.result;
-    };
-    reader.readAsBinaryString(file);
+    };*/
+    reader.readAsText(file);
 }
 
 function write_multipart_image(boundary, name, photofile, end)
 {
 	alert(reader_result);
 	var text = "";
-	//text += '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="';
+	//text += '--' + boundary + '\r\n';
 	text += 'Content-Disposition: form-data; name="';
 	text += name;
 	text += '"; filename="';
 	text += photofile.value;
 	text += '"\r\nContent-Type: ';
-	text += photofile.files[0].type + '\r\n' + 'Content-Transfer-Encoding: binary';
+	text += photofile.files[0].type + '\r\n' + 'Content-Transfer-Encoding: binary;\r\nContent-Length: ';
+	text += reader_result.length;
 	text += '\r\n\r\n';
 	text += reader_result; // binary data - écrite lors onchange de input file
 	text += '\r\n';
@@ -78,20 +80,8 @@ function write_multipart_request(xmlHttpRequest)
 	body += write_multipart_text(boundary, 'username', document.getElementById('formfield-username').value, "\r\n");
 	body += write_multipart_image(boundary, 'photofile', photofile, "--\r\n");
 	//body += write_multipart_text(boundary, 'url', document.getElementById('formfield-photourl').value, "--\r\n");
+	xmlHttpRequest.setRequestHeader( "Content-Length", body.length );
 	return body;
-}
-
-function getTweets()
-{
-	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
-        if (xmlHttpRequest === null)
-		return;
-	xmlHttpRequest.open("GET", "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get", true);
-	xmlHttpRequest.onreadystatechange = function() {
-            if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
-                listTweets(xmlHttpRequest.responseText);
-        }
-	xmlHttpRequest.send("");
 }
 
 function postTweet() // post tweet multipart, version je-me-complique-trop-la-vie
@@ -114,6 +104,20 @@ function postTweet() // post tweet multipart, version je-me-complique-trop-la-vi
         }
         xmlHttpRequest.send(data);
 }
+
+function getTweets()
+{
+	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
+        if (xmlHttpRequest === null)
+		return;
+	xmlHttpRequest.open("GET", "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get", true);
+	xmlHttpRequest.onreadystatechange = function() {
+            if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
+                listTweets(xmlHttpRequest.responseText);
+        }
+	xmlHttpRequest.send("");
+}
+
 
 /* ====================	*/
 /* Modification Wall    */
