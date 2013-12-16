@@ -13,7 +13,7 @@ http://blog.rectorsquid.com/more-ajax-and-multipartform-data/
 
 file upload:
 http://examples.javacodegeeks.com/enterprise-java/rest/jersey/jersey-file-upload-example/
-
+http://www.mkyong.com/webservices/jax-rs/file-upload-example-in-jersey/
 
 chercher maven conf pour avoir h2-browser
 org.h2.tools
@@ -21,3 +21,16 @@ org.h2.tools
 http://www.w3.org/TR/html401/interact/forms.html
 onmouseup
 http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+http://www.ietf.org/rfc/rfc1867.txt
+remarques : form et get -> url-encoded, avec param passés à url après ?
+
+http://www.w3.org/TR/html401/interact/forms.html#submit-format
+
+mimetypes:
+http://www.ltsw.se/knbase/internet/image.htp
+
+http://www.w3.org/TR/FileAPI/
+http://www.w3.org/TR/FileAPI/#dfn-readAsText
+
+http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute

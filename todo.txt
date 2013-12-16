@@ -2,6 +2,7 @@
 -tester si images existe avant de copier
 -modèles user et tags
 -jquery pour au moins les graphiques
+-bouton delete
 
 !-upload images photos
 !-methode get des tweet, affichage en javascript par ajax
