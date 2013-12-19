@@ -1,13 +1,17 @@
 
 package fmin362.model;
 
+import com.avaje.ebean.Ebean;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
@@ -18,18 +22,17 @@ public class Tweet implements Serializable{
     /*
 	@ManyToMany(cascade=CascadeType.ALL)
 	public List<Tag> tags;
-	@Required
-	@ManyToOne
-	@JoinColumn(name="USER_ID")
-	public User author;*/
+	*/
     
     @SequenceGenerator(name="seq_tweet_name", sequenceName="tweet_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tweet_name")
     @Id
     private Long id;
     
-    @Column //(unique=true, nullable=false)
-    private String username; // @TODO Add a User model
+    //@Column (nullable=false)
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
     @Column
     private String tags; // @TODO Add a Tag model
     @Column
@@ -50,8 +53,29 @@ public class Tweet implements Serializable{
         this.photo_url = "";
         this.photo_date = "";
         this.photo_place = "";
-        this.username = "";
+        this.user = new User();
         this.tags = "";
+    }
+    
+    static public boolean save(Tweet tweet) {
+        if (tweet.getUsername() == null || tweet.getUsername().isEmpty())
+            return false;
+        Ebean.save(tweet);
+        return true;
+    }
+    
+    static public boolean update(Tweet tweet) {
+        if (tweet.getUsername() == null || tweet.getUsername().isEmpty())
+            return false;
+        Ebean.update(tweet);
+        return true;
+    }
+    
+    static public boolean delete(Tweet tweet) {
+        tweet.user.removeTweet(tweet);
+        Ebean.update(tweet.user);
+        Ebean.delete(tweet);
+        return true;
     }
     
     /* ====================
@@ -74,14 +98,36 @@ public class Tweet implements Serializable{
         this.date = date;
     }
     
+    public User getUser() {
+        return this.user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     //////
     
     public String getUsername() {
-        return username;
+        return user.getUsername();
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        User user = User.findByName(username);
+        if (this.user.equals(user)) // si le nom d'utilisateur ne change pas, on ne fait rien
+            return;
+        this.user.removeTweet(this); // il faut enlever le tweet à l'utilisateur actuel
+        if (user == null) // nouveau user n'existe pas
+        {
+            user = new User();
+            user.setUsername(username);
+            Ebean.save(user);
+            this.user = user;
+        }
+        else
+            this.user = user;
+        user.addTweet(this);
+        Ebean.update(this.user);
     }
 
     public String getTags() {

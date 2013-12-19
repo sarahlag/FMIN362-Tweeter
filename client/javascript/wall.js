@@ -1,6 +1,4 @@
 var xmlHttpRequest;
-var reader;
-var reader_result;
 
 /* ====================	*/
 /* Utils		*/
@@ -11,8 +9,6 @@ function checkPhoto()
 	var str=document.getElementById('formfield-photourl').value.toUpperCase();
 	if ( !( /\.JPG$/.test(str) || /\.JPEG$/.test(str) || /\.PNG$/.test(str) || /\.GIF$/.test(str) ))
 		alert('Vous devez selectionner une image !');
-	else
-		dataToBinary(document.getElementById('formfield-photourl').files[0]);
 }
 
 /* ====================	*/

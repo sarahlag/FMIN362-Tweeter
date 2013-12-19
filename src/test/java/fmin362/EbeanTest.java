@@ -6,6 +6,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.SqlRow;
 import fmin362.model.Tweet;
+import fmin362.model.User;
 import java.util.List;
 import junit.framework.TestCase;
 
@@ -14,9 +15,7 @@ public class EbeanTest extends TestCase{
     public void testUseEbean() {
 		
 		String sql = "select count(*) as count from dual";
-		SqlRow row = 
-			Ebean.createSqlQuery(sql)
-			.findUnique();
+		SqlRow row = Ebean.createSqlQuery(sql).findUnique();
 		
 		Integer i = row.getInteger("count");
 		
@@ -26,15 +25,18 @@ public class EbeanTest extends TestCase{
     
     public void testQuery() {
         Tweet e = new Tweet();
+        
 	e.setUsername("test");
 	e.setComment("something");
+        
+        User u = e.getUser();
 		
 		// will insert
-	Ebean.save(e);
+	Tweet.save(e);
 	e.setComment("changed");
 		
 		// this will update
-	Ebean.update(e);
+	Tweet.update(e);
 		
 		// find the inserted entity by its id
 	Tweet e2 = Ebean.find(Tweet.class, e.getId());
@@ -46,7 +48,9 @@ public class EbeanTest extends TestCase{
         for (int i=0; i<find.size(); i++)
             System.out.println("c="+find.get(i).getComment());
 		
-	Ebean.delete(e);
+	Tweet.delete(e);
+        User.delete(u);
+        
 		// can use delete by id when you don't have the bean
 		//Ebean.delete(ESimple.class, e.getId());
     }

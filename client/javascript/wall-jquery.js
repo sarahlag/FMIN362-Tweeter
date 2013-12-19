@@ -23,7 +23,7 @@ $(document).ready(function($) {
 			contentType : false,
 			data : data,
 			success : function(resp) {
-				listTweets(resp);
+				listTweets(resp); // listTweets dans wall.js
 			}
 		});
 	});

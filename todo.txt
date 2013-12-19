@@ -1,5 +1,6 @@
--tester si images existent avant de copier
+-contrôler si tweet a au moins une valeur avant de sauver
 -modèles user et tags
+-custom errors in jersey, exceptions
 -jquery pour au moins les graphiques
 -bouton delete
 
@@ -8,3 +9,8 @@
 !-methode get des tweet, affichage en javascript par ajax
 !-persistence de la bdd -> remplacer par ebean
 !-methode post -> url form encoded -> curl
+
+pour admin :
+-> mettre admin par défaut, avec passwd par défaut
+-> l'empecher de faire qq chose tant qu'il a pas changé le mdp
+

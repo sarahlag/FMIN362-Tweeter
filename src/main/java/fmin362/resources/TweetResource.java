@@ -72,19 +72,26 @@ public class TweetResource
         FormDataBodyPart tags = form.getField("tags");
 
         Tweet newtweet = new Tweet();
-        newtweet.setUsername(username.getValueAs(String.class));
-        newtweet.setComment(comment.getValueAs(String.class));
-        newtweet.setPhoto_date(photodate.getValueAs(String.class));
-        newtweet.setPhoto_place(photoloc.getValueAs(String.class));
-        newtweet.setTags(tags.getValueAs(String.class));
+        if (username != null)
+            newtweet.setUsername(username.getValueAs(String.class));
+        if (comment != null)
+            newtweet.setComment(comment.getValueAs(String.class));
+        if (photodate != null)
+            newtweet.setPhoto_date(photodate.getValueAs(String.class));
+        if (photoloc != null)
+            newtweet.setPhoto_place(photoloc.getValueAs(String.class));
+        if (tags != null)
+            newtweet.setTags(tags.getValueAs(String.class));
         
-        Ebean.save(newtweet);        
-        String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
-        if (photourl.isEmpty())
+        if (!Tweet.save(newtweet))
             return Ebean.find(Tweet.class).findList();
         
+        String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
+        if (photourl.isEmpty())
+            return Ebean.find(Tweet.class).findList(); //!TODO renvoyer erreur
+        
         newtweet.setPhoto_url(photourl);
-        Ebean.update(newtweet);
+        Tweet.update(newtweet);
           
 	return Ebean.find(Tweet.class).findList();     
     }
@@ -93,27 +100,28 @@ public class TweetResource
     @Path( "/post" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
     public Response post(	@FormParam("u") String username,
+                                @FormParam("p") String passwd,
                                 @FormParam("c") String comment,
                                 @FormParam("url") String photourl,
                                 @FormParam("pdate") String photodate,
                                 @FormParam("ploc") String photoloc,
                                 @FormParam("tags") String tags) throws FileNotFoundException
-    {
-	String result = "Tweet saved\n";
-        
+    {       
         Tweet newtweet = new Tweet();
         newtweet.setUsername(username);
         newtweet.setComment(comment);
         newtweet.setPhoto_date(photodate);
         newtweet.setPhoto_place(photoloc);
         newtweet.setTags(tags);
-        Ebean.save(newtweet);
         
+        if (!Tweet.save(newtweet))
+            return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed
+                
         String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         newtweet.setPhoto_url(real_photourl);
-        Ebean.update(newtweet);
+        Tweet.update(newtweet);
         
-	return Response.status(201).entity(result).build(); // 201: created
+	return Response.status(201).entity("Tweet saved\n").build(); // 201: created
     }
     
     /* ================ */
@@ -122,6 +130,8 @@ public class TweetResource
     
     private String uploadFile(FormDataBodyPart filePart, String filename)
     {
+        if (filePart == null)
+            return "";
         String realFilename = filePart.getContentDisposition().getFileName();
         if (realFilename.isEmpty())
             return "";
@@ -133,6 +143,8 @@ public class TweetResource
     
     private String uploadFile(String realFilename, String filename) throws FileNotFoundException
     {
+        if (realFilename == null || realFilename.isEmpty())
+            return "";
         InputStream fileInputStream = new FileInputStream(realFilename);
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
         copyFile(fileInputStream, filePath);
