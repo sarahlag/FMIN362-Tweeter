@@ -81,7 +81,7 @@ public class TweetResource
         if (photoloc != null)
             newtweet.setPhoto_place(photoloc.getValueAs(String.class));
         if (tags != null)
-            newtweet.setTags(tags.getValueAs(String.class));
+            newtweet.addTags(tags.getValueAs(String.class));
         
         if (!Tweet.save(newtweet))
             return Ebean.find(Tweet.class).findList();
@@ -112,7 +112,7 @@ public class TweetResource
         newtweet.setComment(comment);
         newtweet.setPhoto_date(photodate);
         newtweet.setPhoto_place(photoloc);
-        newtweet.setTags(tags);
+        newtweet.addTags(tags);
         
         if (!Tweet.save(newtweet))
             return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed

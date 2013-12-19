@@ -36,7 +36,7 @@ public class User implements Serializable {
     public User() {
         this.username = "";
         this.passwd = "";
-        this.admin = false;
+        this.is_admin = false;
         this.tweets = new ArrayList<Tweet>();
     }
     
@@ -104,12 +104,13 @@ public class User implements Serializable {
         this.passwd = passwd;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public boolean isIs_admin() {
+        return is_admin;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setIs_admin(boolean is_admin) {
+        this.is_admin = is_admin;
     }
+
     
 }
