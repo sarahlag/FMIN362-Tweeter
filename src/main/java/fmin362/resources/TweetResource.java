@@ -62,30 +62,21 @@ public class TweetResource
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     @Produces( MediaType.APPLICATION_JSON )
-
-//FormDataMultiPart form
-
-    public List<Tweet> post(	@FormDataParam("username") String username,
-                                //@FormDataParam("c") String comment,
-                                @FormDataParam("photofile") FormDataBodyPart photofile)
-				//@FormDataParam("photofile") FormDataContentDisposition fileDetail)
-                                //@FormDataParam("pdate") String photodate,
-                                //@FormDataParam("ploc") String photoloc,
-                                //@FormDataParam("tags") String tags) 
-	{ 
-        /*FormDataBodyPart filePart = form.getField("photofile");
+    public List<Tweet> post( FormDataMultiPart form )
+    { 
+        FormDataBodyPart photofile = form.getField("photofile");
         FormDataBodyPart username = form.getField("username");
         FormDataBodyPart comment = form.getField("comment");
         FormDataBodyPart photodate = form.getField("photodate");
         FormDataBodyPart photoloc = form.getField("photoloc");
-        FormDataBodyPart tags = form.getField("tags");*/
+        FormDataBodyPart tags = form.getField("tags");
 
         Tweet newtweet = new Tweet();
-        newtweet.setUsername(username); //.getValueAs(String.class));
-        /*newtweet.setComment(comment.getValueAs(String.class));
+        newtweet.setUsername(username.getValueAs(String.class));
+        newtweet.setComment(comment.getValueAs(String.class));
         newtweet.setPhoto_date(photodate.getValueAs(String.class));
         newtweet.setPhoto_place(photoloc.getValueAs(String.class));
-        newtweet.setTags(tags.getValueAs(String.class));*/
+        newtweet.setTags(tags.getValueAs(String.class));
         
         Ebean.save(newtweet);        
         String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
@@ -96,9 +87,6 @@ public class TweetResource
         Ebean.update(newtweet);
           
 	return Ebean.find(Tweet.class).findList();     
-        //URI resp_url = new URI("http://localhost:9000/index.html");
-        //return Response.status(Response.Status.SEE_OTHER).contentLocation(resp_url).build();
-        //return Response.status(205).build(); // 205 Reset Content ? marche pas - Response.Status.NO_CONTENT ?
     }
        
     @POST

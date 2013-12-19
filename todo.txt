@@ -1,9 +1,9 @@
--refresh après post tweet
--tester si images existe avant de copier
+-tester si images existent avant de copier
 -modèles user et tags
 -jquery pour au moins les graphiques
 -bouton delete
 
+!-refresh après post tweet -> post avec ajax
 !-upload images photos
 !-methode get des tweet, affichage en javascript par ajax
 !-persistence de la bdd -> remplacer par ebean

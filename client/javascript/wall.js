@@ -15,95 +15,9 @@ function checkPhoto()
 		dataToBinary(document.getElementById('formfield-photourl').files[0]);
 }
 
-function resetForm()
-{
-        console.log('clearing form');
-        document.getElementById('form-tweet').reset();
-}
-
 /* ====================	*/
 /* AJAX			*/
 /* ====================	*/
-
-function write_multipart_text(boundary, name, value, end)
-{
-	var text = "";
-	text += '--' + boundary + '\r\n' + 'Content-Disposition: form-data; name="';
-	text += name;
-	text += '"\r\n\r\n';
-	text += value;
-	text += '\r\n';
-	text += '--' + boundary;
-	text += end;
-	return text;
-}
-
-function write_reader_result() {
-	reader_result = reader.result;
-}
-
-function dataToBinary(file){
-    reader = new FileReader(); 
-    reader.onload = write_reader_result;/*function() {
-	reader_result = reader.result;
-    };*/
-    reader.readAsText(file);
-}
-
-function write_multipart_image(boundary, name, photofile, end)
-{
-	alert(reader_result);
-	var text = "";
-	//text += '--' + boundary + '\r\n';
-	text += 'Content-Disposition: form-data; name="';
-	text += name;
-	text += '"; filename="';
-	text += photofile.value;
-	text += '"\r\nContent-Type: ';
-	text += photofile.files[0].type + '\r\n' + 'Content-Transfer-Encoding: binary;\r\nContent-Length: ';
-	text += reader_result.length;
-	text += '\r\n\r\n';
-	text += reader_result; // binary data - écrite lors onchange de input file
-	text += '\r\n';
-	text += '--' + boundary;
-	text += end;
-	return text;
-}
-
-function write_multipart_request(xmlHttpRequest)
-{
-	var boundary = 'xxx' + Math.floor(Math.random()*32768) + Math.floor(Math.random()*32768) + Math.floor(Math.random()*32768);
-	xmlHttpRequest.setRequestHeader( "Content-Type", 'multipart/form-data; boundary=' + boundary );
-	var body = '';
-	var photofile = document.getElementById('formfield-photourl');
-	//body += '--' + boundary; // ???
-	body += write_multipart_text(boundary, 'username', document.getElementById('formfield-username').value, "\r\n");
-	body += write_multipart_image(boundary, 'photofile', photofile, "--\r\n");
-	//body += write_multipart_text(boundary, 'url', document.getElementById('formfield-photourl').value, "--\r\n");
-	xmlHttpRequest.setRequestHeader( "Content-Length", body.length );
-	return body;
-}
-
-function postTweet() // post tweet multipart, version je-me-complique-trop-la-vie
-{
-        xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
-        if (xmlHttpRequest == null)
-		return;
-            
-        xmlHttpRequest.open("POST", "http://localhost:9000/FMIN362-Tweeter/resources/tweets/post", true);
-
-	var data = write_multipart_request(xmlHttpRequest);
-	alert(data);
-        xmlHttpRequest.onreadystatechange = function() {
-		console.log(xmlHttpRequest.readyState + " " + xmlHttpRequest.status);
-            if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 0) {     // completed && OK
-                listTweets(xmlHttpRequest.responseText);
-		resetForm();
-	    }
-
-        }
-        xmlHttpRequest.send(data);
-}
 
 function getTweets()
 {
@@ -113,7 +27,7 @@ function getTweets()
 	xmlHttpRequest.open("GET", "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get", true);
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
-                listTweets(xmlHttpRequest.responseText);
+                listTweets(JSON.parse(xmlHttpRequest.responseText));
         }
 	xmlHttpRequest.send("");
 }
@@ -123,11 +37,16 @@ function getTweets()
 /* Modification Wall    */
 /* ====================	*/
 
-function listTweets(data)
+function listTweets(json)
 {
-	console.log('listing!');
-	var listtweets = "";
-	var json = JSON.parse(data);
+	var listtweets = "<tr>"
+				"<th>Photo</th>"
+				"<th>Username</th>"
+				"<th>Tweet</th>"
+				"<th>Date</th>"
+				"<th>Location</th>"
+				"<th>Tags</th>"
+			"</tr>";
    	var output;
    	for (var i=json.length-1; i>=0; i--){
 		output = '<tr>';
@@ -140,7 +59,7 @@ function listTweets(data)
 		output+='</tr>'
 		listtweets += output;
    	}
-	document.getElementById('tableTweets').innerHTML += listtweets;
+	document.getElementById('tableTweets').innerHTML = listtweets;
 }
 
 /* ====================	*/
