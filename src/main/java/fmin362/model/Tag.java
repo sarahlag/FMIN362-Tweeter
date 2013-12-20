@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Tag implements Serializable{
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     
     @SequenceGenerator(name="seq_tag_name", sequenceName="tag_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tag_name")

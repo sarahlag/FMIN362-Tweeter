@@ -20,7 +20,7 @@ import javax.persistence.Temporal;
 
 @Entity
 public class Tweet implements Serializable{
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     
     @SequenceGenerator(name="seq_tweet_name", sequenceName="tweet_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tweet_name")
@@ -33,7 +33,7 @@ public class Tweet implements Serializable{
     //@Column
     @ManyToMany (cascade=CascadeType.ALL)
     private List<Tag> tags;
-    @Column
+    @Column(name="message")
     private String comment = "";
     @Column( name = "message_date" )
     @Temporal( javax.persistence.TemporalType.DATE )
@@ -90,8 +90,8 @@ public class Tweet implements Serializable{
         {
             tag = new Tag();
             tag.setTagname(tagname);
-            if (!Tag.save(tag))
-		return false;
+            //if (!Tag.save(tag))
+		//return false;
         }
         this.tags.add(tag);
 	return true;
@@ -105,7 +105,7 @@ public class Tweet implements Serializable{
     }
     
     public void addTags(String t) {
-        if (t == null)
+        if (t == null || t.isEmpty())
             return;
         String[] tableTags = t.split(",");
         for(int i=0; i<tableTags.length;i++)
@@ -143,7 +143,6 @@ public class Tweet implements Serializable{
         else
             this.user = user;
         user.addTweet(this);
-        User.update(this.user);
 	return true;
     }
     
@@ -159,8 +158,8 @@ public class Tweet implements Serializable{
         this.id = id;
     }
     
-    public Date getDate() { // obligée d'avoir getter et setter pour id et date : autrement, erreur : Bean property fmin362.model.Tweet.id/date has  missing readMethod  missing writeMethod
-        return this.date;
+    public Date getDate() {
+	return this.date;
     }
 
     public void setDate(Date date) {
@@ -182,9 +181,7 @@ public class Tweet implements Serializable{
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-    
-    //////
-    
+       
     public String getComment() {
         return comment;
     }

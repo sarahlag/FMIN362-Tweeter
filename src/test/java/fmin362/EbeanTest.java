@@ -74,15 +74,15 @@ public class EbeanTest extends TestCase{
     public void testTags() { // teste si tags bien ajoutés / supprimés
 	Tweet e = new Tweet();
 	e.setUsername("test");
-	Tweet.save(e);
+	//Tweet.save(e);
 
 	User u = e.getUser();
 
-	e.addTags(" tag1,  tag2,, ");
+	e.addTags(" tag1, tag2,, ");
 	Tag tag1 = e.getTags().get(0);
 	Tag tag2 = e.getTags().get(1);
 
-	//Tweet.save(e);
+	Tweet.save(e);
 
 	System.out.println("[EBEAN TAG TEST RESULT] "+e.getTags().size());
 	System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(0).getTagname()+"'");
@@ -96,8 +96,8 @@ public class EbeanTest extends TestCase{
 
 	assertTrue(rows.size() == 0);
 
-	Ebean.delete(tag1);
-	Ebean.delete(tag2);
+	//Ebean.delete(tag1);
+	//Ebean.delete(tag2);
     }
 
 }

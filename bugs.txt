@@ -3,12 +3,19 @@
 	-> en fait, fait many-to-many, et dans addTags -> objet tag sauvé
 	-> pourtant marche dans play ????
 
+à moins que ce ne soit au niveau génération id tag ?
+testTags(fmin362.EbeanTest): ERROR executing DML bindLog[Binding Insert [tag]  set[id=1, tagname=tag1, ]] error[Unique index or primary key violation: "PRIMARY KEY ON PUBLIC.TAG(ID)"; SQL statement:\n insert into tag (id, tagname) values (?,?) [23505-174]]
+... après vérif dans log de h2, il semble que le test crée mes 2 tags correctement, mais 
+	lorsque je sauve tweet, ebean essaie de re-créer les tags ... d'où unique index violation
+... pourtant, pas ce problème avec User ... what
+
 du coup :
 -tags pas correctement envoyés (voir objet json envoyé par get, et post aussi)
 	-> et pk tweet a username -> a cause des getUsername / setUsername ?
 {"id":6,"user":{"id":1,"username":"annie","passwd":"","is_admin":false},"tags":[],"comment":"comment","date":1387550560867,"photo_url":"/auto_home/slaghribi/FMIN362-ProgAv/FMIN362-Tweeter/upload/6-Fri_Dec_20_15-42-40_CET_2013.jpg","photo_date":"12/20/2013","photo_place":"Paris, France","username":"annie"}
 
-
-
 -Rmq : peut pas supprimer user sans supprimer tweets au préalable
+-Rmp : pour ça et play : pas besoin d'avoir liste de tweets dans user ?
+	- vérifier si on s'en sert dans play
+	- parce que c'est se compliquer la vie pour rien ... on s'en passe très bien dans tags
 

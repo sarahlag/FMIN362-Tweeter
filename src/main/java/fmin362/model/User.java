@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,8 +15,9 @@ import javax.persistence.SequenceGenerator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
+@Table(name="app_user") // pour enlever warning - user étant réservé dans sql
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     
     @SequenceGenerator(name="seq_user_name", sequenceName="user_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_user_name")
