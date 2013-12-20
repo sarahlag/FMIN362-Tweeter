@@ -118,9 +118,11 @@ public class TweetResource
             return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed
                 
         String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
-        newtweet.setPhoto_url(real_photourl);
-        Tweet.update(newtweet);
-        
+	if (!real_photourl.isEmpty()) 
+	{        
+	    newtweet.setPhoto_url(real_photourl);
+            Tweet.update(newtweet);
+	}        
 	return Response.status(201).entity("Tweet saved\n").build(); // 201: created
     }
     
@@ -133,7 +135,7 @@ public class TweetResource
         if (filePart == null)
             return "";
         String realFilename = filePart.getContentDisposition().getFileName();
-        if (realFilename.isEmpty())
+        if (realFilename == null || realFilename.isEmpty())
             return "";
         InputStream fileInputStream = filePart.getValueAs(InputStream.class);
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
@@ -145,7 +147,7 @@ public class TweetResource
     {
         if (realFilename == null || realFilename.isEmpty())
             return "";
-        InputStream fileInputStream = new FileInputStream(realFilename);
+        InputStream fileInputStream = new FileInputStream(realFilename); // throws FileNotFoundException si n'existe pas
         String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
         copyFile(fileInputStream, filePath);
         return filePath;

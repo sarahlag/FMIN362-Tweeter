@@ -126,22 +126,24 @@ public class Tweet implements Serializable{
         return user.getUsername();
     }
 
-    public void setUsername(String username) {
+    public boolean setUsername(String username) {
         User user = User.findByName(username);
         if (this.user.equals(user)) // si le nom d'utilisateur ne change pas, on ne fait rien
-            return;
+            return false;
         this.user.removeTweet(this); // il faut enlever le tweet à l'utilisateur actuel
         if (user == null) // nouveau user n'existe pas
         {
             user = new User();
             user.setUsername(username);
-            Ebean.save(user);
+            if (!User.save(user))
+		return false;
             this.user = user;
         }
         else
             this.user = user;
         user.addTweet(this);
-        Ebean.update(this.user);
+        User.update(this.user);
+	return true;
     }
     
     //////

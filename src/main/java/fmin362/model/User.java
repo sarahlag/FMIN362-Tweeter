@@ -63,6 +63,20 @@ public class User implements Serializable {
         Ebean.update(this);
     }
     
+    static public boolean save(User user) {
+        if (user.getUsername() == null || user.getUsername().isEmpty())
+            return false;
+        Ebean.save(user);
+        return true;
+    }
+    
+    static public boolean update(User user) {
+        if (user == null || user.getUsername() == null || user.getUsername().isEmpty())
+            return false;
+        Ebean.update(user);
+        return true;
+    }
+
     static public void delete(User user) {
         user.removeAllTweets();
         Ebean.delete(user);

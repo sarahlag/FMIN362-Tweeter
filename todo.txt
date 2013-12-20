@@ -1,9 +1,11 @@
--contrôler si tweet a au moins une valeur avant de sauver
--modèles user et tags
+-verifier pour url_form_encoded que url ok
 -custom errors in jersey, exceptions
 -jquery pour au moins les graphiques
 -bouton delete
 
+!-contrôler images
+!-contrôler si tweet a au moins une valeur avant de sauver
+!-modèles user et tags
 !-refresh après post tweet -> post avec ajax
 !-upload images photos
 !-methode get des tweet, affichage en javascript par ajax
