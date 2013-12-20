@@ -52,6 +52,13 @@ public class Tag implements Serializable{
 	return t;
     }
     
+    static public boolean save(Tag tag) {
+        if (tag == null || tag.getTagname() == null || tag.getTagname().isEmpty())
+            return false;
+        Ebean.save(tag);
+        return true;
+    }
+
     /* ====================
         Getters and Setters
        ==================== */
@@ -69,6 +76,11 @@ public class Tag implements Serializable{
     }
 
     public void setTagname(String tagname) {
-        this.tagname = clearTag(tagname);
+	if (tagname == null || tagname.isEmpty())
+		return;
+	String name = clearTag(tagname);
+        this.tagname = clearTag(name);
     }
 }
+
+

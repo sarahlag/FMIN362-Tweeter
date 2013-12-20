@@ -1,11 +1,15 @@
 
 $(document).ready(function($) {
 
+	//$("input[type=submit], button").button();
+	//$("input[type=reset]").button();
+	//$("#radio").buttonset();
+	
 	$("#formfield-pdate").datepicker({
 		changeMonth : true,
 		changeYear : true,
 		maxDate: "+0"
-	});
+	}).datepicker('setDate', new Date()); // pour mettre la date du jour par défaut
 
 	$("#btn-posttweet").click(function(event) {
 		var data = new FormData();
@@ -26,6 +30,88 @@ $(document).ready(function($) {
 				listTweets(resp); // listTweets dans wall.js
 			}
 		});
+	});
+
+	/* ================== */
+	/* autocompletion     */
+	/* ================== */
+
+	var availableTags = new Array();
+	availableTags[0] = "snk";
+	availableTags[1] = "aot";
+	availableTags[2] = "manga";
+	availableTags[3] = "default";
+	availableTags[4] = "op";
+	var availableUsers = new Array();
+	availableUsers[0] = "mikasa";
+	availableUsers[1] = "annie";
+	availableUsers[2] = "armin";
+
+	function split(val) {
+		return val.split(/,\s*/);
+	}
+
+	function extractLast(term) {
+		return split(term).pop();
+	}
+
+
+	$(".tags")
+	// don't navigate away from the field on tab when selecting an item
+	.bind("keydown", function(event) {
+		if (event.keyCode === $.ui.keyCode.TAB && $(this).data("ui-autocomplete").menu.active) {
+			event.preventDefault();
+		}
+	}).autocomplete({
+		minLength : 0,
+		source : function(request, response) {
+			// delegate back to autocomplete, but extract the last term
+			response($.ui.autocomplete.filter(availableTags, extractLast(request.term)));
+		},
+		focus : function() {
+			// prevent value inserted on focus
+			return false;
+		},
+		select : function(event, ui) {
+			var terms = split(this.value);
+			// remove the current input
+			terms.pop();
+			// add the selected item
+			terms.push(ui.item.value);
+			// add placeholder to get the comma-and-space at the end
+			terms.push("");
+			this.value = terms.join(",");
+			return false;
+		}
+	});
+
+	$(".users")
+	// don't navigate away from the field on tab when selecting an item
+	.bind("keydown", function(event) {
+		if (event.keyCode === $.ui.keyCode.TAB && $(this).data("ui-autocomplete").menu.active) {
+			event.preventDefault();
+		}
+	}).autocomplete({
+		minLength : 0,
+		source : function(request, response) {
+			// delegate back to autocomplete, but extract the last term
+			response($.ui.autocomplete.filter(availableUsers, extractLast(request.term)));
+		},
+		focus : function() {
+			// prevent value inserted on focus
+			return false;
+		},
+		select : function(event, ui) {
+			var terms = split(this.value);
+			// remove the current input
+			terms.pop();
+			// add the selected item
+			terms.push(ui.item.value);
+			// add placeholder to get the comma-and-space at the end
+			terms.push("");
+			this.value = terms.join(",");
+			return false;
+		}
 	});
 
 });

@@ -1,18 +1,23 @@
--verifier pour url_form_encoded que url ok
 -custom errors in jersey, exceptions
+	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
--bouton delete
+-pour autocompletion -> avoir UserResource et TagResource
+-pagination, affichage : le retour
+-recherches par tag / user
+-map
+-login/register/navigation anonyme
+-gérer admin
+-bouton delete, autres fonctions admin
+-session cookies
+-rechercher config mvn / ant / autre pour parcourir h2 database
 
 !-contrôler images
 !-contrôler si tweet a au moins une valeur avant de sauver
 !-modèles user et tags
 !-refresh après post tweet -> post avec ajax
-!-upload images photos
+!-upload images photos -> multipart form data
 !-methode get des tweet, affichage en javascript par ajax
 !-persistence de la bdd -> remplacer par ebean
 !-methode post -> url form encoded -> curl
 
-pour admin :
--> mettre admin par défaut, avec passwd par défaut
--> l'empecher de faire qq chose tant qu'il a pas changé le mdp
 

@@ -36,13 +36,13 @@ function getTweets()
 function listTweets(json)
 {
 	var listtweets = "<tr>"
-				"<th>Photo</th>"
-				"<th>Username</th>"
-				"<th>Tweet</th>"
-				"<th>Date</th>"
-				"<th>Location</th>"
-				"<th>Tags</th>"
-			"</tr>";
+				+"<th>Photo</th>"
+				+"<th>Username</th>"
+				+"<th>Tweet</th>"
+				+"<th>Date</th>"
+				+"<th>Location</th>"
+				+"<th>Tags</th>"
+			+"</tr>";
    	var output;
    	for (var i=json.length-1; i>=0; i--){
 		output = '<tr>';
@@ -51,9 +51,12 @@ function listTweets(json)
 		output += '<th>'+json[i].comment+'</th>';
 		output += '<th>'+json[i].photo_date+'</th>';
 		output += '<th>'+json[i].photo_place+'</th>';
-		output += '<th>'+json[i].tags+'</th>';
-		output+='</tr>'
-		listtweets += output;
+		output += '<th>'
+		for (var j=0; j<json[i].tags.length-1; j++)
+			output += json[i].tags[j].tagname+',';
+		output += json[i].tags[j].tagname+'</th>';
+		output += '</tr>';
+		listtweets += output;		
    	}
 	document.getElementById('tableTweets').innerHTML = listtweets;
 }

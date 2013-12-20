@@ -52,7 +52,6 @@ public class TweetResource
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
     public List<Tweet> get()
-            //throws Exception
     {           
             Query<Tweet> find = Ebean.find(Tweet.class);
             return find.findList();
@@ -88,7 +87,7 @@ public class TweetResource
         
         String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
         if (photourl.isEmpty())
-            return Ebean.find(Tweet.class).findList(); //!TODO renvoyer erreur
+            return Ebean.find(Tweet.class).findList();
         
         newtweet.setPhoto_url(photourl);
         Tweet.update(newtweet);
@@ -123,7 +122,7 @@ public class TweetResource
 	    newtweet.setPhoto_url(real_photourl);
             Tweet.update(newtweet);
 	}        
-	return Response.status(201).entity("Tweet saved\n").build(); // 201: created
+	return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
     }
     
     /* ================ */
@@ -189,13 +188,12 @@ public class TweetResource
                 URL[] urls = ((URLClassLoader)cl).getURLs();
         if (urls == null || urls.length < 1)
             return "./";
-        String folder = urls[0].toString(); // [path]/FMIN362-Tweeter/target/cargo/installs/glassfish-3.1.2.2/glassfish3/glassfish/modules/glassfish.jar 
+        String folder = urls[0].toString(); // [path]/[project dir]/target/cargo/installs/glassfish-3.1.2.2/glassfish3/glassfish/modules/glassfish.jar 
         if (folder.startsWith("file:"))
             folder = folder.substring(5);
         int i = folder.indexOf("target");
         folder = folder.substring(0, i);
         
-        return folder + "upload/";
+        return folder + "upload/"; // [path]/[project dir]/upload/
     }
-    
 }

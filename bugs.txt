@@ -1,0 +1,14 @@
+-peut pas faire tweet.addTags() si tweet n'a pas été sauvé au préalable
+	-> UN PETIT PEU EMBETANT
+	-> en fait, fait many-to-many, et dans addTags -> objet tag sauvé
+	-> pourtant marche dans play ????
+
+du coup :
+-tags pas correctement envoyés (voir objet json envoyé par get, et post aussi)
+	-> et pk tweet a username -> a cause des getUsername / setUsername ?
+{"id":6,"user":{"id":1,"username":"annie","passwd":"","is_admin":false},"tags":[],"comment":"comment","date":1387550560867,"photo_url":"/auto_home/slaghribi/FMIN362-ProgAv/FMIN362-Tweeter/upload/6-Fri_Dec_20_15-42-40_CET_2013.jpg","photo_date":"12/20/2013","photo_place":"Paris, France","username":"annie"}
+
+
+
+-Rmq : peut pas supprimer user sans supprimer tweets au préalable
+

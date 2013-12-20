@@ -28,10 +28,10 @@ public class Tweet implements Serializable{
     private Long id;
     
     @ManyToOne
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name="user_id")
     private User user;
     //@Column
-    @ManyToMany///(cascade=CascadeType.ALL)
+    @ManyToMany (cascade=CascadeType.ALL)
     private List<Tag> tags;
     @Column
     private String comment = "";
@@ -59,6 +59,7 @@ public class Tweet implements Serializable{
         if (tweet.getUsername() == null || tweet.getUsername().isEmpty())
             return false;
         Ebean.save(tweet);
+	Ebean.update(tweet.user);
         return true;
     }
     
@@ -74,28 +75,26 @@ public class Tweet implements Serializable{
             return;
         tweet.user.removeTweet(tweet);
         Ebean.update(tweet.user);
-        //tweet.tags.clear();
-        //Ebean.update(tweet);
         Ebean.delete(tweet);
     }
         
-    /* ====================
-        Getters and Setters
-       ==================== */
+    ///////// tags
    
-    public void addTag(String tagname) {
+    public boolean addTag(String tagname) {
         if (tagname == null || tagname.isEmpty())
-            return;
+            return false;
         Tag tag = Tag.findByName(tagname);
-        if (this.getTags().contains(tag)) // si a déjà ce tag, on ne fait rien
-            return;
+        if (this.tags.contains(tag)) // si a déjà ce tag, on ne fait rien
+            return false;
         if (tag == null)
         {
             tag = new Tag();
             tag.setTagname(tagname);
-            Ebean.save(tag);
+            if (!Tag.save(tag))
+		return false;
         }
-        this.getTags().add(tag);
+        this.tags.add(tag);
+	return true;
     }
     
     public void removeTag(String tagname) {
@@ -121,6 +120,8 @@ public class Tweet implements Serializable{
             removeTag (tableTags[i]);
 
     }
+
+    ///////// username
     
     public String getUsername() {
         return user.getUsername();
@@ -146,7 +147,9 @@ public class Tweet implements Serializable{
 	return true;
     }
     
-    //////
+    /* ====================
+        Getters and Setters
+       ==================== */
     
     public Long getId() { // obligée d'avoir getter et setter pour id et date : autrement, erreur : Bean property fmin362.model.Tweet.id/date has  missing readMethod  missing writeMethod
         return this.id;
