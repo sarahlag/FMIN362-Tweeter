@@ -1,6 +1,6 @@
 
 $(document).ready(function($) {
-
+	
 	//$("input[type=submit], button").button();
 	//$("input[type=reset]").button();
 	//$("#radio").buttonset();
@@ -28,10 +28,9 @@ $(document).ready(function($) {
 			data : data,
 			success : function(resp) {
 				listTweets(resp); // listTweets dans wall.js
+				clearErrorMsg();
 			},
-			error : function(data) {
-				printErrorMsg("div-messages", "Une erreur est survenue. Le tweet n'a pas pu être posté.");
-			}
+			error : printErrorMsg("Une erreur est survenue. Le tweet n'a pas pu être posté.")
 		});
 	});
 
@@ -50,10 +49,9 @@ $(document).ready(function($) {
 			$(data).each(function(i) {
 				availableTags[i] = this.tagname;
 			});
+			clearErrorMsg();
 		},
-		error : function(data) {
-			printErrorMsg("div-messages", "Erreur: n'a pas pu récuperer la liste des tags.");
-		}
+		error : printErrorMsg("Erreur: n'a pas pu récuperer la liste des tags.")
 	});
 
 	$.ajax({
@@ -64,10 +62,9 @@ $(document).ready(function($) {
 			$(data).each(function(i) {
 				availableUsers[i] = this.username;
 			});
+			clearErrorMsg();
 		},
-		error : function(data) {
-			printErrorMsg("div-messages", "Erreur: n'a pas pu récuperer la liste des utilisateurs.");
-		}
+		error : printErrorMsg("Erreur: n'a pas pu récuperer la liste des utilisateurs.")
 	});
 	
 	function split(val) {
@@ -77,7 +74,6 @@ $(document).ready(function($) {
 	function extractLast(term) {
 		return split(term).pop();
 	}
-
 
 	$(".tags")
 	// don't navigate away from the field on tab when selecting an item

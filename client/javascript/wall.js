@@ -61,9 +61,14 @@ function listTweets(json)
 	document.getElementById('tableTweets').innerHTML = listtweets;
 }
 
-function printErrorMsg(id, msg)
+function printErrorMsg(msg)
 {
-	document.getElementById(id).innerHTML = msg;
+	document.getElementById('div-messages').innerHTML = '<p class="errmsg">'+msg+'</p>';
+}
+
+function clearErrorMsg()
+{
+	document.getElementById('div-messages').innerHTML = '<p></p>';
 }
 
 /* ====================	*/
