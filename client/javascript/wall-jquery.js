@@ -33,7 +33,33 @@ $(document).ready(function($) {
 			error : printErrorMsg("Une erreur est survenue. Le tweet n'a pas pu être posté.")
 		});
 	});
+	
+	/* ================== */
+	/* affichage	     */
+	/* ================== */
+	
+	$("input[type='radio']").change(function(event) {
+		num_page = 1;
+		nb_affichage = $(this).val();
+		getTweets();
+	});
 
+	$("#btn-next").click(function(event) {
+		$this = $(this);
+		num_page ++;
+		getTweets();
+	});
+
+	$("#btn-prev").click(function(event) {
+		$this = $(this);
+		if(num_page <= 1) {
+			num_page = 1;
+		} else {
+			num_page--;
+			getTweets();
+		}
+	});
+	
 	/* ================== */
 	/* autocompletion     */
 	/* ================== */

@@ -37,11 +37,18 @@ else
 		<label for="formfield-pdate">	Date de prise de la photo</label>	<input type="date" id="formfield-pdate"    name="photodate" /> 
 		<label for="formfield-ploc">	Lieu de prise de la photo</label>	<input type="text" id="formfield-ploc"     name="photoloc" value="Paris, France" /> <br/>
 		<button id="btn-posttweet" type="button" >Envoyer</button>
- 	    	<input type="reset" name="btn-resetform" value="Reset" />
+ 	    <input type="reset" name="btn-resetform" value="Reset" />
         </form>
 	</p>
 
         <table id="tableTweets"></table>
+
+		<p><button id="btn-prev" type="button" ><</button> <label id='label-page'></label> <button id="btn-next" type="button" >></button></p>
+		<p><span id="radio">
+	    	<input type="radio" id="sh5" value="5" />	<label for="sh5">	Affiche 5</label> 
+	    	<input type="radio" id="sh10" value="10"/>	<label for="sh10">	Affiche 10</label>
+	    	<input type="radio" id="sh0" value="0" />	<label for="sh0">	Affiche Tout</label>
+	    </span></p>
 
     </body>
 </html>

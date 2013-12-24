@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
 
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
@@ -32,10 +34,19 @@ public class TweetResource
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
-    public List<Tweet> get()
+    public List<Tweet> get(	@DefaultValue("1") 	@QueryParam("p") int page,
+    						@DefaultValue("0")	@QueryParam("by") int nbAffichage )
     {           
-            Query<Tweet> find = Ebean.find(Tweet.class);
-            return find.findList();
+        Query<Tweet> find = Ebean.find(Tweet.class);
+        if (nbAffichage==0)
+    		return find.findList();
+        int step = (page-1)*nbAffichage;
+        int limit = page*nbAffichage;
+        if (step >= find.findList().size())
+        	step = find.findList().size()-1;
+        if (limit >= find.findList().size())
+        	limit = find.findList().size()-1;
+        return find.findList().subList(step, limit);
     }
 
     @POST
