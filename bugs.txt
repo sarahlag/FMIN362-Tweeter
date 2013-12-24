@@ -1,3 +1,9 @@
+-Rmq : peut pas supprimer user sans supprimer tweets au préalable
+-Rmp : pour ça et play : pas besoin d'avoir liste de tweets dans user ?
+	- vérifier si on s'en sert dans play
+	- parce que c'est se compliquer la vie pour rien ... on s'en passe très bien dans tags
+
+done ===========================
 -peut pas faire tweet.addTags() si tweet n'a pas été sauvé au préalable
 	-> UN PETIT PEU EMBETANT
 	-> en fait, fait many-to-many, et dans addTags -> objet tag sauvé
@@ -8,14 +14,14 @@ testTags(fmin362.EbeanTest): ERROR executing DML bindLog[Binding Insert [tag]  s
 ... après vérif dans log de h2, il semble que le test crée mes 2 tags correctement, mais 
 	lorsque je sauve tweet, ebean essaie de re-créer les tags ... d'où unique index violation
 ... pourtant, pas ce problème avec User ... what
-
 du coup :
 -tags pas correctement envoyés (voir objet json envoyé par get, et post aussi)
 	-> et pk tweet a username -> a cause des getUsername / setUsername ?
 {"id":6,"user":{"id":1,"username":"annie","passwd":"","is_admin":false},"tags":[],"comment":"comment","date":1387550560867,"photo_url":"/auto_home/slaghribi/FMIN362-ProgAv/FMIN362-Tweeter/upload/6-Fri_Dec_20_15-42-40_CET_2013.jpg","photo_date":"12/20/2013","photo_place":"Paris, France","username":"annie"}
 
--Rmq : peut pas supprimer user sans supprimer tweets au préalable
--Rmp : pour ça et play : pas besoin d'avoir liste de tweets dans user ?
-	- vérifier si on s'en sert dans play
-	- parce que c'est se compliquer la vie pour rien ... on s'en passe très bien dans tags
+
+!si on enlève le Tag.save dans addTag, marche ... mais est-ce que tag correctement 
+crée comme entité dans bdd qd tweet.save ?
+-> apparemment, vu que ebean.delete(tag) marche, et mon test vérifie bien que ya bien entrée dans table tweet_tag
+-> réglé
 

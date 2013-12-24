@@ -24,7 +24,7 @@ function getTweets()
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200)      // completed && OK
                 listTweets(JSON.parse(xmlHttpRequest.responseText));
-        }
+        };
 	xmlHttpRequest.send("");
 }
 
@@ -51,7 +51,7 @@ function listTweets(json)
 		output += '<th>'+json[i].comment+'</th>';
 		output += '<th>'+json[i].photo_date+'</th>';
 		output += '<th>'+json[i].photo_place+'</th>';
-		output += '<th>'
+		output += '<th>';
 		for (var j=0; j<json[i].tags.length-1; j++)
 			output += json[i].tags[j].tagname+',';
 		output += json[i].tags[j].tagname+'</th>';
@@ -59,6 +59,11 @@ function listTweets(json)
 		listtweets += output;		
    	}
 	document.getElementById('tableTweets').innerHTML = listtweets;
+}
+
+function printErrorMsg(id, msg)
+{
+	document.getElementById(id).innerHTML = msg;
 }
 
 /* ====================	*/

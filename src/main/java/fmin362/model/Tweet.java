@@ -74,6 +74,8 @@ public class Tweet implements Serializable{
         if (tweet == null)
             return;
         tweet.user.removeTweet(tweet);
+        //qtweet.tags.clear();
+        //Ebean.update(tweet);
         Ebean.update(tweet.user);
         Ebean.delete(tweet);
     }
@@ -91,7 +93,7 @@ public class Tweet implements Serializable{
             tag = new Tag();
             tag.setTagname(tagname);
             //if (!Tag.save(tag))
-		//return false;
+            	//return false;
         }
         this.tags.add(tag);
 	return true;

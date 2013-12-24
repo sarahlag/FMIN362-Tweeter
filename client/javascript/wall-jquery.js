@@ -28,6 +28,9 @@ $(document).ready(function($) {
 			data : data,
 			success : function(resp) {
 				listTweets(resp); // listTweets dans wall.js
+			},
+			error : function(data) {
+				printErrorMsg("div-messages", "Une erreur est survenue. Le tweet n'a pas pu être posté.");
 			}
 		});
 	});
@@ -37,16 +40,36 @@ $(document).ready(function($) {
 	/* ================== */
 
 	var availableTags = new Array();
-	availableTags[0] = "snk";
-	availableTags[1] = "aot";
-	availableTags[2] = "manga";
-	availableTags[3] = "default";
-	availableTags[4] = "op";
 	var availableUsers = new Array();
-	availableUsers[0] = "mikasa";
-	availableUsers[1] = "annie";
-	availableUsers[2] = "armin";
 
+	$.ajax({
+		type : 'GET',
+		url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/get",
+		//contentType : "application/json", // marche pas avec ça
+		success : function(data) {
+			$(data).each(function(i) {
+				availableTags[i] = this.tagname;
+			});
+		},
+		error : function(data) {
+			printErrorMsg("div-messages", "Erreur: n'a pas pu récuperer la liste des tags.");
+		}
+	});
+
+	$.ajax({
+		type : 'GET',
+		url : "http://localhost:9000/FMIN362-Tweeter/resources/users/get",
+		//contentType : "application/json; charset=UTF-8",
+		success : function(data) {
+			$(data).each(function(i) {
+				availableUsers[i] = this.username;
+			});
+		},
+		error : function(data) {
+			printErrorMsg("div-messages", "Erreur: n'a pas pu récuperer la liste des utilisateurs.");
+		}
+	});
+	
 	function split(val) {
 		return val.split(/,\s*/);
 	}

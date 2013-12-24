@@ -74,7 +74,6 @@ public class EbeanTest extends TestCase{
     public void testTags() { // teste si tags bien ajoutés / supprimés
 	Tweet e = new Tweet();
 	e.setUsername("test");
-	//Tweet.save(e);
 
 	User u = e.getUser();
 
@@ -88,16 +87,19 @@ public class EbeanTest extends TestCase{
 	System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(0).getTagname()+"'");
 	System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(1).getTagname()+"'");
 	
-	Tweet.delete(e);
-        User.delete(u);
+	//Tweet.delete(e);
+    //User.delete(u);
 	
 	String sql = "select tag_id from tweet_tag";
 	List<SqlRow> rows = Ebean.createSqlQuery(sql).findList();
 
-	assertTrue(rows.size() == 0);
+	assertTrue(rows.size() > 0);
 
-	//Ebean.delete(tag1);
-	//Ebean.delete(tag2);
+	Tweet.delete(e);
+    User.delete(u);
+	
+	Ebean.delete(tag1);
+	Ebean.delete(tag2);
     }
 
 }

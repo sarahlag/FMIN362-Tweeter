@@ -13,16 +13,20 @@
     
     <body>
 
-<script>
+<!--  <script>
 if (window.File && window.FileReader && window.FileList && window.Blob) 
   document.write("<b>File API supported.</b>");
 else
   document.write('<i>File API not supported by this browser.</i>');
-</script>   
+</script>  --> 
 
         <p>This is The Wall</p>
 
-	<p><a href="http://localhost:9000/FMIN362-Tweeter/resources/tweets/get"> And here are the tweets </a></p>
+		<div id='div-messages'></div>
+
+	<p><a href="http://localhost:9000/FMIN362-Tweeter/resources/tweets/get"> And here are the tweets </a>, 
+		<a href="http://localhost:9000/FMIN362-Tweeter/resources/users/get"> ... users </a>,
+		<a href="http://localhost:9000/FMIN362-Tweeter/resources/tags/get"> ... tags </a>.</p>
 
 	<p>
 	<form id="form-tweet" enctype="multipart/form-data" >

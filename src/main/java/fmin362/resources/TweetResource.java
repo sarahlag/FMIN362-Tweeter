@@ -2,46 +2,27 @@ package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.core.header.ContentDisposition;
 import fmin362.model.Tweet;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-/*import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.transaction.UserTransaction;*/
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
-import com.sun.jersey.multipart.FormDataParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Map;
-import javax.ws.rs.core.Request;
-import org.h2.store.fs.FileUtils;
-//import org.apache.commons.io.FileUtils;
 
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
