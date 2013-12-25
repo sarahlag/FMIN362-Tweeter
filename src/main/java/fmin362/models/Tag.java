@@ -1,4 +1,4 @@
-package fmin362.model;
+package fmin362.models;
 
 import com.avaje.ebean.Ebean;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Tag implements Serializable{
-    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     
     @SequenceGenerator(name="seq_tag_name", sequenceName="tag_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tag_name")
@@ -37,6 +37,11 @@ public class Tag implements Serializable{
         return null;
     }
     
+    public boolean nameEquals(String tagname) {
+    	String name = clearTag(tagname);
+    	return this.tagname.equals(name);
+    }
+    
     static private String clearTag(String t) // enlève les ' ' en trop
     {
 	if (t==null || t.isEmpty() || t == " ")
@@ -58,7 +63,7 @@ public class Tag implements Serializable{
         Ebean.save(tag);
         return true;
     }
-
+    
     /* ====================
         Getters and Setters
        ==================== */

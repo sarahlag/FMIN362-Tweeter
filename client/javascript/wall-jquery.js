@@ -35,6 +35,29 @@ $(document).ready(function($) {
 	});
 	
 	/* ================== */
+	/* recherche	     */
+	/* ================== */
+	
+	$("#btn-search").click(function(event) {
+		var users = $("input[name=searchUsers]").val();
+		var tags = $("input[name=searchTags]").val();
+		if (users !== "" || tags !== "")
+		{	
+			num_page = 1;
+			if (users !== "")
+				criteria = "users:"+users;
+			if (tags !== "")
+			{
+				if (users !== "")
+					criteria += "+tags:"+tags;
+				else
+					criteria = "tags:"+tags;
+			}
+			getTweets();
+		}
+	});
+	
+	/* ================== */
 	/* affichage	     */
 	/* ================== */
 	
@@ -45,13 +68,16 @@ $(document).ready(function($) {
 	});
 
 	$("#btn-next").click(function(event) {
+		if (nb_affichage == 0)
+			return;
 		$this = $(this);
 		num_page ++;
 		getTweets();
 	});
 
 	$("#btn-prev").click(function(event) {
-		$this = $(this);
+		if (nb_affichage == 0)
+			return;
 		if(num_page <= 1) {
 			num_page = 1;
 		} else {

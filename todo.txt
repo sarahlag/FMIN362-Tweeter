@@ -1,7 +1,6 @@
 -custom errors in jersey, exceptions
 	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
--pagination, affichage : le retour
 -recherches par tag / user
 -map
 -login/register/navigation anonyme
@@ -12,6 +11,7 @@
 
 -rechercher config mvn / ant / autre pour parcourir h2 database
 
+!-pagination, affichage : le retour
 !-pour autocompletion -> ajax: avoir UserResource et TagResource
 !-contrôler images
 !-contrôler si tweet a au moins une valeur avant de sauver

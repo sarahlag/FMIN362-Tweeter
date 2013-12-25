@@ -1,11 +1,15 @@
 
-package fmin362.model;
+package fmin362.models;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,11 +22,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
+import fmin362.models.Tag;
+import fmin362.models.Tweet;
+
 @Entity
 public class Tweet implements Serializable{
-    //private static final long serialVersionUID = 1L;
-    
-    @SequenceGenerator(name="seq_tweet_name", sequenceName="tweet_seq") 
+    private static final long serialVersionUID = 1L;
+
+	@SequenceGenerator(name="seq_tweet_name", sequenceName="tweet_seq") 
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_tweet_name")
     @Id
     private Long id;
@@ -55,6 +62,10 @@ public class Tweet implements Serializable{
         this.tags = new ArrayList<Tag>();
     }
    
+    /* ====================
+    	Ebean
+   		==================== */
+    
     static public boolean save(Tweet tweet) {
         if (tweet.getUsername() == null || tweet.getUsername().isEmpty())
             return false;
@@ -79,6 +90,10 @@ public class Tweet implements Serializable{
         Ebean.update(tweet.user);
         Ebean.delete(tweet);
     }
+    
+    /* ====================
+    	User et tags
+   		==================== */
         
     ///////// tags
    
@@ -147,6 +162,108 @@ public class Tweet implements Serializable{
         user.addTweet(this);
 	return true;
     }
+    
+    /* ====================
+    	Recherche
+   		==================== */
+    
+    public static List<Tweet> findBy(String criteria)
+    {
+    	String tags, users;
+    	Query<Tweet> find = Ebean.find(Tweet.class);
+    	List<Tweet> tweets = new ArrayList<Tweet>();
+    	
+    	if (criteria == null || criteria.equals("current") || criteria.isEmpty())
+    		return find.findList();
+    	
+    	if (criteria.contains("users:")){
+			int j,i= criteria.indexOf("users:")+6;
+			if (criteria.substring(i).contains("+"))
+				j = criteria.indexOf("+");
+			else
+				j = criteria.length();
+			users = criteria.substring(i,j);
+			List<Tweet> tweetsuser = Tweet.findByUsernames(users);
+			tweets = tweetsuser;
+		}
+    	
+    	if (criteria.contains("tags:")){
+			int j,i= criteria.indexOf("tags:")+5;
+			if (criteria.substring(i).contains("+"))
+				j = criteria.indexOf("+");
+			else
+				j = criteria.length();
+			tags = criteria.substring(i,j);
+
+			List<Tweet> tweetstags = Tweet.findByTagnames(tags);
+			if (!tweetstags.isEmpty())
+			{
+				if (tweets.isEmpty()) // il n'y a de contrainte sur user, on peut renvoyer directement findByTags
+					tweets = tweetstags;
+				else // sinon, il faut trier dans les résultats précédents ...
+				{
+					Iterator<Tweet> tw = tweets.iterator();
+					while (tw.hasNext())
+					{
+						if (!tw.next().hasAtLeastOneOfTags(tags))
+							tw.remove();
+					}
+				}
+			}
+    	}
+    	return tweets;
+    }
+    
+    public static List<Tweet> findByUsernames(String usernames)
+    {
+    	List<Tweet> tweets = new ArrayList<Tweet>();
+		String[] users = usernames.split(",");
+		for(int i=0; i<users.length;i++)
+		{
+			User user = User.findByName(users[i]); 
+			if (user == null)
+				continue;
+			
+			List<Tweet> fromJpaRequest = Ebean.find(Tweet.class).where().in("user", user).findList();
+			for(int j=0; j<fromJpaRequest.size(); j++)
+				if(!tweets.contains(fromJpaRequest.get(j)))
+					tweets.add(fromJpaRequest.get(j));
+		}
+		return tweets;
+    }
+    
+    public static List<Tweet> findByTagnames(String tagnames)
+    {
+    	List<Tweet> tweets = new ArrayList<Tweet>();
+		String[] tags = tagnames.split(",");
+		for(int i=0; i<tags.length;i++)
+		{
+			Tag tag = Tag.findByName(tags[i]); 
+			if (tag == null)
+				continue;
+			
+			List<Tweet> fromJpaRequest = Ebean.find(Tweet.class).where().in("tags", tag).findList();
+			for(int j=0; j<fromJpaRequest.size(); j++)
+				if(!tweets.contains(fromJpaRequest.get(j)))
+					tweets.add(fromJpaRequest.get(j));
+		}
+		return tweets;
+    }
+    
+    public boolean hasAtLeastOneOfTags(String t)
+	{
+		String[] tableTags = t.split(",");
+		for(int i=0; i<tableTags.length;i++)
+		{
+			if (tableTags[i].isEmpty())
+				continue;
+			// on vérifie si tags contient tableTags[i]
+			for (int j=0; j<tags.size();j++)
+				if (tags.get(j).nameEquals(tableTags[i]))
+					return true;
+		}
+		return false;
+	}
     
     /* ====================
         Getters and Setters

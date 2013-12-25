@@ -1,11 +1,13 @@
 package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-import fmin362.model.Tweet;
+
+import fmin362.models.Tweet;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -14,8 +16,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
@@ -35,18 +40,21 @@ public class TweetResource
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
     public List<Tweet> get(	@DefaultValue("1") 	@QueryParam("p") int page,
-    						@DefaultValue("0")	@QueryParam("by") int nbAffichage )
+    						@DefaultValue("0")	@QueryParam("by") int nbAffichage, 
+    						@DefaultValue("current") @QueryParam("c") String criteria )
     {           
-        Query<Tweet> find = Ebean.find(Tweet.class);
+        List<Tweet> list = Tweet.findBy(criteria);
         if (nbAffichage==0)
-    		return find.findList();
+    		return list;
+        
         int step = (page-1)*nbAffichage;
         int limit = page*nbAffichage;
-        if (step >= find.findList().size())
-        	step = find.findList().size()-1;
-        if (limit >= find.findList().size())
-        	limit = find.findList().size()-1;
-        return find.findList().subList(step, limit);
+        if (step >= list.size())
+        	step = list.size()-1;
+        if (limit >= list.size())
+        	limit = list.size()-1;
+        
+        return list.subList(step, limit);
     }
 
     @POST

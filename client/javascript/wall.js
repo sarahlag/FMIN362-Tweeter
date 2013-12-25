@@ -2,6 +2,7 @@ var xmlHttpRequest;
 
 var nb_affichage;
 var num_page;
+var criteria;
 
 /* ====================	*/
 /* Utils		*/
@@ -20,10 +21,13 @@ function addParam(url)
 		nb_affichage = 0;
 	if (typeof num_page == 'undefined')
 		num_page = 1;
+	if (typeof criteria == 'undefined')
+		criteria = "current";
 		
 	url += "?";
 	url += "by="+nb_affichage;
 	url += "&p="+num_page;
+	url += "&c="+criteria;
 	return url;
 }
 
@@ -92,7 +96,7 @@ function listTweets(json)
 		output += '<th>'+json[i].photo_place+'</th>';
 		output += '<th>';
 		for (var j=0; j<json[i].tags.length-1; j++)
-			output += json[i].tags[j].tagname+',';
+			output += json[i].tags[j].tagname+', ';
 		output += json[i].tags[j].tagname+'</th>';
 		output += '</tr>';
 		listtweets += output;		

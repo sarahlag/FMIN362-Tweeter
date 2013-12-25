@@ -5,10 +5,13 @@ package fmin362;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.SqlRow;
-import fmin362.model.Tweet;
-import fmin362.model.User;
-import fmin362.model.Tag;
+
+import fmin362.models.Tag;
+import fmin362.models.Tweet;
+import fmin362.models.User;
+
 import java.util.List;
+
 import junit.framework.TestCase;
 
 public class EbeanTest extends TestCase{
