@@ -35,3 +35,7 @@ http://www.w3.org/TR/FileAPI/#dfn-readAsText
 
 http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute
 
+cookies:
+http://stackoverflow.com/questions/2257631/how-create-a-session-using-javascript
+
+

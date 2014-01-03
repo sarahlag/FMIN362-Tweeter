@@ -1,3 +1,5 @@
+problème affichage de tweets par 5 et par 10 : si nb total de tweets < 5 ou 10, n'affiche pas le bon nombre
+
 -Rmq : peut pas supprimer user sans supprimer tweets au préalable
 -Rmp : pour ça et play : pas besoin d'avoir liste de tweets dans user ?
 	- vérifier si on s'en sert dans play
