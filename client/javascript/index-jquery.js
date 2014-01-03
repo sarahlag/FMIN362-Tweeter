@@ -16,8 +16,7 @@ $(document).ready(function($) {
 			data : data,
 			success : function(resp) {
 				writeCookie('username', username_value);
-				alert('u : '+ username_value + ', cookie : '+readCookie('username'));
-				//location.href="wall.html";
+				location.href="wall.html";
 			},
 			error : function(resp) {
 					clearErrorMsg();

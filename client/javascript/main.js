@@ -3,6 +3,7 @@ var xmlHttpRequest;
 var nb_affichage;
 var num_page;
 var criteria;
+var username;
 
 /* ====================	*/
 /* Utils		*/
@@ -123,14 +124,12 @@ function clearErrorMsg()
 function writeCookie(name, value) 
 {
     document.cookie = name + "=" + encodeURIComponent(value); // + "; path=/";
-    alert("in writeCookie: "+name+","+value+", cookie="+document.cookie);
 }
 
 function readCookie (cookie_name)
 {
     // http://www.thesitewizard.com/javascripts/cookies.shtml
     var cookie_string = document.cookie;
-    alert('whole cookie: '+cookie_string);
     if (cookie_string.length != 0) {
         var cookie_value = cookie_string.match (
                         '(^|;)[\s]*' +
@@ -147,13 +146,11 @@ function readCookie (cookie_name)
 
 function WallLoaded()
 {
-	var username = readCookie('username');
-	var username_msg = "@";
-	if (typeof username != 'undefined' && username !== '')
-		username_msg += username;
-	else
-		username_msg += "anon";
-	document.getElementById('p-username').innerHTML = username_msg;
+	username = readCookie('username');
+	if (typeof username == 'undefined' ||  username === '')
+		username = "anon";
+	
+	document.getElementById('p-username').innerHTML = "@"+username;
 	getTweets();
 }
 

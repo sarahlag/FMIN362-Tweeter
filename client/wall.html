@@ -20,8 +20,8 @@ else
   document.write('<i>File API not supported by this browser.</i>');
 </script>  --> 
 
+		<p id='p-username'></p>
         <p>This is The Wall</p>
-        <p id='p-username'></p>
 
 		<div id='div-messages' ></div>
 
@@ -30,28 +30,36 @@ else
 		<a href="http://localhost:9000/FMIN362-Tweeter/resources/tags/get"> ... tags </a>.
 	</p>
 
-	<p>
-		<label>Poster : </label>
-		<form id="form-tweet" enctype="multipart/form-data" >
-        	<label for="formfield-username">Nom</label> 				<input type="text" id="formfield-username" name="username" />
-		<label for="formfield-comment">	Commentaire</label> 			<input type="text" id="formfield-comment"  name="comment" value="comment" />
-		<label for="formfield-tags">	Tags</label> 				<input type="text" id="formfield-tags"     name="tags" class="tags" /> <br/>
-		<label for="formfield-photourl">Photo</label>				<input type="file" id="formfield-photourl" name="photofile" onchange="checkPhoto()" /> <br/>
-		<label for="formfield-pdate">	Date de prise de la photo</label>	<input type="date" id="formfield-pdate"    name="photodate" /> 
-		<label for="formfield-ploc">	Lieu de prise de la photo</label>	<input type="text" id="formfield-ploc"     name="photoloc" value="Paris, France" /> <br/>
-		<button id="btn-posttweet" type="button" >Envoyer</button>
- 	    <input type="reset" name="btn-resetform" value="Reset" />
-        </form>
-   	</p>
-	
-	<p>
-		<label>Rechercher : </label>
-		<form id="form-search" >
-		<label>auteur</label> 		<input type="text" name="searchUsers" class="users" />
-		<label>avec tags </label> 	<input type="text" name="searchTags" class="tags" /> 
-		<button id="btn-search" type="button" >Rechercher</button>
-		</form>
-	</p>
+	<div id="tabs">
+		 <ul>
+		 	<li><a href="#tabs-search">Rechercher</a></li>
+			<li class='lvlUser'><a href="#tabs-post">Poster</a></li>
+			<li class='lvlAdmin'><a href="#tabs-admin">Admin</a></li>
+		</ul>
+		
+		<div id="tabs-search">
+   			<form id="form-search" >
+			<label>auteur</label> 		<input type="text" name="searchUsers" class="users" />
+			<label>avec tags </label> 	<input type="text" name="searchTags" class="tags" /> 
+				<button id="btn-search" type="button" >Rechercher</button>
+			</form>
+   		</div>
+		<div id="tabs-post" class='lvlUser'>
+			<form id="form-tweet" enctype="multipart/form-data" >
+        		<!--  <label for="formfield-username">Nom</label> 				<input type="text" id="formfield-username" name="username" /> -->
+			<label for="formfield-comment">	Commentaire</label> 			<input type="text" id="formfield-comment"  name="comment" value="comment" />
+			<label for="formfield-tags">	Tags</label> 				<input type="text" id="formfield-tags"     name="tags" class="tags" /> <br/>
+			<label for="formfield-photourl">Photo</label>				<input type="file" id="formfield-photourl" name="photofile" onchange="checkPhoto()" /> <br/>
+			<label for="formfield-pdate">	Date de prise de la photo</label>	<input type="date" id="formfield-pdate"    name="photodate" /> 
+			<label for="formfield-ploc">	Lieu de prise de la photo</label>	<input type="text" id="formfield-ploc"     name="photoloc" value="Paris, France" /> <br/>
+				<button id="btn-posttweet" type="button" >Envoyer</button>
+ 	    		<input type="reset" name="btn-resetform" value="Reset" />
+        	</form>
+   		</div>
+   		<div id="tabs-admin" class='lvlAdmin'>
+   			<p>Not yet<p>
+   		</div>
+	</div>
 
    	<table id="tableTweets"></table>
 
@@ -62,8 +70,6 @@ else
 	    	<input type="radio" id="sh0" value="0" />	<label for="sh0">	Affiche Tout</label>
 	    </span></p>
 
-
-	<script>WallLoaded();</script>
     </body>
 </html>
 

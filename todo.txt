@@ -1,6 +1,4 @@
 -login/register/navigation anonyme
-	-> document.cookie marche pour page serveur, pas pour client externe. Trouver autre solution ?
-
 -custom errors in jersey, exceptions
 	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques

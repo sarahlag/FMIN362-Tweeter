@@ -1,9 +1,22 @@
 
 $(document).ready(function($) {
 	
+	WallLoaded();
+	
 	//$("input[type=submit], button").button();
 	//$("input[type=reset]").button();
 	//$("#radio").buttonset();
+	
+	if (username === "anon") // TODO: ajouter test admin
+	{
+		$(".lvlUser").css("display", "none");
+		$(".lvlAdmin").css("display", "none");
+	}
+	
+	$("#tabs").tabs({
+	      collapsible: true,
+	      active: false
+	});
 	
 	$("#formfield-pdate").datepicker({
 		changeMonth : true,
@@ -11,10 +24,14 @@ $(document).ready(function($) {
 		maxDate: "+0"
 	}).datepicker('setDate', new Date()); // pour mettre la date du jour par défaut
 
+	/* ================== */
+	/* post			     */
+	/* ================== */
+	
 	$("#btn-posttweet").click(function(event) {
 		var data = new FormData();
+		data.append('username',  readCookie('username'));
 		data.append('photofile', $('#formfield-photourl')[0].files[0]);
-		data.append('username',  $('#formfield-username').val());
 		data.append('comment',   $('#formfield-comment').val());
 		data.append('photodate', $('#formfield-pdate').val());
 		data.append('photoloc',  $('#formfield-ploc').val());
