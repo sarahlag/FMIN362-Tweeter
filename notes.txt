@@ -46,4 +46,6 @@ https://wiki.openstreetmap.org/wiki/Downloading_data
 http://wiki.openstreetmap.org/wiki/Openlayers_POI_layer_example
 https://wiki.openstreetmap.org/wiki/Overpass_API/Language_Guide
 https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
+http://dev.openlayers.org/docs/files/OpenLayers-js.html
+http://gis.stackexchange.com/questions/22433/problem-with-open-popup-onclick-marker-in-openlayers
 

@@ -1,10 +1,21 @@
 var map;
 
-function ajaxGetLonLat(location)
+/*
+ *   "type": "node",
+  "id": 371597317,
+  "lat": 50.7412721,
+  "lon": 7.1927120,
+  "tags": {
+    "is_in": "Bonn,Regierungsbezirk KÃ¶ln,Nordrhein-Westfalen,Bundesrepublik Deutschland,Europe",
+    "name": "Gielgen",
+    "place": "suburb"
+ * */
+
+function ajaxGetLonLat(locationList)
 {
 	var url = "http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:json];";
-	for (var i=0; i<location.length; i++)
-		url += "node[name="+location[i]+"];out skel 1;";
+	for (var i=0; i<locationList.length; i++)
+		url += "node[name="+locationList[i]+"];out 1;";
 	
 	var xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
         if (xmlHttpRequest === null)
@@ -49,7 +60,22 @@ function showMap(json)
     var lonLat = getOpenLayersCoord(json);
     var markers = new OpenLayers.Layer.Markers("Markers");
     for (var i=0; i<json.elements.length; i++)
-    	markers.addMarker(new OpenLayers.Marker(lonLat[i]));
+    {    	
+    	var marker = new OpenLayers.Marker(lonLat[i]);
+    	var contentHTML = json.generator+" "+json.version+"</br>"+json.elements[i].tags.name;
+    	
+    	marker.events.register("click", marker, function(){
+    	    popup = new OpenLayers.Popup.FramedCloud(null,
+    	    		this.lonlat,
+    	            new OpenLayers.Size(200, 200),
+    	            contentHTML,
+    	            null,
+    	            true);
+    		map.addPopup(popup);
+    		}); 
+    	 
+        markers.addMarker(marker);
+    }   
     map.addLayer(markers);
     
     map.setCenter (lonLat[0], zoom);
@@ -60,6 +86,7 @@ function queryMap()
 	var locationList = new Array();
     locationList[0] = "Gielgen";
     locationList[1] = "Paris";
+    locationList[2] = "sfqdfqsf"; // n'apparaîtra pas
     
     ajaxGetLonLat(locationList);
 }
