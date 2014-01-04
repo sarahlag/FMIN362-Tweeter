@@ -2,15 +2,15 @@
 -custom errors in jersey, exceptions
 	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
--recherches par tag / user
 -map
 -gérer admin
 -bouton delete, autres fonctions admin
--session cookies
 -avoir autocompletion pour photo location ?
 
 -rechercher config mvn / ant / autre pour parcourir h2 database
 
+!-session cookies
+!-recherches par tag / user
 !-pagination, affichage : le retour
 !-pour autocompletion -> ajax: avoir UserResource et TagResource
 !-contrôler images

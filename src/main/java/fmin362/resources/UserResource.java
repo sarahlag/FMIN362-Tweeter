@@ -32,10 +32,14 @@ public class UserResource {
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
 	@Produces( MediaType.TEXT_PLAIN )
     public Response login(	@FormParam("username") String username,
-                            @FormParam("password") String password ) 
+                            @FormParam("passwd") String passwd ) 
     {       
-        
-		return Response.status(200).entity("Login successful.").build();
+        User user = User.findByName(username);
+        if (user == null)
+        	return Response.status(404).entity("User "+username+" doesn't exist").build(); // 404: Not Found
+        if (!passwd.equals(user.getPasswd()))
+        	return Response.status(403).entity("Wrong password").build(); // 403: Forbidden
+		return Response.status(200).entity("Login successful").build();
     }
 	
 	@POST
@@ -43,10 +47,17 @@ public class UserResource {
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
 	@Produces( MediaType.TEXT_PLAIN )
     public Response register (	@FormParam("username") String username,
-                            	@FormParam("password") String password,
-                            	@FormParam("password-verify") String passwordverify ) 
+                            	@FormParam("passwd") String passwd ) 
     {       
-        
-		return Response.status(200).entity("Successfully registered.").build();
+		User user = User.findByName(username);
+		if (user != null)
+			return Response.status(403).entity("Username "+username+" already in use").build(); // 403: Forbidden
+		user = new User();
+		user.setUsername(username);
+		user.setPasswd(passwd);
+		if (!User.save(user))
+			return Response.status(403).entity("Username "+username+" incorrect").build(); // 403: Forbidden
+		
+		return Response.status(200).entity("Successfully registered").build();
     }
 }

@@ -2,14 +2,13 @@
 $(document).ready(function($) {
 	
 	$("input[type=submit], button").button();
-	//$("input[type=reset]").button();
-	//$("#radio").buttonset();
 	
 	$("#btn-login").click(function(event) {
 		var username_value = $('#formfield-login-username').val();
+		var passwd = $('#formfield-login-passwd').val();
 		var data = "username="+username_value
-					+"&password="+$('#formfield-login-password').val();
-
+					+"&passwd="+passwd;
+		
 		$.ajax({
 			type : 'POST',
 			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/login",
@@ -20,7 +19,7 @@ $(document).ready(function($) {
 			},
 			error : function(resp) {
 					clearErrorMsg();
-					printErrorMsg("Une erreur est survenue. Veuillez vérifier vos informations de login.");
+					printErrorMsg("Une erreur est survenue : "+resp.responseText);
 			}
 					
 		});
@@ -28,9 +27,18 @@ $(document).ready(function($) {
 	
 	$("#btn-register").click(function(event) {
 		var username_value = $('#formfield-register-username').val();
+		var passwd = $('#formfield-register-passwd').val();
+		var passwd_verif = $('#formfield-register-passwd-verify').val();
+		
+		if (passwd != passwd_verif)
+		{
+			clearErrorMsg();
+			printErrorMsg("Les deux mots de passe ne correspondent pas.");
+			return;
+		}
+		
 		var data = "username="+username_value
-					+"&password="+username_value
-					+"&password-verif="+$('#formfield-register-password-verify').val();
+					+"&passwd="+passwd;
 		
 		$.ajax({
 			type : 'POST',
@@ -42,7 +50,7 @@ $(document).ready(function($) {
 			},
 			error : function(resp) {
 				clearErrorMsg();
-				printErrorMsg("Une erreur est survenue. Impossible d'enregister le nouvel utilisateur.");
+				printErrorMsg("Une erreur est survenue : "+resp.responseText);
 			}
 		});
 	});
