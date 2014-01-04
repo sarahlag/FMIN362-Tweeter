@@ -1,14 +1,15 @@
--login/register/navigation anonyme
--custom errors in jersey, exceptions
-	-catch filenotfound excp pour url_form_encoded qd url pas ok
--jquery pour au moins les graphiques
 -map
 -gérer admin
 -bouton delete, autres fonctions admin
--avoir autocompletion pour photo location ?
 
 -rechercher config mvn / ant / autre pour parcourir h2 database
 
+-custom errors in jersey, exceptions
+	-catch filenotfound excp pour url_form_encoded qd url pas ok
+-jquery pour au moins les graphiques
+-avoir autocompletion pour photo location ?
+
+!-login/register/navigation anonyme
 !-session cookies
 !-recherches par tag / user
 !-pagination, affichage : le retour

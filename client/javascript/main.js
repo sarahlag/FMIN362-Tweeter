@@ -149,7 +149,6 @@ function WallLoaded()
 	username = readCookie('username');
 	if (typeof username == 'undefined' ||  username === '')
 		username = "anon";
-	
 	document.getElementById('p-username').innerHTML = "@"+username;
 	getTweets();
 }

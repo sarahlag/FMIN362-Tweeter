@@ -40,3 +40,8 @@ http://stackoverflow.com/questions/2257631/how-create-a-session-using-javascript
 http://crunchify.com/how-to-do-java-servlet-session-management-using-cookies/
 
 http://www.oracle.com/technetwork/java/filters-137243.html
+
+openstreetmap:
+https://wiki.openstreetmap.org/wiki/API_v0.6
+https://wiki.openstreetmap.org/wiki/Downloading_data
+http://wiki.openstreetmap.org/wiki/Openlayers_POI_layer_example
