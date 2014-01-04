@@ -23,7 +23,6 @@ onmouseup
 http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 
 http://www.ietf.org/rfc/rfc1867.txt
-remarques : form et get -> url-encoded, avec param passés à url après ?
 
 http://www.w3.org/TR/html401/interact/forms.html#submit-format
 
@@ -45,3 +44,6 @@ openstreetmap:
 https://wiki.openstreetmap.org/wiki/API_v0.6
 https://wiki.openstreetmap.org/wiki/Downloading_data
 http://wiki.openstreetmap.org/wiki/Openlayers_POI_layer_example
+https://wiki.openstreetmap.org/wiki/Overpass_API/Language_Guide
+https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
+

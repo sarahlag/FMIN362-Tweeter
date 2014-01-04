@@ -1,5 +1,3 @@
-var xmlHttpRequest;
-
 var nb_affichage;
 var num_page;
 var criteria;
@@ -58,7 +56,7 @@ function getTweets()
 {
 	var url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get";
 	url = addParam(url);
-	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
+	var xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
         if (xmlHttpRequest === null)
 		return;
 	xmlHttpRequest.open("GET", url, true);
