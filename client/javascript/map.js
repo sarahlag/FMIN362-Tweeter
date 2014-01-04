@@ -50,6 +50,19 @@ function getOpenLayersCoord(json)
 	return result;
 }
 
+function showPopupMarker(map, marker, contentHTML)
+{
+	marker.events.register("click", marker, function(){
+    popup = new OpenLayers.Popup.FramedCloud(null,
+    		this.lonlat,
+            new OpenLayers.Size(200, 200),
+            contentHTML,
+            null,
+            true);
+	map.addPopup(popup);
+	}); 
+}
+
 function showMap(json) 
 {    
     var zoom=5;
@@ -63,16 +76,7 @@ function showMap(json)
     {    	
     	var marker = new OpenLayers.Marker(lonLat[i]);
     	var contentHTML = json.generator+" "+json.version+"</br>"+json.elements[i].tags.name;
-    	
-    	marker.events.register("click", marker, function(){
-    	    popup = new OpenLayers.Popup.FramedCloud(null,
-    	    		this.lonlat,
-    	            new OpenLayers.Size(200, 200),
-    	            contentHTML,
-    	            null,
-    	            true);
-    		map.addPopup(popup);
-    		}); 
+    	showPopupMarker(map, marker, contentHTML);
     	 
         markers.addMarker(marker);
     }   
@@ -85,8 +89,8 @@ function queryMap()
 {
 	var locationList = new Array();
     locationList[0] = "Gielgen";
-    locationList[1] = "Paris";
-    locationList[2] = "sfqdfqsf"; // n'apparaîtra pas
+    locationList[1] = "sfqsdfsqf";
+    locationList[2] = "Paris";
     
     ajaxGetLonLat(locationList);
 }
