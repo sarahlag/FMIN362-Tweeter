@@ -1,18 +1,36 @@
 var map;
 
-/*
- *   "type": "node",
-  "id": 371597317,
-  "lat": 50.7412721,
-  "lon": 7.1927120,
-  "tags": {
-    "is_in": "Bonn,Regierungsbezirk KÃ¶ln,Nordrhein-Westfalen,Bundesrepublik Deutschland,Europe",
-    "name": "Gielgen",
-    "place": "suburb"
- * */
-
-function ajaxGetLonLat(locationList)
+function getTweets()
 {
+	var url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get";
+	var xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
+        if (xmlHttpRequest === null)
+		return;
+	xmlHttpRequest.open("GET", url, true);
+	xmlHttpRequest.onreadystatechange = function() {
+            if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200){      // completed && OK
+            	ajaxGetLonLat(JSON.parse(xmlHttpRequest.responseText));
+            }
+        };
+	xmlHttpRequest.send("");
+}
+
+function getLocationList(tweets)
+{
+	var locationList = new Array();
+	for (var i=0; i<tweets.length; i++)
+	{
+		var loc = tweets[i].photo_place;
+		if (loc.contains(',') || loc.contains(' '))
+			loc = "Dublin";
+		locationList[i] = loc;
+	}
+	return locationList;
+}
+
+function ajaxGetLonLat(tweets)
+{
+	var locationList = getLocationList(tweets);
 	var url = "http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:json];";
 	for (var i=0; i<locationList.length; i++)
 		url += "node[name="+locationList[i]+"];out 1;";
@@ -23,7 +41,7 @@ function ajaxGetLonLat(locationList)
 	xmlHttpRequest.open("GET", url, true);
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200){      // completed && OK
-                showMap(JSON.parse(xmlHttpRequest.responseText));
+                showMap(JSON.parse(xmlHttpRequest.responseText), tweets);
             }
         };
 	xmlHttpRequest.send("");
@@ -63,7 +81,7 @@ function showPopupMarker(map, marker, contentHTML)
 	}); 
 }
 
-function showMap(json) 
+function showMap(json, tweets) 
 {    
     var zoom=5;
     
@@ -85,7 +103,7 @@ function showMap(json)
     map.setCenter (lonLat[0], zoom);
 }
 
-function queryMap()
+/*function queryMap()
 {
 	var locationList = new Array();
     locationList[0] = "Gielgen";
@@ -93,6 +111,6 @@ function queryMap()
     locationList[2] = "Paris";
     
     ajaxGetLonLat(locationList);
-}
+}*/
 
 

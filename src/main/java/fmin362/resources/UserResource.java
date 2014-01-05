@@ -39,7 +39,9 @@ public class UserResource {
         	return Response.status(404).entity("User "+username+" doesn't exist").build(); // 404: Not Found
         if (!passwd.equals(user.getPasswd()))
         	return Response.status(403).entity("Wrong password").build(); // 403: Forbidden
-		return Response.status(200).entity("Login successful").build();
+        if (user.isIs_admin())
+        	return Response.status(221).entity("Login successful as admin").build(); // 221: ici, indique que user est admin
+        return Response.status(220).entity("Login successful").build(); // 220: ici, indique que user n'est pas admin
     }
 	
 	@POST
