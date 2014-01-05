@@ -7,11 +7,10 @@ $(document).ready(function($) {
 	//$("input[type=reset]").button();
 	//$("#radio").buttonset();
 	
-	if (username === "anon") // TODO: ajouter test admin
-	{
+	if (username === "anon")
 		$(".lvlUser").css("display", "none");
+	if (is_admin === "false")
 		$(".lvlAdmin").css("display", "none");
-	}
 	
 	$("#tabs").tabs({
 	      collapsible: true,

@@ -1,7 +1,9 @@
 var nb_affichage;
 var num_page;
 var criteria;
+
 var username;
+var is_admin;
 
 /* ====================	*/
 /* Utils		*/
@@ -126,16 +128,17 @@ function writeCookie(name, value)
 
 function readCookie (cookie_name)
 {
-    // http://www.thesitewizard.com/javascripts/cookies.shtml
-    var cookie_string = document.cookie;
-    if (cookie_string.length != 0) {
-        var cookie_value = cookie_string.match (
-                        '(^|;)[\s]*' +
-                        cookie_name +
-                        '=([^;]*)' );
-        return decodeURIComponent ( cookie_value[2] ) ;
-    }
-    return '';
+	var cookie_string = document.cookie;
+	if (cookie_string.length === 0)
+		return '';
+	var i = cookie_string.indexOf(cookie_name);
+	if (i<0)
+		return '';
+	var cookie_value = cookie_string.slice(i+cookie_name.length+1);
+	var j = cookie_value.indexOf(";");
+	if (j>=0)
+		cookie_value = cookie_value.substring(0,j);
+	return decodeURIComponent ( cookie_value ) ;
 }
 
 /* ====================	*/
@@ -144,6 +147,7 @@ function readCookie (cookie_name)
 
 function WallLoaded()
 {
+	is_admin = readCookie('is_admin');
 	username = readCookie('username');
 	if (typeof username == 'undefined' ||  username === '')
 		username = "anon";

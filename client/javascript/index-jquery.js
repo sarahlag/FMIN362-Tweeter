@@ -14,6 +14,10 @@ $(document).ready(function($) {
 			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/login",
 			data : data,
 			success : function(resp) {
+				if (resp.status === 221)
+					writeCookie('is_admin', "true");
+				else
+					writeCookie('is_admin', "false");
 				writeCookie('username', username_value);
 				location.href="wall.html";
 			},
@@ -45,6 +49,7 @@ $(document).ready(function($) {
 			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/register",
 			data : data,
 			success : function(resp) {
+				writeCookie("is_admin", "false");
 				writeCookie("username", username_value);
 				location.href="wall.html";
 			},

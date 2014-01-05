@@ -1,16 +1,16 @@
 -map
 	-> passer info tweets en param, et vérifier les erreurs
 	
--gérer admin
 -bouton delete, autres fonctions admin
-
 -rechercher config mvn / ant / autre pour parcourir h2 database
+-avoir admin par défaut?
 
 -custom errors in jersey, exceptions
 	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
 -avoir autocompletion pour photo location ?
 
+!-gérer admin dans client
 !-login/register/navigation anonyme
 !-session cookies
 !-recherches par tag / user
