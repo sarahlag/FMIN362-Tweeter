@@ -25,17 +25,30 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
     private final String SERVER_UPLOAD_LOCATION_FOLDER = getUploadPath();
         
+    @GET
+    @Path("{id}")
+    @Produces( MediaType.APPLICATION_OCTET_STREAM )
+    public Response find(@PathParam("id") Long id) throws URISyntaxException 
+    {
+    	Tweet t = Ebean.find(Tweet.class, id);
+    	URI uri = new URI("file://"+t.getPhoto_url());
+        return Response.ok().contentLocation(uri).build();
+    }
+
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
@@ -137,9 +150,9 @@ public class TweetResource
         if (realFilename == null || realFilename.isEmpty())
             return "";
         InputStream fileInputStream = filePart.getValueAs(InputStream.class);
-        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
-        copyFile(fileInputStream, filePath);
-        return filePath;
+        String fullname = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
+        copyFile(fileInputStream, fullname);
+        return fullname;
     }
     
     private String uploadFile(String realFilename, String filename) throws FileNotFoundException
@@ -147,9 +160,9 @@ public class TweetResource
         if (realFilename == null || realFilename.isEmpty())
             return "";
         InputStream fileInputStream = new FileInputStream(realFilename); // throws FileNotFoundException si n'existe pas
-        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
-        copyFile(fileInputStream, filePath);
-        return filePath;
+        String fullname = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
+        copyFile(fileInputStream,  fullname);
+        return fullname;
     }
 
     private static void copyFile(InputStream uploadedInputStream, String serverLocation) {

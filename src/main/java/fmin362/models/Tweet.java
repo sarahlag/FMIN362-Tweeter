@@ -37,7 +37,6 @@ public class Tweet implements Serializable{
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
-    //@Column
     @ManyToMany (cascade=CascadeType.ALL)
     private List<Tag> tags;
     @Column(name="message")
