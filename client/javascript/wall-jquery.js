@@ -86,7 +86,6 @@ $(document).ready(function($) {
 	$("#btn-next").click(function(event) {
 		if (nb_affichage == 0)
 			return;
-		$this = $(this);
 		num_page ++;
 		getTweets();
 	});
