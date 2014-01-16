@@ -42,6 +42,11 @@ http://crunchify.com/how-to-do-java-servlet-session-management-using-cookies/
 
 http://www.oracle.com/technetwork/java/filters-137243.html
 
+https://jersey.java.net/documentation/latest/representations.html#d0e4790
+
+context init:
+http://www.theserverside.com/discussions/thread.tss?thread_id=33188
+
 openstreetmap:
 https://wiki.openstreetmap.org/wiki/API_v0.6
 https://wiki.openstreetmap.org/wiki/Downloading_data

@@ -34,5 +34,9 @@
         <filter-name>CORS</filter-name>
         <servlet-name>JerseyServletName</servlet-name>
    </filter-mapping>
-                                       
+                      
+   <!-- pour avoir evennements on startup -->             
+   <listener>
+        <listener-class>ContextListener</listener-class>
+   </listener>                 
 </web-app>

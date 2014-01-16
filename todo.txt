@@ -3,13 +3,16 @@
 	
 -bouton delete, autres fonctions admin
 -rechercher config mvn / ant / autre pour parcourir h2 database
--avoir admin par défaut?
+-avoir negociation de contenu en get
+-avoir url pour images
+-avoir chargement bdd avec yml
 
 -custom errors in jersey, exceptions
 	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
 -avoir autocompletion pour photo location ?
 
+!-avoir admin par défaut au démarrage de bdd
 !-gérer admin dans client
 !-login/register/navigation anonyme
 !-session cookies

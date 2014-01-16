@@ -30,7 +30,7 @@ public class UserResource {
 	@POST
     @Path( "/login" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-	@Produces( MediaType.TEXT_PLAIN )
+	@Produces( MediaType.TEXT_PLAIN ) // + ";" + MediaType.APPLICATION_JSON
     public Response login(	@FormParam("username") String username,
                             @FormParam("passwd") String passwd ) 
     {       
@@ -61,5 +61,6 @@ public class UserResource {
 			return Response.status(403).entity("Username "+username+" incorrect").build(); // 403: Forbidden
 		
 		return Response.status(200).entity("Successfully registered").build();
+		// faire négociation contenu
     }
 }

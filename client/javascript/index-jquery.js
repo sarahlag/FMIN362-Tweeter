@@ -14,7 +14,7 @@ $(document).ready(function($) {
 			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/login",
 			data : data,
 			success : function(resp) {
-				if (resp.status === 221)
+				if (resp === "Login successful as admin")
 					writeCookie('is_admin', "true");
 				else
 					writeCookie('is_admin', "false");
