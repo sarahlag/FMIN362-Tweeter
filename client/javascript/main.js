@@ -65,10 +65,10 @@ function getTweets()
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200){      // completed && OK
                 listTweets(JSON.parse(xmlHttpRequest.responseText));
-                clearErrorMsg();
+                clearMsg();
             }
             else if (xmlHttpRequest.readyState === xmlHttpRequest.DONE) // status == 4**, erreur
-            	printErrorMsg("Erreur: n'a pas pu récupérer la liste des tweets.");
+            	printMsg("Erreur: n'a pas pu récupérer la liste des tweets.");
         };
 	xmlHttpRequest.send("");
 }
@@ -109,12 +109,12 @@ function listTweets(json)
 	setRadioChecked();
 }
 
-function printErrorMsg(msg)
+function printMsg(msg)
 {
 	document.getElementById('div-messages').innerHTML += '<label class="errmsg">'+msg+'</label> </br>';
 }
 
-function clearErrorMsg()
+function clearMsg()
 {
 	document.getElementById('div-messages').innerHTML = "";
 }

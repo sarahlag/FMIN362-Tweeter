@@ -30,18 +30,33 @@ public class UserResource {
 	@POST
     @Path( "/login" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-	@Produces( MediaType.TEXT_PLAIN ) // + ";" + MediaType.APPLICATION_JSON
+	@Produces( MediaType.TEXT_PLAIN )
     public Response login(	@FormParam("username") String username,
-                            @FormParam("passwd") String passwd ) 
+                            @FormParam("passwd") String passwd,
+                            @FormParam("newpasswd") String newpasswd,
+                            @FormParam("newpasswd_verif") String newpasswd_verif ) 
     {       
         User user = User.findByName(username);
         if (user == null)
         	return Response.status(404).entity("User "+username+" doesn't exist").build(); // 404: Not Found
         if (!passwd.equals(user.getPasswd()))
         	return Response.status(403).entity("Wrong password").build(); // 403: Forbidden
+        
+        if (newpasswd != null || newpasswd_verif != null)
+        {
+        	if (newpasswd == null || newpasswd_verif == null)
+        		return Response.status(403).entity("This action requires all fields").build(); // 403: Forbidden
+        	if (newpasswd.isEmpty())
+        		return Response.status(403).entity("A password cannot be empty").build(); // 403: Forbidden
+        	if (!newpasswd.equals(newpasswd_verif))
+        		return Response.status(403).entity("The new passwords don't match").build(); // 403: Forbidden
+        	user.setPasswd(newpasswd);
+        	User.update(user);
+        }
+        
         if (user.isIs_admin())
-        	return Response.status(221).entity("Login successful as admin").build(); // 221: ici, indique que user est admin
-        return Response.status(220).entity("Login successful").build(); // 220: ici, indique que user n'est pas admin
+        	return Response.status(200).entity("Login successful as admin").build();
+        return Response.status(200).entity("Login successful").build();
     }
 	
 	@POST
@@ -61,6 +76,5 @@ public class UserResource {
 			return Response.status(403).entity("Username "+username+" incorrect").build(); // 403: Forbidden
 		
 		return Response.status(200).entity("Successfully registered").build();
-		// faire négociation contenu
     }
 }

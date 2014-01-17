@@ -63,7 +63,12 @@ else
    			<p>Not yet<p>
    		</div>
 		<div id="tabs-mdp" class='lvlUser'>
-   			<p>Not yet<p>
+   			<form id="form-register" enctype="application/x-www-form-urlencoded" >
+	  			<p><label>Ancien mot de passe : </label><input type="password" id="oldpasswd"/> </p>
+	  			<p><label>Nouveau mot de passe : </label><input type="password" id="newpasswd"/> </p>
+	  			<p><label>Retaper le nouveau mot de passe : </label><input type="password" id="newpasswd_verif"/> </p>
+	  			<button id="btn-changemdp" type="button" >Envoyer</button>
+	  		</form>
    		</div>
 	</div>
 

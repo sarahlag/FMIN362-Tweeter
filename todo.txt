@@ -1,5 +1,4 @@
 -bug pagination
--modif profil (=mdp)
 -bouton delete, autres fonctions admin
 -avoir negociation de contenu en get
 -map -> remplacer par google ?
@@ -11,6 +10,7 @@
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-modif profil (=mdp)
 !-avoir chargement bdd avec yml
 !-avoir dossier upload crée automatiquement
 !-avoir url pour images

@@ -44,9 +44,9 @@ $(document).ready(function($) {
 			data : data,
 			success : function(resp) {
 				listTweets(resp); // listTweets dans wall.js
-				clearErrorMsg();
+				clearMsg();
 			},
-			error : printErrorMsg("Une erreur est survenue. Le tweet n'a pas pu être posté.")
+			error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être posté.")
 		});
 	});
 	
@@ -116,9 +116,9 @@ $(document).ready(function($) {
 			$(data).each(function(i) {
 				availableTags[i] = this.tagname;
 			});
-			clearErrorMsg();
+			clearMsg();
 		},
-		error : printErrorMsg("Erreur: n'a pas pu récuperer la liste des tags.")
+		error : printMsg("Erreur: n'a pas pu récuperer la liste des tags.")
 	});
 
 	$.ajax({
@@ -129,9 +129,9 @@ $(document).ready(function($) {
 			$(data).each(function(i) {
 				availableUsers[i] = this.username;
 			});
-			clearErrorMsg();
+			clearMsg();
 		},
-		error : printErrorMsg("Erreur: n'a pas pu récuperer la liste des utilisateurs.")
+		error : printMsg("Erreur: n'a pas pu récuperer la liste des utilisateurs.")
 	});
 	
 	function split(val) {
@@ -200,6 +200,41 @@ $(document).ready(function($) {
 		}
 	});
 
+	/* ================== */
+	/* admin & profil     */
+	/* ================== */
+	
+	$("#btn-changemdp").click(function(event) {
+		var passwd = $('#oldpasswd').val();
+		var newpasswd = $('#newpasswd').val();
+		var newpasswd_verif = $('#newpasswd_verif').val();
+		
+		if (newpasswd !== newpasswd_verif)
+		{
+			clearMsg();
+			printMsg("Erreur : les deux mots de passe ne correspondent pas.");
+			return;
+		}
+		
+		var data = "username="+username
+					+"&passwd="+passwd
+					+"&newpasswd="+newpasswd
+					+"&newpasswd_verif="+newpasswd_verif;
+		
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/login",
+			data : data,
+			success : function(resp) {
+				clearMsg();
+				printMsg("Votre mot de passe a bien été modifié");
+			},
+			error : function(resp) {
+					clearMsg();
+					printMsg("Une erreur est survenue : "+resp.responseText);
+			}	
+		});
+	});
 });
 
 

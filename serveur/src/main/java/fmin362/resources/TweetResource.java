@@ -60,13 +60,12 @@ public class TweetResource
     
     @GET
     @Path("/{image}")
-    @Produces("image/*")
+    @Produces("image/*") // renvoyer image, ou tweet, selon la requete
     public Response getImage(@PathParam("image") String image) {
     	File f = new File(SERVER_UPLOAD_LOCATION_FOLDER + image);
-
     	if (!f.exists())
     		return Response.noContent().build();
-   	
+    	
     	return Response.ok(f, CommonMediaTypes.getMediaTypeFromFile(f)).build();
     }
     

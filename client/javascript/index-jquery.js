@@ -22,8 +22,8 @@ $(document).ready(function($) {
 				location.href="wall.html";
 			},
 			error : function(resp) {
-					clearErrorMsg();
-					printErrorMsg("Une erreur est survenue : "+resp.responseText);
+					clearMsg();
+					printMsg("Une erreur est survenue : "+resp.responseText);
 			}
 					
 		});
@@ -36,8 +36,8 @@ $(document).ready(function($) {
 		
 		if (passwd != passwd_verif)
 		{
-			clearErrorMsg();
-			printErrorMsg("Les deux mots de passe ne correspondent pas.");
+			clearMsg();
+			printMsg("Les deux mots de passe ne correspondent pas.");
 			return;
 		}
 		
@@ -54,8 +54,8 @@ $(document).ready(function($) {
 				location.href="wall.html";
 			},
 			error : function(resp) {
-				clearErrorMsg();
-				printErrorMsg("Une erreur est survenue : "+resp.responseText);
+				clearMsg();
+				printMsg("Une erreur est survenue : "+resp.responseText);
 			}
 		});
 	});
