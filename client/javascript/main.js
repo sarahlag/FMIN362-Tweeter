@@ -88,9 +88,11 @@ function listTweets(json)
 				+"<th>Tags</th>"
 			+"</tr>";
    	var output;
+   	var img_url;
    	for (var i=json.length-1; i>=0; i--){
+   		img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+json[i].photo_url;
 		output = '<tr>';
-		output += '<th><a href="'+json[i].photo_url+'"> <img src="'+json[i].photo_url+'" class="icon" /></a></th>';
+		output += '<th><a href="'+img_url+'"> <img src="'+img_url+'" class="icon" /></a></th>';
 		output += '<th>'+json[i].username+'</th>';
 		output += '<th>'+json[i].comment+'</th>';
 		output += '<th>'+json[i].photo_date+'</th>';

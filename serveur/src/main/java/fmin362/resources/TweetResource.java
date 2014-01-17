@@ -25,8 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -34,21 +32,13 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.PathParam;
 
+import com.sun.jersey.multipart.file.DefaultMediaTypePredictor.CommonMediaTypes;
+
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
     private final String SERVER_UPLOAD_LOCATION_FOLDER = getUploadPath();
-        
-    @GET
-    @Path("{id}")
-    @Produces( MediaType.APPLICATION_OCTET_STREAM )
-    public Response find(@PathParam("id") Long id) throws URISyntaxException 
-    {
-    	Tweet t = Ebean.find(Tweet.class, id);
-    	URI uri = new URI("file://"+t.getPhoto_url());
-        return Response.ok().contentLocation(uri).build();
-    }
-
+            
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
@@ -69,7 +59,19 @@ public class TweetResource
         
         return list.subList(step, limit);
     }
+    
+    @GET
+    @Path("/{image}")
+    @Produces("image/*")
+    public Response getImage(@PathParam("image") String image) {
+    	File f = new File(SERVER_UPLOAD_LOCATION_FOLDER + image);
 
+    	if (!f.exists())
+    		return Response.noContent().build();
+   	
+    	return Response.ok(f, CommonMediaTypes.getMediaTypeFromFile(f)).build();
+    }
+    
     @POST
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
@@ -105,7 +107,7 @@ public class TweetResource
         newtweet.setPhoto_url(photourl);
         Tweet.update(newtweet);
           
-	return Ebean.find(Tweet.class).findList();     
+        return Ebean.find(Tweet.class).findList();     
     }
        
     @POST
@@ -150,9 +152,9 @@ public class TweetResource
         if (realFilename == null || realFilename.isEmpty())
             return "";
         InputStream fileInputStream = filePart.getValueAs(InputStream.class);
-        String fullname = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
-        copyFile(fileInputStream, fullname);
-        return fullname;
+        String name = filename + getExt(realFilename);
+        copyFile(fileInputStream, SERVER_UPLOAD_LOCATION_FOLDER + name);
+        return name;
     }
     
     private String uploadFile(String realFilename, String filename) throws FileNotFoundException
@@ -160,9 +162,9 @@ public class TweetResource
         if (realFilename == null || realFilename.isEmpty())
             return "";
         InputStream fileInputStream = new FileInputStream(realFilename); // throws FileNotFoundException si n'existe pas
-        String fullname = SERVER_UPLOAD_LOCATION_FOLDER + filename + getExt(realFilename);
-        copyFile(fileInputStream,  fullname);
-        return fullname;
+        String name = filename + getExt(realFilename);
+        copyFile(fileInputStream,  SERVER_UPLOAD_LOCATION_FOLDER + name);
+        return name;
     }
 
     private static void copyFile(InputStream uploadedInputStream, String serverLocation) {

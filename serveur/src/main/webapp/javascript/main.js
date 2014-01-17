@@ -55,7 +55,7 @@ function setRadioChecked()
 
 function getTweets()
 {
-	var url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get";
+	var url = "/FMIN362-Tweeter/resources/tweets/get";
 	url = addParam(url);
 	xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
         if (xmlHttpRequest === null)
@@ -87,9 +87,11 @@ function listTweets(json)
 				+"<th>Tags</th>"
 			+"</tr>";
    	var output;
+   	var img_url;
    	for (var i=json.length-1; i>=0; i--){
+   		img_url = "/FMIN362-Tweeter/resources/tweets/"+json[i].photo_url;//.photo_url;
 		output = '<tr>';
-		output += '<th><a href="'+json[i].photo_url+'"> <img src="'+json[i].photo_url+'" class="icon" /></a></th>';
+		output += '<th><a href="'+img_url+'"> <img src="'+img_url+'" class="icon" /></a></th>';
 		output += '<th>'+json[i].username+'</th>';
 		output += '<th>'+json[i].comment+'</th>';
 		output += '<th>'+json[i].photo_date+'</th>';
@@ -130,7 +132,6 @@ function readCookie (cookie_name)
 {
     // http://www.thesitewizard.com/javascripts/cookies.shtml
     var cookie_string = document.cookie;
-    alert('whole cookie: '+cookie_string);
     if (cookie_string.length != 0) {
         var cookie_value = cookie_string.match (
                         '(^|;)[\s]*' +
