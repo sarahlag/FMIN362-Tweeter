@@ -37,6 +37,6 @@
                       
    <!-- pour avoir evenements on startup -->             
    <listener>
-        <listener-class>ContextListener</listener-class>
+        <listener-class>fmin362.ContextListener</listener-class>
    </listener>                 
 </web-app>

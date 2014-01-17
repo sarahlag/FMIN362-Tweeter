@@ -1,7 +1,6 @@
 package fmin362.models;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlRow;
 
 import java.io.Serializable;
 import java.util.ArrayList;

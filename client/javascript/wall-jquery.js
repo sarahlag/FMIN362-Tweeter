@@ -9,7 +9,7 @@ $(document).ready(function($) {
 	
 	if (username === "anon")
 		$(".lvlUser").css("display", "none");
-	if (is_admin === "false")
+	if (is_admin !== "true")
 		$(".lvlAdmin").css("display", "none");
 	
 	$("#tabs").tabs({

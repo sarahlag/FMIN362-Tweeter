@@ -1,21 +1,18 @@
--avoir dossier upload crée automatiquement
 -bug pagination
 -modif profil (=mdp)
 -bouton delete, autres fonctions admin
 -avoir negociation de contenu en get
--avoir chargement bdd avec yml
 -map -> remplacer par google ?
 	-> passer info tweets en param, et vérifier les erreurs
 -ajouter plus de test !
 -mettre client en interne aussi
-
--rechercher config mvn / ant / autre pour parcourir h2 database
-
--custom errors in jersey, exceptions
-	-catch filenotfound excp pour url_form_encoded qd url pas ok
 -jquery pour au moins les graphiques
--avoir autocompletion pour photo location ?
 
+x-rechercher config mvn / ant / autre pour parcourir h2 database
+	-> serveur mode de h2 database ?
+
+!-avoir chargement bdd avec yml
+!-avoir dossier upload crée automatiquement
 !-avoir url pour images
 !-avoir admin par défaut au démarrage de bdd
 !-gérer admin dans client

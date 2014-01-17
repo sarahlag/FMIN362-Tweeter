@@ -58,3 +58,7 @@ https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
 http://dev.openlayers.org/docs/files/OpenLayers-js.html
 http://gis.stackexchange.com/questions/22433/problem-with-open-popup-onclick-marker-in-openlayers
 
+http://java.dzone.com/articles/using-yaml-java-application
+https://code.google.com/p/snakeyaml/wiki/Documentation#Loading_YAML
+
+

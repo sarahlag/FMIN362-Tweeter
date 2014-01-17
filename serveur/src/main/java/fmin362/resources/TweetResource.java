@@ -25,8 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -37,7 +35,7 @@ import com.sun.jersey.multipart.file.DefaultMediaTypePredictor.CommonMediaTypes;
 @Path( "/tweets" ) // http://localhost:9000/FMIN362-Tweeter/resources/tweets
 public class TweetResource
 {
-    private final String SERVER_UPLOAD_LOCATION_FOLDER = getUploadPath();
+    private static String SERVER_UPLOAD_LOCATION_FOLDER = "";
             
     @GET
     @Path( "/get" )
@@ -76,7 +74,7 @@ public class TweetResource
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     @Produces( MediaType.APPLICATION_JSON )
-    public List<Tweet> post( FormDataMultiPart form )
+    public List<Tweet> post( FormDataMultiPart form ) throws FileNotFoundException
     { 
         FormDataBodyPart photofile = form.getField("photofile");
         FormDataBodyPart username = form.getField("username");
@@ -100,10 +98,10 @@ public class TweetResource
         if (!Tweet.save(newtweet))
             return Ebean.find(Tweet.class).findList();
         
-        String photourl = uploadFile(photofile, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
+        // ajout de l'url de l'image
+        String photourl = uploadFile(photofile, newtweet);
         if (photourl.isEmpty())
             return Ebean.find(Tweet.class).findList();
-        
         newtweet.setPhoto_url(photourl);
         Tweet.update(newtweet);
           
@@ -128,26 +126,23 @@ public class TweetResource
         newtweet.setPhoto_place(photoloc);
         newtweet.addTags(tags);
         
+        newtweet.setPhoto_url(photourl);
+        
         if (!Tweet.save(newtweet))
             return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed
-                
-        String real_photourl = uploadFile(photourl, newtweet.getId()+"-"+newtweet.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-"));
-	if (!real_photourl.isEmpty()) 
-	{        
-	    newtweet.setPhoto_url(real_photourl);
-            Tweet.update(newtweet);
-	}        
-	return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
+
+        return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
     }
     
     /* ================ */
     /* UPLOAD           */
     /* ================ */
     
-    private String uploadFile(FormDataBodyPart filePart, String filename)
+    public String uploadFile(FormDataBodyPart filePart, Tweet tw)
     {
         if (filePart == null)
             return "";
+        String filename = tw.getId()+"-"+tw.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-");
         String realFilename = filePart.getContentDisposition().getFileName();
         if (realFilename == null || realFilename.isEmpty())
             return "";
@@ -157,10 +152,11 @@ public class TweetResource
         return name;
     }
     
-    private String uploadFile(String realFilename, String filename) throws FileNotFoundException
+    public static String uploadFile(String realFilename, Tweet tw) throws FileNotFoundException
     {
         if (realFilename == null || realFilename.isEmpty())
             return "";
+        String filename = tw.getId()+"-"+tw.getDate().toString().replaceAll(" ", "_").replaceAll(":", "-");
         InputStream fileInputStream = new FileInputStream(realFilename); // throws FileNotFoundException si n'existe pas
         String name = filename + getExt(realFilename);
         copyFile(fileInputStream,  SERVER_UPLOAD_LOCATION_FOLDER + name);
@@ -187,7 +183,7 @@ public class TweetResource
 
     }
     
-    private String getExt(String filename)
+    private static String getExt(String filename)
     {
         if (filename == null || filename.equals(""))
             return "";
@@ -197,18 +193,19 @@ public class TweetResource
         return "";
     }
     
-    private String getUploadPath()
-    {
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-                URL[] urls = ((URLClassLoader)cl).getURLs();
-        if (urls == null || urls.length < 1)
-            return "./";
-        String folder = urls[0].toString(); // [path]/[project dir]/target/cargo/installs/glassfish-3.1.2.2/glassfish3/glassfish/modules/glassfish.jar 
-        if (folder.startsWith("file:"))
-            folder = folder.substring(5);
-        int i = folder.indexOf("target");
-        folder = folder.substring(0, i);
+    public static void setUploadPath(String folder)
+    {	
+    	// fonction appelée 1 seule fois, dans ContextListener.contextInitialized()
+    	if (!SERVER_UPLOAD_LOCATION_FOLDER.isEmpty())
+    		return;
+    	
+        // vérifie si répertoire upload existe, le crée sinon
+        File dir = new File(folder + "upload/");
+        if (!dir.exists())
+        	dir.mkdir();
         
-        return folder + "upload/"; // [path]/[project dir]/upload/
+        System.out.println("server upload folder @ "+ folder + "upload/");
+        SERVER_UPLOAD_LOCATION_FOLDER = folder + "upload/"; // [path]/[project dir]/upload/
     }
+    
 }

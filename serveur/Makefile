@@ -6,5 +6,4 @@ test:
 	mvn test
 clean:
 	rm upload/*
-	rm *~
 

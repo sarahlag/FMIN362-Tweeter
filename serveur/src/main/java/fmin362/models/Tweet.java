@@ -4,11 +4,13 @@ package fmin362.models;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +26,7 @@ import javax.persistence.Temporal;
 
 import fmin362.models.Tag;
 import fmin362.models.Tweet;
+import fmin362.resources.TweetResource;
 
 @Entity
 public class Tweet implements Serializable{
@@ -65,11 +68,22 @@ public class Tweet implements Serializable{
     	Ebean
    		==================== */
     
-    static public boolean save(Tweet tweet) {
+    static public boolean save(Tweet tweet) throws FileNotFoundException {
         if (tweet.getUsername() == null || tweet.getUsername().isEmpty())
             return false;
         Ebean.save(tweet);
-	Ebean.update(tweet.user);
+        Ebean.update(tweet.user);
+        
+        // photo_url -> copyFile
+        if (!tweet.getPhoto_url().isEmpty())
+        {
+        	String real_photourl = TweetResource.uploadFile(tweet.getPhoto_url(), tweet);
+        	if (!real_photourl.isEmpty()) 
+        	{        
+        	    tweet.setPhoto_url(real_photourl);
+                Tweet.update(tweet);
+        	} 
+        }
         return true;
     }
     
@@ -110,7 +124,7 @@ public class Tweet implements Serializable{
             	//return false;
         }
         this.tags.add(tag);
-	return true;
+        return true;
     }
     
     public void removeTag(String tagname) {
@@ -263,6 +277,27 @@ public class Tweet implements Serializable{
 		}
 		return false;
 	}
+    
+    /* ====================
+		Conversion
+	   ==================== */
+    
+    @SuppressWarnings("unchecked")
+	public void fromMap(Map<?, ?> map, String fullpath)
+    {
+    	setUsername(map.get("username").toString());
+    	this.comment = map.get("comment").toString();
+    	this.photo_url = fullpath + map.get("photo_url").toString();
+    	this.photo_date = map.get("photo_date").toString();
+    	this.photo_place = map.get("photo_place").toString();
+    	
+		List<String> list = (List<String>) map.get("tags");
+    	String tags = "";
+    	for (int i=0; i<list.size(); i++)
+    		tags += list.get(i)+",";
+    	System.out.println("[FROM MAP] adding tags:"+tags);
+    	addTags(tags);
+    }
     
     /* ====================
         Getters and Setters
