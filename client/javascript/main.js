@@ -86,21 +86,31 @@ function listTweets(json)
 				+"<th>Date</th>"
 				+"<th>Location</th>"
 				+"<th>Tags</th>"
+				+"<th class='lvlUser'>Admin</th>"
 			+"</tr>";
    	var output;
    	var img_url;
    	for (var i=json.length-1; i>=0; i--){
    		img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+json[i].photo_url;
 		output = '<tr>';
-		output += '<th><a href="'+img_url+'"> <img src="'+img_url+'" class="icon" /></a></th>';
-		output += '<th>'+json[i].username+'</th>';
-		output += '<th>'+json[i].comment+'</th>';
-		output += '<th>'+json[i].photo_date+'</th>';
-		output += '<th>'+json[i].photo_place+'</th>';
-		output += '<th>';
+		output += '<td><a href="'+img_url+'"> <img src="'+img_url+'" class="icon" /></a></td>';
+		output += '<td>'+json[i].username+'</td>';
+		output += '<td>'+json[i].comment+'</td>';
+		output += '<td>'+json[i].photo_date+'</td>';
+		output += '<td>'+json[i].photo_place+'</td>';
+		output += '<td>';
 		for (var j=0; j<json[i].tags.length-1; j++)
 			output += json[i].tags[j].tagname+', ';
-		output += json[i].tags[j].tagname+'</th>';
+		output += json[i].tags[j].tagname+'</td>';
+		
+		if (username === json[i].username || is_admin !== "false")
+			output += '<td id="td-'+json[i].id+'"><button id="btn-delete-'+json[i].id+'" class="btn-delete" type="button">x</button></td>';
+		//output += '<td class="lvlUser" id="td-'+json[i].id+'"></td>';
+
+		// <button id="btn-delete-'+json[i].id+'" class="btn-delete" type="button"> </button>
+		//var $button = $('<button/>').attr({ type: 'button', id:'btn-delete-'+json[i].id}).addClass("btn-delete");
+		//$("#col-admin").append($button);
+		
 		output += '</tr>';
 		listtweets += output;		
    	}
@@ -144,7 +154,12 @@ function readCookie (cookie_name)
 }
 
 /* ====================	*/
-/* On Load		*/
+/* Buttons				*/
+/* ====================	*/
+
+
+/* ====================	*/
+/* On Load				*/
 /* ====================	*/
 
 function WallLoaded()

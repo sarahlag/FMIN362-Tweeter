@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
+import com.sun.jersey.multipart.FormDataMultiPart;
 
 import fmin362.models.User;
 
@@ -76,5 +77,21 @@ public class UserResource {
 			return Response.status(403).entity("Username "+username+" incorrect").build(); // 403: Forbidden
 		
 		return Response.status(200).entity("Successfully registered").build();
+    }
+	
+	@POST
+    @Path( "/delete" )
+    @Consumes( MediaType.MULTIPART_FORM_DATA )
+    public Response deleteUser( FormDataMultiPart form )
+    {       
+    	String username = form.getField("username").toString();
+    	String names = form.getField("names").toString();
+    	
+    	User admin = User.findByName(username);
+    	if (admin == null || !admin.isIs_admin())
+    		return Response.status(403).entity("You are not allowed to do that").build();
+    	       	
+    	// af
+        return Response.status(200).entity("User(s) deleted").build();
     }
 }

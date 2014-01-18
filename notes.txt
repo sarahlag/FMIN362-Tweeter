@@ -7,6 +7,9 @@ http://www.h2database.com/html/cheatSheet.html
 http://stackoverflow.com/questions/2205126/starting-an-h2-database-server-from-maven
 http://www.h2database.com/html/tutorial.html#using_eclipselink
 
+persistence hell:
+https://groups.google.com/forum/?_escaped_fragment_=topic/ebean/HZRH0wcOiz8#!topic/ebean/HZRH0wcOiz8
+
 post:
 http://www.ibm.com/developerworks/library/wa-aj-tomcat/
 http://blog.rectorsquid.com/more-ajax-and-multipartform-data/

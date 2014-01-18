@@ -37,7 +37,7 @@ public class Tweet implements Serializable{
     @Id
     private Long id;
     
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name="user_id")
     private User user;
     @ManyToMany (cascade=CascadeType.ALL)
@@ -111,6 +111,7 @@ public class Tweet implements Serializable{
     ///////// tags
    
     public boolean addTag(String tagname) {
+    	tagname = Tag.clearTag(tagname);
         if (tagname == null || tagname.isEmpty())
             return false;
         Tag tag = Tag.findByName(tagname);
@@ -125,6 +126,12 @@ public class Tweet implements Serializable{
         }
         this.tags.add(tag);
         return true;
+    }
+    
+    public void removeTag(Tag tag) {
+    	if (tag == null)
+            return;
+        this.tags.remove(tag);
     }
     
     public void removeTag(String tagname) {
@@ -148,7 +155,6 @@ public class Tweet implements Serializable{
         String[] tableTags = t.split(",");
         for(int i=0; i<tableTags.length;i++)
             removeTag (tableTags[i]);
-
     }
 
     ///////// username

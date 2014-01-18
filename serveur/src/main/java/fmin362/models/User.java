@@ -82,11 +82,31 @@ public class User implements Serializable {
         return true;
     }
 
+    /*public static boolean deleteUsers(String t)
+	{		
+		if (t == null)
+			return false;
+		String[] userNames = t.split(",");
+		if (userNames == null || userNames[0].equals(""))
+			return false;
+		for(int i=0; i<userNames.length;i++)
+		{
+			User user = User.findByUserName(userNames[i]);
+			if (user == null)
+				continue;
+			for (int j=0; j<user.tweets.size();j++)
+				Tweet.deleteTweet(user.tweets.get(j).id);
+			find.ref(user.id).delete();	
+			System.out.println("User "+userNames[i]+" a été correctement supprimé.");
+		}
+		return true;
+	}*/
+    
     static public void delete(User user) {
         user.removeAllTweets();
         Ebean.delete(user);
     }
-    
+        
     /* ====================
         Getters and Setters
        ==================== */

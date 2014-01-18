@@ -1,11 +1,12 @@
 
 $(document).ready(function($) {
-	
+		
 	WallLoaded();
 	
-	//$("input[type=submit], button").button();
 	//$("input[type=reset]").button();
 	//$("#radio").buttonset();
+		
+	//alert($("#btn-delete-1"));
 	
 	if (username === "anon")
 		$(".lvlUser").css("display", "none");
@@ -22,7 +23,7 @@ $(document).ready(function($) {
 		changeYear : true,
 		maxDate: "+0"
 	}).datepicker('setDate', new Date()); // pour mettre la date du jour par défaut
-
+	
 	/* ================== */
 	/* post			     */
 	/* ================== */
@@ -234,6 +235,38 @@ $(document).ready(function($) {
 					printMsg("Une erreur est survenue : "+resp.responseText);
 			}	
 		});
+	});
+	
+	//var $button = $('<button/>').attr({ type: 'button', id:'btn-delete'}).addClass("btn-delete");
+	//$("td.lvlUser").append($button);
+	
+	$("#tableTweets").change(function(event) {
+			alert("hey");
+	});
+	
+	$(".btn-delete").button({
+		icons : {
+			primary : "ui-icon-closethick"
+		},
+		text : false
+	});
+	
+	$(".btn-delete").click(function(event) {
+		alert("Button "+$(this).attr('id')+" clicked");
+		/*
+		$id = $(this).attr('id').substr(11);
+		$.ajax({
+			type : 'POST',
+			url : "/admin/deleteTweet",
+			contentType : "application/json; charset=UTF-8",
+			data : JSON.stringify({
+				"id" : $id
+			}),
+			success : function(data) {
+				//alert(data);
+				location.href="/wall?c="+ criteria +"&by="+ nb_affichage +"&p=" + num_page;
+			}
+		});*/
 	});
 });
 

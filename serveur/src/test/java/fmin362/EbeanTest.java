@@ -4,6 +4,7 @@ package fmin362;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
+import com.avaje.ebean.SqlUpdate;
 
 import fmin362.models.Tag;
 import fmin362.models.Tweet;
@@ -24,7 +25,7 @@ import junit.framework.TestCase;
 public class EbeanTest extends TestCase{
 		
     // http://www.avaje.org/ebean/getstarted_props.html
-    public void testUseEbean() {
+    /*public void testUseEbean() {
 		
 		String sql = "select count(*) as count from dual";
 		SqlRow row = Ebean.createSqlQuery(sql).findUnique();
@@ -80,41 +81,64 @@ public class EbeanTest extends TestCase{
 	assertTrue(u.getTweets().isEmpty());
 
         User.delete(u);
-    }
+    }*/
 
     public void testTags() throws FileNotFoundException { // teste si tags bien ajoutés / supprimés
 	Tweet e = new Tweet();
 	e.setUsername("test");
 
-	User u = e.getUser();
+	
 
 	e.addTags(" tag1, tag2,, ");
-	Tag tag1 = e.getTags().get(0);
+
 	Tag tag2 = e.getTags().get(1);
 
 	Tweet.save(e);
 
 	System.out.println("[EBEAN TAG TEST RESULT] "+e.getTags().size());
-	System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(0).getTagname()+"'");
-	System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(1).getTagname()+"'");
+	for (int i=0; i<e.getTags().size(); i++)
+		System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(i).getTagname()+"'");
+	//System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(1).getTagname()+"'");
 	
 	//Tweet.delete(e);
     //User.delete(u);
 	
-	String sql = "select tag_id from tweet_tag";
-	List<SqlRow> rows = Ebean.createSqlQuery(sql).findList();
-
-	assertTrue(rows.size() > 0);
-
-	Tweet.delete(e);
-    User.delete(u);
+	// on enlève un tag
 	
-	Ebean.delete(tag1);
-	Ebean.delete(tag2);
+	 String s = "delete from tweet_tag where tag_id = :id";
+	 SqlUpdate update = Ebean.createSqlUpdate(s);
+	 update.setParameter("id", tag2.getId());
+	 Ebean.execute(update);
+    Ebean.delete(tag2);
+    e.getTags().remove(tag2);
+    Ebean.refreshMany(e, "tags");
+    
+	System.out.println("[EBEAN TAG TEST RESULT]After Del Tag, got "+e.getTags().size()+" tags");
+	for (int i=0; i<e.getTags().size(); i++)
+		System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(i).getTagname()+"'");
+	
+	assertTrue(e.getTags().size() == 1);
 	
     }
     
-    public void testYaml() throws IOException
+    public void testPersist()
+    {
+    	Tweet e = Ebean.find(Tweet.class, 1);
+    	User u = e.getUser();
+    	Tag tag1 = e.getTags().get(0);
+    	
+    	System.out.println("[EBEAN PERSIST] got "+e.getTags().size()+" tags");
+    	for (int i=0; i<e.getTags().size(); i++)
+    		System.out.println("[EBEAN PERSIST]Got '"+e.getTags().get(i).getTagname()+"'");
+    	
+    	assertTrue(e.getTags().size() == 1);
+    	
+    	Tweet.delete(e);
+        User.delete(u);
+    	Ebean.delete(tag1);
+    }
+    
+    /*public void testYaml() throws IOException
     {
    	  	Yaml yaml = new Yaml();
 		try {
@@ -132,7 +156,7 @@ public class EbeanTest extends TestCase{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		};
-    }
+    }*/
 }
 
 

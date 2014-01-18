@@ -3,6 +3,7 @@ package fmin362.resources;
 import com.avaje.ebean.Ebean;
 
 import fmin362.models.Tweet;
+import fmin362.models.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,6 +133,102 @@ public class TweetResource
 
         return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
     }
+    
+    @POST
+    @Path( "/delete" )
+    @Consumes( MediaType.MULTIPART_FORM_DATA )
+    public Response deleteTweet( FormDataMultiPart form )
+    {       
+    	String username = form.getField("username").toString();
+    	Long id = form.getField("id").getValueAs(Long.class);
+    	
+    	Tweet tw = Ebean.find(Tweet.class, id);
+    	User admin = User.findByName(username);
+    	if (tw == null)
+    		return Response.status(404).entity("Tweet not found").build();
+    	if (!tw.getUsername().equals(username) || admin == null || !admin.isIs_admin() )
+    		return Response.status(403).entity("You are not allowed to do that").build();
+     	
+    	Tweet.delete(tw);
+        return Response.status(200).entity("Tweet "+id+" deleted").build();
+    }
+    
+    /*
+    
+	 //Fusion entre deux tags
+	 public static Result fusionTags(){
+		 if (request().accepts("application/json")) {
+			 Form<String> form = Form.form(String.class).bindFromRequest();
+			 String tagOld = form.field("fusionTagOld").value(), tagNew = form.field("fusionTagNew").value();;
+			 System.out.println("fusionTag: "+tagOld+"->"+tagNew);
+			 boolean r = Tag.fusionTags(tagOld, tagNew);
+			 if (r == false)
+				 return badRequest("Une erreur est survenue. Vérifier les paramètres.");
+			 return redirect(routes.Application.listTweetsBy()); 
+		 }
+		 return badRequest();
+	 }
+    //Modification d'un tweet
+	public static Result modifyTweet() throws IOException
+	{		
+		Form<Tweet> form = Form.form(Tweet.class).bindFromRequest();
+		MultipartFormData body = request().body().asMultipartFormData();
+		
+		Tweet tweet = Tweet.find.byId(Long.parseLong(form.field("id").value()));
+
+		String username, comment, photodate, photolocation, tags;
+		username = form.field("username").value();
+		comment = form.field("comment").value();
+		photodate = form.field("photodate").value();
+		photolocation = form.field("photolocation").value();
+		tags = form.field("tags").value();
+		
+		FilePart picture = body.getFile("photo");
+		
+		if (!username.isEmpty() && !username.equals(tweet.author.userName)) //ok
+		{
+			System.out.println("Username "+tweet.author.userName+" modified to "+username);
+			tweet.changeUser(username);
+		}
+		if (!comment.isEmpty() && !comment.equals(tweet.commentaire)) //ok
+		{
+			System.out.println("Comment "+tweet.commentaire+" modified to "+comment);
+			tweet.commentaire = comment;
+		}
+
+		if (picture != null) //ok
+		{
+			File file = picture.getFile();
+			String filename = tweet.id + "-" + tweet.creationDate + "-"
+					+ picture.getFilename();
+			System.out.println("Photourl "+tweet.photoURL+" modified to "+filename);
+			File photofile = new File("public/images/" + filename);
+			FileUtils.copyFile(file, photofile);
+			tweet.photoURL = filename;
+		}
+		
+		if (!photodate.isEmpty() && !photodate.equals(tweet.photoDate)) //ok
+		{
+			System.out.println("photodate "+tweet.photoDate+" modified to "+photodate);
+			tweet.photoDate = photodate;
+		}
+				
+		if (!photolocation.isEmpty() && !photolocation.equals(tweet.photoAdresse)) //ok
+		{
+			System.out.println("photolocation "+tweet.photoAdresse+" modified to "+photolocation);
+			tweet.photoAdresse = photolocation;
+		}
+		
+		if (tags != null && !tweet.printTags().equals(tags)) //ok
+		{
+			System.out.println("Tags "+tweet.printTags()+" modified to "+tags);
+			tweet.clearTags();
+			tweet.addTags(tags);
+		}
+		Ebean.update(tweet);
+		
+		return redirect(routes.Application.listTweetsBy());
+	}*/
     
     /* ================ */
     /* UPLOAD           */
