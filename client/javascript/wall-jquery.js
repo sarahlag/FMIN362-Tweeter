@@ -268,6 +268,91 @@ $(document).ready(function($) {
 			}
 		});*/
 	});
+	
+	/*$("#btn-test").click(function(event) {
+		var data = new FormData();
+		data.append('username',  readCookie('username'));
+		data.append('names', 	 'mikasa, armin');
+
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/delete",
+			processData : false,
+			contentType : false,
+			data : data,
+			success : getTweets(),
+			error : function(resp) {
+				clearMsg();
+				printMsg("Une erreur est survenue : "+resp.responseText);
+			}	
+		});
+	});*/
+	
+	/*$("#btn-test").click(function(event) {
+		var data = new FormData();
+		data.append('username', readCookie('username'));
+		data.append('id', 	 	'19');
+					
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/delete",
+			processData : false,
+			contentType : false,
+			data : data,
+			success : getTweets(),
+			error : function(resp) {
+				clearMsg();
+				printMsg("Une erreur est survenue : "+resp.responseText);
+			}	
+		});
+	});*/
+	
+	/*$("#btn-test").click(function(event) {
+		var data = new FormData();
+		data.append('username',  readCookie('username'));
+		data.append('oldtag', 	 'TheMystery');
+		data.append('newtag', 	 'left');
+
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/rename",
+			processData : false,
+			contentType : false,
+			data : data,
+			success : getTweets(),
+			error : function(resp) {
+				clearMsg();
+				printMsg("Une erreur est survenue : "+resp.responseText);
+			}	
+		});
+	});*/
+	
+	$("#btn-test").click(function(event) {
+		var data = new FormData();
+		data.append('from_username',  readCookie('username'));
+		data.append('id',  '16');
+		
+		data.append('username',  'annie'); // no reaction
+		data.append('photofile', $('#formfield-photourl')[0].files[0]); // ok
+		data.append('comment',   ''); 
+		data.append('photodate', '');
+		data.append('photoloc',  '');
+		data.append('tags', 	 '');
+
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/update",
+			processData : false,
+			contentType : false,
+			data : data,
+			success : function(resp) {
+				listTweets(resp); // listTweets dans wall.js
+				clearMsg();
+			},
+			error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être modifié.")
+		});
+	});
+	
 });
 
 

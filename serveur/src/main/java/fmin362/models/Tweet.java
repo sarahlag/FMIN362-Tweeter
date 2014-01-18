@@ -179,7 +179,7 @@ public class Tweet implements Serializable{
         else
             this.user = user;
         user.addTweet(this);
-	return true;
+        return true;
     }
     
     /* ====================
@@ -239,6 +239,7 @@ public class Tweet implements Serializable{
 		String[] users = usernames.split(",");
 		for(int i=0; i<users.length;i++)
 		{
+			users[i] = User.clearName(users[i]);
 			User user = User.findByName(users[i]); 
 			if (user == null)
 				continue;
@@ -303,6 +304,17 @@ public class Tweet implements Serializable{
     		tags += list.get(i)+",";
     	System.out.println("[FROM MAP] adding tags:"+tags);
     	addTags(tags);
+    }
+    
+    public String printTags()
+    {
+    	String t = "";
+    	if(tags.size()==0) 
+			return "";
+    	for (int i=0; i<tags.size()-1; i++)
+    		t += tags.get(i).getTagname()+", ";
+    	t += tags.get(tags.size()-1).getTagname();
+    	return t;
     }
     
     /* ====================

@@ -62,6 +62,7 @@ function getTweets()
         if (xmlHttpRequest === null)
 		return;
 	xmlHttpRequest.open("GET", url, true);
+	xmlHttpRequest.setRequestHeader("Accept", "application/json"); 
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200){      // completed && OK
                 listTweets(JSON.parse(xmlHttpRequest.responseText));
@@ -101,7 +102,8 @@ function listTweets(json)
 		output += '<td>';
 		for (var j=0; j<json[i].tags.length-1; j++)
 			output += json[i].tags[j].tagname+', ';
-		output += json[i].tags[j].tagname+'</td>';
+		if (json[i].tags.length > 0)
+			output += json[i].tags[j].tagname+'</td>';
 		
 		if (username === json[i].username || is_admin !== "false")
 			output += '<td id="td-'+json[i].id+'"><button id="btn-delete-'+json[i].id+'" class="btn-delete" type="button">x</button></td>';

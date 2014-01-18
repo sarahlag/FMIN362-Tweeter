@@ -15,6 +15,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
+import fmin362.models.Tweet;
 import fmin362.models.User;
 
 @Path( "/users" ) // http://localhost:9000/FMIN362-Tweeter/resources/users
@@ -31,7 +32,6 @@ public class UserResource {
 	@POST
     @Path( "/login" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-	@Produces( MediaType.TEXT_PLAIN )
     public Response login(	@FormParam("username") String username,
                             @FormParam("passwd") String passwd,
                             @FormParam("newpasswd") String newpasswd,
@@ -63,7 +63,6 @@ public class UserResource {
 	@POST
     @Path( "/register" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-	@Produces( MediaType.TEXT_PLAIN )
     public Response register (	@FormParam("username") String username,
                             	@FormParam("passwd") String passwd ) 
     {       
@@ -84,14 +83,26 @@ public class UserResource {
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     public Response deleteUser( FormDataMultiPart form )
     {       
-    	String username = form.getField("username").toString();
-    	String names = form.getField("names").toString();
+    	String username = form.getField("username").getValue();
+    	String names = form.getField("names").getValue();
     	
     	User admin = User.findByName(username);
     	if (admin == null || !admin.isIs_admin())
     		return Response.status(403).entity("You are not allowed to do that").build();
-    	       	
-    	// af
+    	
+    	String[] users = names.split(",");
+    	for (int i=0; i<users.length; i++)
+    		if (users[i].equals(username))
+    			return Response.status(403).entity("You cannot delete yourself").build();
+    	
+    	List<Tweet> list = Tweet.findByUsernames(names);
+    	if (list != null)
+    	{
+    		for (int i=0; i<list.size(); i++)
+        		Tweet.delete(list.get(i));
+    		User.delete(names);
+    	}
+    		
         return Response.status(200).entity("User(s) deleted").build();
     }
 }

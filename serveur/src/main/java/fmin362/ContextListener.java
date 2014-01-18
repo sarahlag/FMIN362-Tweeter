@@ -33,6 +33,15 @@ public class ContextListener implements ServletContextListener {
     	// si la base de donnée est vide
     	if (Ebean.find(Tweet.class).findRowCount() == 0 && new File(SERVER_ROOT_FOLDER + "initbdd.yml").exists())
     	{
+    		// création de l'admin
+    		User user = new User();
+        	user.setUsername("admin");
+        	//user.setPasswd("admin");
+        	user.setIs_admin(true);
+        	User.save(user);
+        	System.out.println("Default user admin successfully created.");
+        	
+        	// ajout de tweets
     		Yaml yaml = new Yaml();
     		try {
     			InputStream in = new FileInputStream(SERVER_ROOT_FOLDER + "initbdd.yml");			
@@ -44,14 +53,6 @@ public class ContextListener implements ServletContextListener {
     		} catch (FileNotFoundException e) {
     			e.printStackTrace();
     		}
-    		
-    		// création de l'admin
-    		User user = new User();
-        	user.setUsername("admin");
-        	//user.setPasswd("admin");
-        	user.setIs_admin(true);
-        	User.save(user);
-        	System.out.println("Default user admin successfully created.");
     	}
     }
     

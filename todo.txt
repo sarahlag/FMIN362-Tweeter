@@ -1,15 +1,20 @@
--bug pagination
--bouton delete, autres fonctions admin
--avoir negociation de contenu en get
+-ren tag, coté serveur
+-modification tweet, coté serveur
+
+-coté client, avoir ces **** de boutons qui marchent
 -map -> remplacer par google ?
 	-> passer info tweets en param, et vérifier les erreurs
+
+-bug pagination -> reprendre solution du projet play
 -ajouter plus de test !
 -mettre client en interne aussi
--jquery pour au moins les graphiques
+-améliorer graphiques
 
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-delete user/tag/tweet, coté serveur
+!-avoir negociation de contenu en get
 !-modif profil (=mdp)
 !-avoir chargement bdd avec yml
 !-avoir dossier upload crée automatiquement

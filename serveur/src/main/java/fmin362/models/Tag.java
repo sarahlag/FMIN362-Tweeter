@@ -44,47 +44,11 @@ public class Tag implements Serializable{
     	String name = clearTag(tagname);
     	return this.tagname.equals(name);
     }
-        
-    static public void delete(Tag tag) {
-        if (tag == null)
-        	return;
-        List<Tweet> tweets = Tweet.findByTagnames(tag.getTagname());
-        if (tweets == null)
-    		return;
-        for (int j=0; j<tweets.size();j++) {
-			//tweets.get(j).getTags().remove(tag);
-			
-					 String s = "delete from tweet_tag where tag_id = :id";
-					 SqlUpdate update = Ebean.createSqlUpdate(s);
-					 update.setParameter("id", tag.getId());
-					 Ebean.execute(update);
-
-			
-			//Ebean.refreshMany(tweets.get(j), "tags");
-			//Ebean.saveManyToManyAssociations(tweets.get(j), "tags");
-			
-			//Ebean.deleteManyToManyAssociations(tweets.get(j), "tags");
-			//Tweet.update(tweets.get(j));
-
-        }
-        Ebean.delete(tag);
-        for (int j=0; j<tweets.size();j++){
-        	tweets.get(j).getTags().remove(tag);
-        	Ebean.refreshMany(tweets.get(j), "tags");
-        	//Tweet.update(tweets.get(j));
-        }
-        System.out.println("TEST1111!!!1 u="+tweets.get(0).getUsername()+" size="+tweets.get(0).getTags().size());
-    }
-    
+            
     static public void delete(String names) {
     	List<Tweet> tweets = Tweet.findByTagnames(names);
     	if (tweets == null)
     		return;
-    	for (int j=0; j<tweets.size();j++) {
-			tweets.get(j).removeTags(names);
-			Tweet.update(tweets.get(j));
-			Ebean.deleteManyToManyAssociations(tweets.get(j), "tags");
-        }
         String[] tags = names.split(",");
 		if (tags == null || tags[0].equals(""))
 			return;
@@ -93,23 +57,31 @@ public class Tag implements Serializable{
 			Tag tag = Tag.findByName(tags[i]);
 			if (tag == null)
 				continue;
+			SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tag_id = :id");
+			update.setParameter("id", tag.getId());
+			Ebean.execute(update);
 			Ebean.delete(tag);
+			
 		}
+		for (int j=0; j<tweets.size();j++) {
+			tweets.get(j).removeTags(names);
+			Ebean.refreshMany(tweets.get(j), "tags");
+        }
     }
     
     static public String clearTag(String t) // enlève les ' ' en trop
     {
-	if (t==null || t.isEmpty() || t == " ")
-		return ""; 
-	int index=0;
-	for (int i=0; i<t.length() && t.charAt(i)==' '; i++)
-		index++;
-	t = t.substring(index);
-	index=t.length();
-	for (int i=t.length()-1; i>0 && t.charAt(i)==' '; i--)
-		index--;
-	t = t.substring(0, index);
-	return t;
+    	if (t==null || t.isEmpty() || t == " ")
+    		return ""; 
+    	int index=0;
+    	for (int i=0; i<t.length() && t.charAt(i)==' '; i++)
+    		index++;
+    	t = t.substring(index);
+    	index=t.length();
+    	for (int i=t.length()-1; i>0 && t.charAt(i)==' '; i--)
+    		index--;
+    	t = t.substring(0, index);
+    	return t;
     }
     
     static public boolean save(Tag tag) {
@@ -119,6 +91,35 @@ public class Tag implements Serializable{
         return true;
     }
     
+    static public boolean fusion(String tagOld, String tagNew) {
+    	Tag tag1 = findByName(tagOld), tag2 = findByName(tagNew);
+    	if (tag1 == tag2 || tag1 == null || tagNew.isEmpty())
+			return false;
+    	if (tag2 == null) // on renomme
+		{
+			tag1.setTagname(tagNew);
+			Ebean.update(tag1);
+		}
+    	else // on fusionne
+		{
+			// faut les listes des tweets
+			List<Tweet> tweets = Tweet.findByTagnames(tagOld);
+			
+			SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tag_id = :id");
+			update.setParameter("id", tag1.getId());
+			Ebean.execute(update);
+			Ebean.delete(tag1);
+			
+			for (int i=0; i<tweets.size(); i++) {
+				tweets.get(i).removeTags(tagOld);
+				Ebean.refreshMany(tweets.get(i), "tags");
+				tweets.get(i).addTag(tagNew);
+				Ebean.refreshMany(tweets.get(i), "tags");
+			}
+		}
+    	return true;
+    }
+
     /* ====================
         Getters and Setters
        ==================== */

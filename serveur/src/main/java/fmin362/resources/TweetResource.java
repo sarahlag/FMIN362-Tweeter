@@ -1,6 +1,7 @@
 package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlUpdate;
 
 import fmin362.models.Tweet;
 import fmin362.models.User;
@@ -15,7 +16,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import com.sun.jersey.multipart.FormDataBodyPart;
@@ -44,7 +48,7 @@ public class TweetResource
     public List<Tweet> get(	@DefaultValue("1") 	@QueryParam("p") int page,
     						@DefaultValue("0")	@QueryParam("by") int nbAffichage, 
     						@DefaultValue("current") @QueryParam("c") String criteria )
-    {           
+    {               
         List<Tweet> list = Tweet.findBy(criteria);
         if (nbAffichage==0)
     		return list;
@@ -59,17 +63,38 @@ public class TweetResource
         return list.subList(step, limit);
     }
     
-    @GET
+    /*@GET
     @Path("/{image}")
-    @Produces("image/*") // renvoyer image, ou tweet, selon la requete
+    @Produces("image/*")
     public Response getImage(@PathParam("image") String image) {
     	File f = new File(SERVER_UPLOAD_LOCATION_FOLDER + image);
     	if (!f.exists())
     		return Response.noContent().build();
-    	
     	return Response.ok(f, CommonMediaTypes.getMediaTypeFromFile(f)).build();
-    }
+    }*/
     
+    @GET
+    @Path("/{req}")
+    @Produces( {"image/*", MediaType.APPLICATION_JSON} )
+    public Response getTweet(@PathParam("req") String req,
+    						 @Context HttpHeaders headers) {
+    	if (headers.getRequestHeader("Accept").toString().contains("image/*") || headers.getRequestHeader("Accept").toString().contains("*/*"))
+    	{
+    		File f = new File(SERVER_UPLOAD_LOCATION_FOLDER + req);
+        	if (!f.exists())
+        		return Response.noContent().build();
+        	return Response.ok(f, CommonMediaTypes.getMediaTypeFromFile(f)).build();
+    	}
+    	
+    	if (headers.getRequestHeader("Accept").contains(MediaType.APPLICATION_JSON))
+    	{
+    		Long id = Long.parseLong(req);
+    		return Response.ok().entity(Ebean.find(Tweet.class, id)).build();
+    	}
+    	
+    	return Response.status(405).build(); // 405: Method Not Allowed
+    }
+        
     @POST
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
@@ -139,96 +164,88 @@ public class TweetResource
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     public Response deleteTweet( FormDataMultiPart form )
     {       
-    	String username = form.getField("username").toString();
-    	Long id = form.getField("id").getValueAs(Long.class);
+    	String username = form.getField("username").getValue();
+    	Long id = Long.parseLong(form.getField("id").getValue());
     	
     	Tweet tw = Ebean.find(Tweet.class, id);
     	User admin = User.findByName(username);
     	if (tw == null)
     		return Response.status(404).entity("Tweet not found").build();
-    	if (!tw.getUsername().equals(username) || admin == null || !admin.isIs_admin() )
+    	
+    	System.out.println("METHOD DELETE TWEET GRRR username="+username+"&admin="+admin.isIs_admin()+"&tweet_username="+tw.getUsername());
+    	//username=admin&admin=true&tweet_username=annie
+    	
+    	if ( admin == null || (!admin.isIs_admin() && !tw.getUsername().equals(username)) )
     		return Response.status(403).entity("You are not allowed to do that").build();
      	
     	Tweet.delete(tw);
         return Response.status(200).entity("Tweet "+id+" deleted").build();
     }
     
-    /*
-    
-	 //Fusion entre deux tags
-	 public static Result fusionTags(){
-		 if (request().accepts("application/json")) {
-			 Form<String> form = Form.form(String.class).bindFromRequest();
-			 String tagOld = form.field("fusionTagOld").value(), tagNew = form.field("fusionTagNew").value();;
-			 System.out.println("fusionTag: "+tagOld+"->"+tagNew);
-			 boolean r = Tag.fusionTags(tagOld, tagNew);
-			 if (r == false)
-				 return badRequest("Une erreur est survenue. Vérifier les paramètres.");
-			 return redirect(routes.Application.listTweetsBy()); 
-		 }
-		 return badRequest();
-	 }
-    //Modification d'un tweet
-	public static Result modifyTweet() throws IOException
-	{		
-		Form<Tweet> form = Form.form(Tweet.class).bindFromRequest();
-		MultipartFormData body = request().body().asMultipartFormData();
-		
-		Tweet tweet = Tweet.find.byId(Long.parseLong(form.field("id").value()));
+    @POST
+    @Path( "/update" )
+    @Consumes( MediaType.MULTIPART_FORM_DATA )
+    public Response updateTweet( FormDataMultiPart form )
+    {       
+    	String from_username = form.getField("from_username").getValue();
+    	Long id = Long.parseLong(form.getField("id").getValue());
+    	
+    	FormDataBodyPart photofile = form.getField("photofile");
+        String username = form.getField("username").getValue();
+        String comment = form.getField("comment").getValue();
+        String photodate = form.getField("photodate").getValue();
+        String photoloc = form.getField("photoloc").getValue();
+        String tags = form.getField("tags").getValue();
+    	
+    	Tweet tweet = Ebean.find(Tweet.class, id);
+    	User admin = User.findByName(from_username);
+    	if (tweet == null)
+    		return Response.status(404).entity("Tweet not found").build();
+    	if ( admin == null || (!admin.isIs_admin() && !tweet.getUsername().equals(from_username)) )
+    		return Response.status(403).entity("You are not allowed to do that").build();
 
-		String username, comment, photodate, photolocation, tags;
-		username = form.field("username").value();
-		comment = form.field("comment").value();
-		photodate = form.field("photodate").value();
-		photolocation = form.field("photolocation").value();
-		tags = form.field("tags").value();
-		
-		FilePart picture = body.getFile("photo");
-		
-		if (!username.isEmpty() && !username.equals(tweet.author.userName)) //ok
-		{
-			System.out.println("Username "+tweet.author.userName+" modified to "+username);
-			tweet.changeUser(username);
-		}
-		if (!comment.isEmpty() && !comment.equals(tweet.commentaire)) //ok
-		{
-			System.out.println("Comment "+tweet.commentaire+" modified to "+comment);
-			tweet.commentaire = comment;
-		}
-
-		if (picture != null) //ok
-		{
-			File file = picture.getFile();
-			String filename = tweet.id + "-" + tweet.creationDate + "-"
-					+ picture.getFilename();
-			System.out.println("Photourl "+tweet.photoURL+" modified to "+filename);
-			File photofile = new File("public/images/" + filename);
-			FileUtils.copyFile(file, photofile);
-			tweet.photoURL = filename;
-		}
-		
-		if (!photodate.isEmpty() && !photodate.equals(tweet.photoDate)) //ok
-		{
-			System.out.println("photodate "+tweet.photoDate+" modified to "+photodate);
-			tweet.photoDate = photodate;
-		}
-				
-		if (!photolocation.isEmpty() && !photolocation.equals(tweet.photoAdresse)) //ok
-		{
-			System.out.println("photolocation "+tweet.photoAdresse+" modified to "+photolocation);
-			tweet.photoAdresse = photolocation;
-		}
+    	// modification tweet
+    	if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
+    	{
+    		System.out.println("MODIF TWEET: from username="+tweet.getUsername()+" to new username="+username);
+			tweet.setUsername(username);
+    	}
+    	if (!comment.isEmpty() && !comment.equals(tweet.getComment())) //ok
+			tweet.setComment(comment);
+    	if (!photodate.isEmpty() && !photodate.equals(tweet.getPhoto_date())) //ok
+			tweet.setPhoto_date(photodate);
+    	if (!photoloc.isEmpty() && !photoloc.equals(tweet.getPhoto_place())) //ok
+			tweet.setPhoto_place(photoloc);
 		
 		if (tags != null && !tweet.printTags().equals(tags)) //ok
 		{
-			System.out.println("Tags "+tweet.printTags()+" modified to "+tags);
-			tweet.clearTags();
+			//Ebean.deleteManyToManyAssociations(tweet, "tags");
+			if (!tweet.getTags().isEmpty())
+			{
+				SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tweet_id = :id");
+				update.setParameter("id", tweet.getId());
+				Ebean.execute(update);
+				
+				tweet.getTags().clear();
+				Ebean.refreshMany(tweet, "tags");
+			}
 			tweet.addTags(tags);
 		}
-		Ebean.update(tweet);
 		
-		return redirect(routes.Application.listTweetsBy());
-	}*/
+    	Ebean.update(tweet);
+    	
+		if (photofile != null) //ok
+		{
+			String photourl = uploadFile(photofile, tweet);
+	        if (!photourl.isEmpty())
+	        {
+	            tweet.setPhoto_url(photourl);
+	            Ebean.update(tweet);
+	        }
+		}
+
+        return Response.status(200).entity("Tweet "+id+" updated").build();
+    }
     
     /* ================ */
     /* UPLOAD           */

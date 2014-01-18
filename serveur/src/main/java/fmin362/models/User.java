@@ -81,30 +81,39 @@ public class User implements Serializable {
         Ebean.update(user);
         return true;
     }
-
-    /*public static boolean deleteUsers(String t)
-	{		
-		if (t == null)
-			return false;
-		String[] userNames = t.split(",");
-		if (userNames == null || userNames[0].equals(""))
-			return false;
-		for(int i=0; i<userNames.length;i++)
-		{
-			User user = User.findByUserName(userNames[i]);
-			if (user == null)
-				continue;
-			for (int j=0; j<user.tweets.size();j++)
-				Tweet.deleteTweet(user.tweets.get(j).id);
-			find.ref(user.id).delete();	
-			System.out.println("User "+userNames[i]+" a été correctement supprimé.");
-		}
-		return true;
-	}*/
-    
+        
     static public void delete(User user) {
+    	if (user == null)
+    		return;
         user.removeAllTweets();
         Ebean.delete(user);
+    }
+    
+    static public void delete(String names) {
+    	String[] users = names.split(",");
+    	if (users == null)
+    		return;
+    	for(int i=0; i<users.length; i++)
+    	{
+    		users[i] = clearName(users[i]);
+    		User user = User.findByName(users[i]);
+    		delete(user);
+    	}
+    }
+    
+    static public String clearName(String t) // enlève les ' ' en trop
+    {
+    	if (t==null || t.isEmpty() || t == " ")
+    		return ""; 
+    	int index=0;
+    	for (int i=0; i<t.length() && t.charAt(i)==' '; i++)
+    		index++;
+    	t = t.substring(index);
+    	index=t.length();
+    	for (int i=t.length()-1; i>0 && t.charAt(i)==' '; i--)
+    		index--;
+    	t = t.substring(0, index);
+    	return t;
     }
         
     /* ====================

@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 public class EbeanTest extends TestCase{
 		
     // http://www.avaje.org/ebean/getstarted_props.html
-    /*public void testUseEbean() {
+    public void testUseEbean() {
 		
 		String sql = "select count(*) as count from dual";
 		SqlRow row = Ebean.createSqlQuery(sql).findUnique();
@@ -81,13 +81,11 @@ public class EbeanTest extends TestCase{
 	assertTrue(u.getTweets().isEmpty());
 
         User.delete(u);
-    }*/
+    }
 
     public void testTags() throws FileNotFoundException { // teste si tags bien ajoutés / supprimés
 	Tweet e = new Tweet();
 	e.setUsername("test");
-
-	
 
 	e.addTags(" tag1, tag2,, ");
 
@@ -95,7 +93,9 @@ public class EbeanTest extends TestCase{
 
 	Tweet.save(e);
 
-	System.out.println("[EBEAN TAG TEST RESULT] "+e.getTags().size());
+	assertTrue(e.getTags().size() == 2);
+	
+	System.out.println("[EBEAN TAG TEST RESULT] "+e.getId()+", "+e.getTags().size());
 	for (int i=0; i<e.getTags().size(); i++)
 		System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(i).getTagname()+"'");
 	//System.out.println("[EBEAN TAG TEST RESULT]Got '"+e.getTags().get(1).getTagname()+"'");
@@ -105,6 +105,7 @@ public class EbeanTest extends TestCase{
 	
 	// on enlève un tag
 	
+	// ces lignes MARCHENT PAS GRRR si je les met dans fonction Tag.delete(tag) ... en test
 	 String s = "delete from tweet_tag where tag_id = :id";
 	 SqlUpdate update = Ebean.createSqlUpdate(s);
 	 update.setParameter("id", tag2.getId());
@@ -123,7 +124,7 @@ public class EbeanTest extends TestCase{
     
     public void testPersist()
     {
-    	Tweet e = Ebean.find(Tweet.class, 1);
+    	Tweet e = Ebean.find(Tweet.class, 3);
     	User u = e.getUser();
     	Tag tag1 = e.getTags().get(0);
     	
@@ -138,7 +139,7 @@ public class EbeanTest extends TestCase{
     	Ebean.delete(tag1);
     }
     
-    /*public void testYaml() throws IOException
+    public void testYaml() throws IOException
     {
    	  	Yaml yaml = new Yaml();
 		try {
@@ -156,7 +157,7 @@ public class EbeanTest extends TestCase{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		};
-    }*/
+    }
 }
 
 
