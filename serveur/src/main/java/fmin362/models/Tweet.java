@@ -6,6 +6,7 @@ import com.avaje.ebean.Query;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 
 import fmin362.models.Tag;
 import fmin362.models.Tweet;
@@ -53,6 +55,9 @@ public class Tweet implements Serializable{
     private String photo_date;
     @Column
     private String photo_place;
+    
+    @Version
+    public Timestamp lastUpdate;
 
     public Tweet() {
         this.date = new Date();
@@ -385,4 +390,11 @@ public class Tweet implements Serializable{
         this.photo_place = photo_place;
     }
     
+    public Timestamp getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

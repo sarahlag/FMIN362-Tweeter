@@ -3,6 +3,7 @@ package fmin362.models;
 import com.avaje.ebean.Ebean;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Version;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -38,7 +40,10 @@ public class User implements Serializable {
     @JsonIgnore
     private List<Tweet> tweets;
     
-    public User() {
+    @Version
+    public Timestamp lastUpdate;
+    
+	public User() {
         this.username = "";
         this.passwd = "";
         this.is_admin = false;
@@ -160,5 +165,11 @@ public class User implements Serializable {
         this.is_admin = is_admin;
     }
 
-    
+    public Timestamp getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

@@ -269,7 +269,7 @@ $(document).ready(function($) {
 		});*/
 	});
 	
-	/*$("#btn-test").click(function(event) {
+	$("#btn-delete-user").click(function(event) {
 		var data = new FormData();
 		data.append('username',  readCookie('username'));
 		data.append('names', 	 'mikasa, armin');
@@ -286,16 +286,16 @@ $(document).ready(function($) {
 				printMsg("Une erreur est survenue : "+resp.responseText);
 			}	
 		});
-	});*/
+	});
 	
-	/*$("#btn-test").click(function(event) {
+	$("#btn-delete-tag").click(function(event) {
 		var data = new FormData();
 		data.append('username', readCookie('username'));
-		data.append('id', 	 	'19');
+		data.append('names', 	 	'aot');
 					
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/delete",
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/delete",
 			processData : false,
 			contentType : false,
 			data : data,
@@ -305,13 +305,13 @@ $(document).ready(function($) {
 				printMsg("Une erreur est survenue : "+resp.responseText);
 			}	
 		});
-	});*/
+	});
 	
-	/*$("#btn-test").click(function(event) {
+	$("#btn-test").click(function(event) {
 		var data = new FormData();
 		data.append('username',  readCookie('username'));
-		data.append('oldtag', 	 'TheMystery');
-		data.append('newtag', 	 'left');
+		data.append('oldtag', 	 'aot');
+		data.append('newtag', 	 'meta');
 
 		$.ajax({
 			type : 'POST',
@@ -325,19 +325,19 @@ $(document).ready(function($) {
 				printMsg("Une erreur est survenue : "+resp.responseText);
 			}	
 		});
-	});*/
+	});
 	
-	$("#btn-test").click(function(event) {
+	/*$("#btn-test").click(function(event) {
 		var data = new FormData();
 		data.append('from_username',  readCookie('username'));
-		data.append('id',  '16');
+		data.append('id',  '18');
 		
-		data.append('username',  'annie'); // no reaction
+		data.append('username',  'mikasa'); // no reaction
 		data.append('photofile', $('#formfield-photourl')[0].files[0]); // ok
-		data.append('comment',   ''); 
+		data.append('comment',   'hey'); 
 		data.append('photodate', '');
 		data.append('photoloc',  '');
-		data.append('tags', 	 '');
+		data.append('tags', 	 'hello');
 
 		$.ajax({
 			type : 'POST',
@@ -345,13 +345,10 @@ $(document).ready(function($) {
 			processData : false,
 			contentType : false,
 			data : data,
-			success : function(resp) {
-				listTweets(resp); // listTweets dans wall.js
-				clearMsg();
-			},
+			success : getTweets(),
 			error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être modifié.")
 		});
-	});
+	});*/
 	
 });
 

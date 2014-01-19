@@ -207,21 +207,27 @@ public class TweetResource
     	// modification tweet
     	if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
     	{
-    		System.out.println("MODIF TWEET: from username="+tweet.getUsername()+" to new username="+username);
+    		User olduser = tweet.getUser();
 			tweet.setUsername(username);
+			Ebean.saveAssociation(tweet, "user");
+			User.update(olduser);
+			User.update(tweet.getUser());
     	}
+    	
     	if (!comment.isEmpty() && !comment.equals(tweet.getComment())) //ok
 			tweet.setComment(comment);
+
     	if (!photodate.isEmpty() && !photodate.equals(tweet.getPhoto_date())) //ok
 			tweet.setPhoto_date(photodate);
+    	
     	if (!photoloc.isEmpty() && !photoloc.equals(tweet.getPhoto_place())) //ok
 			tweet.setPhoto_place(photoloc);
-		
+
 		if (tags != null && !tweet.printTags().equals(tags)) //ok
 		{
-			//Ebean.deleteManyToManyAssociations(tweet, "tags");
 			if (!tweet.getTags().isEmpty())
 			{
+				//Ebean.deleteManyToManyAssociations(tweet, "tags");
 				SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tweet_id = :id");
 				update.setParameter("id", tweet.getId());
 				Ebean.execute(update);
@@ -230,17 +236,17 @@ public class TweetResource
 				Ebean.refreshMany(tweet, "tags");
 			}
 			tweet.addTags(tags);
+			Ebean.refreshMany(tweet, "tags");
+			//Ebean.saveManyToManyAssociations(tweet, "tags");
 		}
-		
-    	Ebean.update(tweet);
-    	
+		    	
 		if (photofile != null) //ok
 		{
 			String photourl = uploadFile(photofile, tweet);
 	        if (!photourl.isEmpty())
 	        {
 	            tweet.setPhoto_url(photourl);
-	            Ebean.update(tweet);
+	            Tweet.update(tweet);
 	        }
 		}
 

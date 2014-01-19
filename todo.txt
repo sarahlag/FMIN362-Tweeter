@@ -1,10 +1,10 @@
 -ren tag, coté serveur
 -modification tweet, coté serveur
+-coté client, avoir formulaires admin
 
--coté client, avoir ces **** de boutons qui marchent
+-coté client, avoir ces **** de boutons dyn qui marchent
 -map -> remplacer par google ?
 	-> passer info tweets en param, et vérifier les erreurs
-
 -bug pagination -> reprendre solution du projet play
 -ajouter plus de test !
 -mettre client en interne aussi
