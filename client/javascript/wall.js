@@ -1,6 +1,7 @@
 
 function listTweets(json)
 {
+	tweets_json = json;
 	document.getElementById('tableTweets').innerHTML = init_table;
 	
    	for (var i=json.length-1; i>=0; i--){
@@ -88,6 +89,17 @@ $(document).ready(function($) {
 	$("body").ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 		alert("ERROR : " + thrownError);
 		location.reload();
+	});
+	
+	//Initialisation de la map
+	google.maps.event.addDomListener(window, 'load', function() {
+		geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(48.865166, 2.351704);
+		var mapOptions = {
+			zoom : 3,
+			center : latlng
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	});
 	
 	init_table = document.getElementById('tableTweets').innerHTML;
@@ -334,8 +346,73 @@ $(document).ready(function($) {
 	$("#showMap").click(function(event) {
 		$("#dialogMap").dialog("open");
 		google.maps.event.trigger(map, "resize");
-		showMap(criteria, nb_affichage, num_page);
+		showMap();
 	});
+	
+	$("#dialogInfo").dialog({
+		autoOpen : false,
+		height: 500
+	});
+	
+	function showTweetInfo(marker, tweet)
+	{
+		google.maps.event.addListener(marker, 'click', function() {
+			var tags = '';
+			var img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
+			$('#dialogInfo').html('');
+			$('#dialogInfo').append('<a href="'+img_url+'"> <img src="'+img_url+'" class="bigIcon" /></a>');
+			$('#dialogInfo').append('<p><b>Auteur : </b>'+tweet.username+'</p>');
+			$('#dialogInfo').append('<p><b>Commentaire : </b>'+tweet.comment+'</p>');
+			$('#dialogInfo').append('<p><b>Date : </b>'+tweet.photo_date+'</p>');
+			$('#dialogInfo').append('<p><b>Lieu : </b>'+tweet.photo_place+'</p>');
+			for (var j=0; j<tweet.tags.length-1; j++)
+				tags += tweet.tags[j].tagname+', ';
+			if (tweet.tags.length > 0)
+				tags += tweet.tags[j].tagname;
+			$('#dialogInfo').append('<p><b>Tags : </b>'+tags+'</p>');
+			
+			$("#dialogInfo").dialog("open");
+		});
+	}
+	
+	function showMap() {
+		//Récupération des tweets
+		$(tweets_json).each(function(i) {
+			//Initialisation du geocoder
+			geocoder = new google.maps.Geocoder();
+			//Récupération des infos du tweet
+			var tweet = this;
+			var id = this.id;
+			var address = this.photo_place;
+			var date = this.photo_date;
+			var comment = this.comment;
+			//Géolocalisation du tweet
+			geocoder.geocode({
+				'address' : address
+			}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					//On recentre la carte sur la position du tweet
+					map.setCenter(results[0].geometry.location);
+					//Ajout d'un marker correspondant au tweet
+					var marker = new google.maps.Marker({
+						map : map,
+						title : date + " " + comment,
+						draggable : true,
+						animation : google.maps.Animation.DROP,
+						position : results[0].geometry.location
+					});
+					//Ajout d'un listener sur le marker pour afficher les infos du tweet
+					showTweetInfo(marker, tweet);
+				} 
+				else if (status == google.maps.GeocoderStatus.ZERO_RESULTS)
+					alert('[id='+id+'] '+address+' est une adresse invalide');
+				else {
+					alert('Geocode was not successful for the following reason: ' + status);
+				}
+				
+			});
+		});
+	}
 	
 	/* ================== */
 	/* autocompletion     */

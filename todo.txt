@@ -1,18 +1,19 @@
--ren tag, coté serveur
+-fusion tag, coté serveur
 -modification tweet, coté serveur
--popup ?
+-modification tweet, coté client
+-map: controler la limite ?
 
--map -> remplacer par google ?
-	-> passer info tweets en param, et vérifier les erreurs
 -bug pagination -> reprendre solution du projet play
 
 -ajouter plus de test !
 -mettre client en interne aussi
 
+-preparer nice base de données
 
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-map -> remplacer par google
 !-améliorer graphiques
 !-coté client, avoir ces **** de boutons dyn qui marchent -> sans icone
 !-coté client, avoir formulaires admin

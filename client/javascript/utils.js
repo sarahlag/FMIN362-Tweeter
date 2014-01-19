@@ -5,10 +5,15 @@ var criteria;
 var username;
 var is_admin;
 
+var tweets_json;
+
 var availableTags = new Array();
 var availableUsers = new Array();
 
 var init_table;
+
+var geocoder;
+var map;
 
 /* ====================	*/
 /* Utils				*/
