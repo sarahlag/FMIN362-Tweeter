@@ -1,6 +1,5 @@
 -ren tag, coté serveur
 -modification tweet, coté serveur
--coté client, avoir formulaires admin
 
 -coté client, avoir ces **** de boutons dyn qui marchent
 -map -> remplacer par google ?
@@ -13,6 +12,7 @@
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-coté client, avoir formulaires admin
 !-delete user/tag/tweet, coté serveur
 !-avoir negociation de contenu en get
 !-modif profil (=mdp)

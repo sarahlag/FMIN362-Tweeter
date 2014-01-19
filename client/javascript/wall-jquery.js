@@ -269,10 +269,10 @@ $(document).ready(function($) {
 		});*/
 	});
 	
-	$("#btn-delete-user").click(function(event) {
+	$("#btn-delete-users").click(function(event) {
 		var data = new FormData();
 		data.append('username',  readCookie('username'));
-		data.append('names', 	 'mikasa, armin');
+		data.append('names', 	 $("#formfield-delete-users").val());
 
 		$.ajax({
 			type : 'POST',
@@ -280,18 +280,20 @@ $(document).ready(function($) {
 			processData : false,
 			contentType : false,
 			data : data,
-			success : getTweets(),
+			success : function(resp) {
+				getTweets();
+			},
 			error : function(resp) {
 				clearMsg();
 				printMsg("Une erreur est survenue : "+resp.responseText);
-			}	
+			}
 		});
 	});
 	
-	$("#btn-delete-tag").click(function(event) {
+	$("#btn-delete-tags").click(function(event) {
 		var data = new FormData();
 		data.append('username', readCookie('username'));
-		data.append('names', 	 	'aot');
+		data.append('names', 	 $("#formfield-delete-tags").val());
 					
 		$.ajax({
 			type : 'POST',
@@ -307,11 +309,11 @@ $(document).ready(function($) {
 		});
 	});
 	
-	$("#btn-test").click(function(event) {
+	$("#btn-ren-tags").click(function(event) {
 		var data = new FormData();
 		data.append('username',  readCookie('username'));
-		data.append('oldtag', 	 'aot');
-		data.append('newtag', 	 'meta');
+		data.append('oldtag', 	 $("#formfield-ren-tagold").val());
+		data.append('newtag', 	 $("#formfield-ren-tagnew").val());
 
 		$.ajax({
 			type : 'POST',

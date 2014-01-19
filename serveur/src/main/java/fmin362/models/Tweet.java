@@ -26,6 +26,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import fmin362.models.Tag;
 import fmin362.models.Tweet;
 import fmin362.resources.TweetResource;
@@ -48,6 +50,7 @@ public class Tweet implements Serializable{
     private String comment = "";
     @Column( name = "message_date" )
     @Temporal( javax.persistence.TemporalType.DATE )
+    @JsonIgnore
     private Date date;
     @Column
     private String photo_url;
@@ -57,6 +60,7 @@ public class Tweet implements Serializable{
     private String photo_place;
     
     @Version
+    @JsonIgnore
     public Timestamp lastUpdate;
 
     public Tweet() {

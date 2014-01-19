@@ -51,6 +51,7 @@ else
 				<button id="btn-search" type="button" >Rechercher</button>
 			</form>
    		</div>
+   		
 		<div id="tabs-post" class='lvlUser'>
 			<form id="form-tweet" enctype="multipart/form-data" >
         		<!--  <label for="formfield-username">Nom</label> 				<input type="text" id="formfield-username" name="username" /> -->
@@ -63,9 +64,23 @@ else
  	    		<input type="reset" name="btn-resetform" value="Reset" />
         	</form>
    		</div>
+   		
    		<div id="tabs-admin" class='lvlAdmin'>
-   			<p>Not yet<p>
+   			<form id="form-delete-users" enctype="multipart/form-data" >
+	  			<label>Supprimer des utilisateurs</label> 
+	  			<input type="text" id="formfield-delete-users" class="users" /> <button id="btn-delete-users" type="button" >Envoyer</button>
+	  		</form>
+	  		<form id="form-delete-tags" enctype="multipart/form-data" >
+	  			<label>Supprimer des Tags</label> 
+	  			<input type="text" id="formfield-delete-tags" class="tags" /> <button id="btn-delete-tags" type="button" >Envoyer</button>
+	  		</form>
+	  		<form id="form-delete-tags" enctype="multipart/form-data" >
+	  			<label>Renommer : tag</label> <input type="text" id="formfield-ren-tagold" /> 
+	  			<label>en</label> <input type="text" id="formfield-ren-tagnew" />
+			 	<button id="btn-ren-tags" type="button" >Envoyer</button>
+	  		</form>
    		</div>
+   		
 		<div id="tabs-mdp" class='lvlUser'>
    			<form id="form-register" enctype="application/x-www-form-urlencoded" >
 	  			<p><label>Ancien mot de passe : </label><input type="password" id="oldpasswd"/> </p>

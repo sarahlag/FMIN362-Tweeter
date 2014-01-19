@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 public class Tag implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -28,6 +30,7 @@ public class Tag implements Serializable{
     private String tagname;
     
     @Version
+    @JsonIgnore
     public Timestamp lastUpdate;
 
     public Tag() {

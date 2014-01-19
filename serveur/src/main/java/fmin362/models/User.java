@@ -41,6 +41,7 @@ public class User implements Serializable {
     private List<Tweet> tweets;
     
     @Version
+    @JsonIgnore
     public Timestamp lastUpdate;
     
 	public User() {
