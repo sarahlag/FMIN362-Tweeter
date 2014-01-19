@@ -1,7 +1,6 @@
 package fmin362.resources;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlUpdate;
 
 import fmin362.models.Tweet;
 import fmin362.models.User;
@@ -10,9 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -189,11 +185,7 @@ public class TweetResource
     	Long id = Long.parseLong(form.getField("id").getValue());
     	
     	FormDataBodyPart photofile = form.getField("photofile");
-        //String username = form.getField("username").getValue();
-        //String comment = form.getField("comment").getValue();
-        //String photodate = form.getField("photodate").getValue();
         String photoloc = form.getField("photoloc").getValue();
-        //String tags = form.getField("tags").getValue();
     	
     	Tweet tweet = Ebean.find(Tweet.class, id);
     	User admin = User.findByName(from_username);
@@ -202,49 +194,14 @@ public class TweetResource
     	if ( admin == null || (!admin.isIs_admin() && !tweet.getUsername().equals(from_username)) )
     		return Response.status(403).entity("You are not allowed to do that").build();
 
-    	// modification tweet
-    	/*if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
-    	{
-    		User olduser = tweet.getUser();
-			tweet.setUsername(username);
-			Ebean.saveAssociation(tweet, "user");
-			User.update(olduser);
-			User.update(tweet.getUser());
-    	}
-    	
-    	if (!comment.isEmpty() && !comment.equals(tweet.getComment())) //ok
-			tweet.setComment(comment);
-
-    	if (!photodate.isEmpty() && !photodate.equals(tweet.getPhoto_date())) //ok
-			tweet.setPhoto_date(photodate);*/
-    	
     	if (!photoloc.isEmpty() && !photoloc.equals(tweet.getPhoto_place())) //ok
 			tweet.setPhoto_place(photoloc);
-		/*if (tags != null && !tweet.printTags().equals(tags)) //ok
-		{
-			if (!tweet.getTags().isEmpty())
-			{
-				//Ebean.deleteManyToManyAssociations(tweet, "tags");
-				SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tweet_id = :id");
-				update.setParameter("id", tweet.getId());
-				Ebean.execute(update);
-				
-				tweet.getTags().clear();
-				Ebean.refreshMany(tweet, "tags");
-			}
-			tweet.addTags(tags);
-			Ebean.refreshMany(tweet, "tags");
-			//Ebean.saveManyToManyAssociations(tweet, "tags");
-		}*/
-		    	
+				    	
 		if (photofile != null) //ok
 		{
 			String photourl = uploadFile(photofile, tweet);
 	        if (!photourl.isEmpty())
-	        {
 	            tweet.setPhoto_url(photourl);
-	            //Tweet.update(tweet);
-	        }
 		}
 
 		Tweet.update(tweet);
@@ -326,3 +283,72 @@ public class TweetResource
     }
     
 }
+
+/*public Response updateTweet( FormDataMultiPart form )
+    {       
+    	String from_username = form.getField("from_username").getValue();
+    	Long id = Long.parseLong(form.getField("id").getValue());
+    	
+    	FormDataBodyPart photofile = form.getField("photofile");
+        //String username = form.getField("username").getValue();
+        //String comment = form.getField("comment").getValue();
+        //String photodate = form.getField("photodate").getValue();
+        String photoloc = form.getField("photoloc").getValue();
+        //String tags = form.getField("tags").getValue();
+    	
+    	Tweet tweet = Ebean.find(Tweet.class, id);
+    	User admin = User.findByName(from_username);
+    	if (tweet == null)
+    		return Response.status(404).entity("Tweet not found").build();
+    	if ( admin == null || (!admin.isIs_admin() && !tweet.getUsername().equals(from_username)) )
+    		return Response.status(403).entity("You are not allowed to do that").build();
+
+    	// modification tweet
+    	if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
+    	{
+    		User olduser = tweet.getUser();
+			tweet.setUsername(username);
+			Ebean.saveAssociation(tweet, "user");
+			User.update(olduser);
+			User.update(tweet.getUser());
+    	}
+    	
+    	if (!comment.isEmpty() && !comment.equals(tweet.getComment())) //ok
+			tweet.setComment(comment);
+
+    	if (!photodate.isEmpty() && !photodate.equals(tweet.getPhoto_date())) //ok
+			tweet.setPhoto_date(photodate);
+    	
+    	if (!photoloc.isEmpty() && !photoloc.equals(tweet.getPhoto_place())) //ok
+			tweet.setPhoto_place(photoloc);
+		if (tags != null && !tweet.printTags().equals(tags)) //ok
+		{
+			if (!tweet.getTags().isEmpty())
+			{
+				//Ebean.deleteManyToManyAssociations(tweet, "tags");
+				SqlUpdate update = Ebean.createSqlUpdate("delete from tweet_tag where tweet_id = :id");
+				update.setParameter("id", tweet.getId());
+				Ebean.execute(update);
+				
+				tweet.getTags().clear();
+				Ebean.refreshMany(tweet, "tags");
+			}
+			tweet.addTags(tags);
+			Ebean.refreshMany(tweet, "tags");
+			//Ebean.saveManyToManyAssociations(tweet, "tags");
+		}
+		    	
+		if (photofile != null) //ok
+		{
+			String photourl = uploadFile(photofile, tweet);
+	        if (!photourl.isEmpty())
+	        {
+	            tweet.setPhoto_url(photourl);
+	            //Tweet.update(tweet);
+	        }
+		}
+
+		Tweet.update(tweet);
+        return Response.status(200).entity("Tweet "+id+" updated").build();
+    }
+    */

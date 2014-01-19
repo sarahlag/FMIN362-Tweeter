@@ -1,8 +1,48 @@
 <html>
 <!-- http://localhost:9000/FMIN362-Tweeter/ -->
+
+<head>
+    <title>Tweety</title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" media="screen" href="stylesheets/main.css">
+	<link rel="stylesheet" media="screen" href="stylesheets/jquery-ui-1.10.3.custom.css">
+	<script src="javascript/jquery-1.9.0.min.js"></script>
+	<script src="javascript/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="javascript/utils.js"></script>
+	<script src="javascript/index.js"></script>
+</head>
+
 <body>
+
     <h2>Tweeter</h2>
-    <p>For now, use the js client</p>
+    
+    <div id='div-messages' ></div>
+    
+    <p class="ui-widget-content ui-corner-all"><a href="wall.html">To the Wall !</a>
+    
+    <div id="login" class="ui-widget-content ui-corner-all">
+    <p>
+		<form id="form-login" enctype="application/x-www-form-urlencoded" >
+			<label>Se connecter :</label>
+			<p><label>Nom d'utilisateur : </label><input type="text" id="formfield-login-username" /></p>
+			<p><label>Mot de passe : </label> <input type="password" id="formfield-login-passwd" /></p>
+			<button id="btn-login" type="button" >Go !</button>
+        </form>
+	</p>
+	</div>
+    
+	<div id="register" class="ui-widget-content ui-corner-all">
+	<p>
+		<form id="form-register" enctype="application/x-www-form-urlencoded" >
+			<label>S'enregistrer :</label>
+			<p><label>Nom d'utilisateur : </label><input type="text" id="formfield-register-username" /></p>
+			<p><label>Mot de passe : </label> <input type="password" id="formfield-register-passwd" /></p>
+			<p><label>Retapez le mot de passe : </label> <input type="password" id="formfield-register-passwd-verify" /></p>
+			<button id="btn-register" type="button" >Register !</button>
+        </form>
+	</p>
+	</div>
+    
 </body>
 </html>
 

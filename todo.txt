@@ -1,6 +1,6 @@
 
 -ajouter plus de test !
--mettre client en interne aussi
+
 
 -preparer nice base de données
 
@@ -9,6 +9,7 @@ x-map: controler la limite ?
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-mettre client en interne aussi
 !-modification (partielle) tweet, coté client
 !-modification (partielle) tweet, coté serveur
 !-bug pagination -> reprendre solution du projet play

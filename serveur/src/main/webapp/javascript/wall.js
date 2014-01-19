@@ -3,7 +3,7 @@ function attachTweetProp($btn_mod, tweet)
 {
 	$btn_mod.click(function(event) {   
 		var tags = '';
-		var img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
+		var img_url = "/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
 		$('#dialogTweet').html('<center id=1/>');
 		$('#dialogTweet center#1').append('<a href="'+img_url+'"> <img src="'+img_url+'" class="bigIcon" /></a></br>');
 		$('#dialogTweet').append('<b>Auteur : </b>'+tweet.username+'</br>');
@@ -39,7 +39,7 @@ function attachTweetProp($btn_mod, tweet)
 
 			$.ajax({
 				type : 'POST',
-				url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/update",
+				url : "/FMIN362-Tweeter/resources/tweets/update",
 				processData : false,
 				contentType : false,
 				data : data
@@ -66,7 +66,7 @@ function listTweets(json)
    		$('#tableTweets tr:last').clone(true).insertAfter('#tableTweets tr:last');
    		
    		var tags = '';
-   		var img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+json[i].photo_url;
+   		var img_url = "/FMIN362-Tweeter/resources/tweets/"+json[i].photo_url;
    		
    		$('#tableTweets tr:last #td-photo').html('<a href="'+img_url+'"> <img src="'+img_url+'" class="icon" /></a>');
    		$('#tableTweets tr:last #td-username').html(json[i].username);
@@ -90,7 +90,7 @@ function listTweets(json)
    				
    				$.ajax({
    					type : 'POST',
-   					url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/delete",
+   					url : "/FMIN362-Tweeter/resources/tweets/delete",
    					processData : false,
    					contentType : false,
    					data : data,
@@ -130,7 +130,7 @@ function listTweets(json)
 // ajax get tweets
 function getTweets()
 {
-	var url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get";
+	var url = "/FMIN362-Tweeter/resources/tweets/get";
 	url = addParam(url);
 	var xmlHttpRequest = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP");
         if (xmlHttpRequest === null)
@@ -291,7 +291,7 @@ $(document).ready(function($) {
 
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/post",
+			url : "/FMIN362-Tweeter/resources/tweets/post",
 			processData : false,
 			contentType : false,
 			data : data,
@@ -324,7 +324,7 @@ $(document).ready(function($) {
 		
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/login",
+			url : "/FMIN362-Tweeter/resources/users/login",
 			data : data,
 			success : function(resp) {
 				clearMsg();
@@ -344,7 +344,7 @@ $(document).ready(function($) {
 
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/users/delete",
+			url : "/FMIN362-Tweeter/resources/users/delete",
 			processData : false,
 			contentType : false,
 			data : data,
@@ -365,7 +365,7 @@ $(document).ready(function($) {
 					
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/delete",
+			url : "/FMIN362-Tweeter/resources/tags/delete",
 			processData : false,
 			contentType : false,
 			data : data,
@@ -387,7 +387,7 @@ $(document).ready(function($) {
 
 		$.ajax({
 			type : 'POST',
-			url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/rename",
+			url : "/FMIN362-Tweeter/resources/tags/rename",
 			processData : false,
 			contentType : false,
 			data : data,
@@ -425,7 +425,7 @@ $(document).ready(function($) {
 	{
 		google.maps.event.addListener(marker, 'click', function() {
 			var tags = '';
-			var img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
+			var img_url = "/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
 			$('#dialogInfo').html('');
 			$('#dialogInfo').append('<a href="'+img_url+'"> <img src="'+img_url+'" class="bigIcon" /></a>');
 			$('#dialogInfo').append('<p><b>Auteur : </b>'+tweet.username+'</p>');
@@ -492,7 +492,7 @@ $(document).ready(function($) {
 
 	$.ajax({
 		type : 'GET',
-		url : "http://localhost:9000/FMIN362-Tweeter/resources/tags/get",
+		url : "/FMIN362-Tweeter/resources/tags/get",
 		//contentType : "application/json", // marche pas avec ça
 		success : function(data) {
 			$(data).each(function(i) {
@@ -505,7 +505,7 @@ $(document).ready(function($) {
 
 	$.ajax({
 		type : 'GET',
-		url : "http://localhost:9000/FMIN362-Tweeter/resources/users/get",
+		url : "/FMIN362-Tweeter/resources/users/get",
 		//contentType : "application/json; charset=UTF-8",
 		success : function(data) {
 			$(data).each(function(i) {
