@@ -32,6 +32,7 @@ public class User implements Serializable {
     private String username;
     
     @Column
+    @JsonIgnore
     private String passwd;
     @Column
     private boolean is_admin;

@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -21,8 +22,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import com.sun.jersey.multipart.FormDataBodyPart;
@@ -44,7 +43,7 @@ import com.sun.jersey.multipart.file.DefaultMediaTypePredictor.CommonMediaTypes;
 public class TweetResource
 {
     private static String SERVER_UPLOAD_LOCATION_FOLDER = "";
-            
+    
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
@@ -52,7 +51,7 @@ public class TweetResource
     						@DefaultValue("0")	@QueryParam("by") int nbAffichage, 
     						@DefaultValue("current") @QueryParam("c") String criteria )
     {
-    	long max_page = 1;
+    	int max_page = 1;
 		List<Tweet> list = Tweet.findBy(criteria);
         
         if (nbAffichage==0)
@@ -62,7 +61,7 @@ public class TweetResource
         max_page = size / nbAffichage + 1;
         
         if (page > max_page)
-        	page = (int) max_page;
+        	page = max_page;
         
         int step = (page-1)*nbAffichage;
         int limit = page*nbAffichage;
@@ -71,8 +70,6 @@ public class TweetResource
         	step = (page-2)*nbAffichage;
         if (limit >= size)
         	limit = size;
-        
-        
         
         return Response.ok().header("num_page_max", max_page).entity(list.subList(step, limit)).build();
     }
@@ -103,7 +100,7 @@ public class TweetResource
     @Path("/post")
     @Consumes( MediaType.MULTIPART_FORM_DATA )
     @Produces( MediaType.APPLICATION_JSON )
-    public List<Tweet> post( FormDataMultiPart form ) throws FileNotFoundException
+    public Response post( FormDataMultiPart form ) throws FileNotFoundException
     { 
         FormDataBodyPart photofile = form.getField("photofile");
         FormDataBodyPart username = form.getField("username");
@@ -125,16 +122,16 @@ public class TweetResource
             newtweet.addTags(tags.getValueAs(String.class));
         
         if (!Tweet.save(newtweet))
-            return Ebean.find(Tweet.class).findList();
+        	return Response.status(405).entity("Tweet not saved").build(); // 405 Method Not Allowed
         
         // ajout de l'url de l'image
         String photourl = uploadFile(photofile, newtweet);
         if (photourl.isEmpty())
-            return Ebean.find(Tweet.class).findList();
+        	return Response.status(201).entity("Tweet saved").build(); // 201 Resource Created
         newtweet.setPhoto_url(photourl);
         Tweet.update(newtweet);
           
-        return Ebean.find(Tweet.class).findList();     
+        return Response.status(201).entity("Tweet saved").build(); // 201 Resource Created  
     }
        
     @POST
@@ -158,9 +155,9 @@ public class TweetResource
         newtweet.setPhoto_url(photourl);
         
         if (!Tweet.save(newtweet))
-            return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed
+            return Response.status(405).entity("Tweet not saved").build(); // 405 Method Not Allowed
 
-        return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
+        return Response.status(201).entity("Tweet saved").build(); // 201 Resource Created
     }
     
     @POST
@@ -175,10 +172,7 @@ public class TweetResource
     	User admin = User.findByName(username);
     	if (tw == null)
     		return Response.status(404).entity("Tweet not found").build();
-    	
-    	//System.out.println("METHOD DELETE TWEET GRRR username="+username+"&admin="+admin.isIs_admin()+"&tweet_username="+tw.getUsername());
-    	//username=admin&admin=true&tweet_username=annie
-    	
+    	    	
     	if ( admin == null || (!admin.isIs_admin() && !tw.getUsername().equals(username)) )
     		return Response.status(403).entity("You are not allowed to do that").build();
      	
@@ -195,11 +189,11 @@ public class TweetResource
     	Long id = Long.parseLong(form.getField("id").getValue());
     	
     	FormDataBodyPart photofile = form.getField("photofile");
-        String username = form.getField("username").getValue();
-        String comment = form.getField("comment").getValue();
-        String photodate = form.getField("photodate").getValue();
+        //String username = form.getField("username").getValue();
+        //String comment = form.getField("comment").getValue();
+        //String photodate = form.getField("photodate").getValue();
         String photoloc = form.getField("photoloc").getValue();
-        String tags = form.getField("tags").getValue();
+        //String tags = form.getField("tags").getValue();
     	
     	Tweet tweet = Ebean.find(Tweet.class, id);
     	User admin = User.findByName(from_username);
@@ -209,7 +203,7 @@ public class TweetResource
     		return Response.status(403).entity("You are not allowed to do that").build();
 
     	// modification tweet
-    	if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
+    	/*if (!username.isEmpty() && !username.equals(tweet.getUsername())) //ok
     	{
     		User olduser = tweet.getUser();
 			tweet.setUsername(username);
@@ -222,12 +216,11 @@ public class TweetResource
 			tweet.setComment(comment);
 
     	if (!photodate.isEmpty() && !photodate.equals(tweet.getPhoto_date())) //ok
-			tweet.setPhoto_date(photodate);
+			tweet.setPhoto_date(photodate);*/
     	
     	if (!photoloc.isEmpty() && !photoloc.equals(tweet.getPhoto_place())) //ok
 			tweet.setPhoto_place(photoloc);
-
-		if (tags != null && !tweet.printTags().equals(tags)) //ok
+		/*if (tags != null && !tweet.printTags().equals(tags)) //ok
 		{
 			if (!tweet.getTags().isEmpty())
 			{
@@ -242,7 +235,7 @@ public class TweetResource
 			tweet.addTags(tags);
 			Ebean.refreshMany(tweet, "tags");
 			//Ebean.saveManyToManyAssociations(tweet, "tags");
-		}
+		}*/
 		    	
 		if (photofile != null) //ok
 		{
@@ -250,10 +243,11 @@ public class TweetResource
 	        if (!photourl.isEmpty())
 	        {
 	            tweet.setPhoto_url(photourl);
-	            Tweet.update(tweet);
+	            //Tweet.update(tweet);
 	        }
 		}
 
+		Tweet.update(tweet);
         return Response.status(200).entity("Tweet "+id+" updated").build();
     }
     

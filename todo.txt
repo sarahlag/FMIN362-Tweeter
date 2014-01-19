@@ -1,16 +1,16 @@
--fusion tag, coté serveur
--modification tweet, coté serveur
--modification tweet, coté client
--map: controler la limite ?
 
 -ajouter plus de test !
 -mettre client en interne aussi
 
 -preparer nice base de données
 
+x-fusion tag, coté serveur
+x-map: controler la limite ?
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-modification (partielle) tweet, coté client
+!-modification (partielle) tweet, coté serveur
 !-bug pagination -> reprendre solution du projet play
 !-cookies pour criteria/num_page/aff_by
 !-map -> remplacer par google

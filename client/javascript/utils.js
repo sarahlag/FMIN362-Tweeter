@@ -12,9 +12,9 @@ var map;
 /* Utils				*/
 /* ====================	*/
 
-function checkPhoto()
+function checkPhoto(id)
 {
-	var str=document.getElementById('formfield-photourl').value.toUpperCase();
+	var str=document.getElementById(id).value.toUpperCase();
 	if ( !( /\.JPG$/.test(str) || /\.JPEG$/.test(str) || /\.PNG$/.test(str) || /\.GIF$/.test(str) ))
 		alert('Vous devez selectionner une image !');
 }

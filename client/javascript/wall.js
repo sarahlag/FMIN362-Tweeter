@@ -1,4 +1,60 @@
+// dialog d'info tweet (admin)
+function attachTweetProp($btn_mod, tweet)
+{
+	$btn_mod.click(function(event) {   
+		var tags = '';
+		var img_url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/"+tweet.photo_url;
+		$('#dialogTweet').html('<center id=1/>');
+		$('#dialogTweet center#1').append('<a href="'+img_url+'"> <img src="'+img_url+'" class="bigIcon" /></a></br>');
+		$('#dialogTweet').append('<b>Auteur : </b>'+tweet.username+'</br>');
+		$('#dialogTweet').append('<b>Commentaire : </b>'+tweet.comment+'</br>');
+		$('#dialogTweet').append('<b>Date : </b>'+tweet.photo_date+'</br>');
+		for (var j=0; j<tweet.tags.length-1; j++)
+			tags += tweet.tags[j].tagname+', ';
+		if (tweet.tags.length > 0)
+			tags += tweet.tags[j].tagname;
+		$('#dialogTweet').append('<b>Tags : </b>'+tags+'</br>');
+		
+		$('#dialogTweet').append('<b>Lieu : </b>');
+		var $input_loc = $('<input />').attr({ type: 'text', value:tweet.photo_place });
+		$('#dialogTweet').append($input_loc);
+		
+		$('#dialogTweet').append('</br><label><b>Photo : </b></label>');
+		var $input_file = $('<input />').attr({ type: 'file', id:'formfield-newphoto' });
+		$input_file.change(function() { 
+			checkPhoto('formfield-newphoto');
+		});
+		$('#dialogTweet').append($input_file);
+		
+		$('#dialogTweet').append('<center id=2/>');
+		var $btn_up = $('<button />').attr({ type: 'button', id:'btn-god' }).button();
+		var $btn_up_span = $('<span />').text("I am God").addClass('ui-button-text');
+		$btn_up.click(function(event) {
+			var data = new FormData();
+			data.append('from_username',  readCookie('username'));
+			data.append('id',  tweet.id);
+		
+			data.append('photofile', $input_file[0].files[0]);
+			data.append('photoloc',  $input_loc.val());
 
+			$.ajax({
+				type : 'POST',
+				url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/update",
+				processData : false,
+				contentType : false,
+				data : data
+			});
+		});
+		
+		
+		$('#dialogTweet center#2').append($btn_up);
+		$('#dialogTweet center#2 button').append($btn_up_span);
+				
+		$("#dialogTweet").dialog("open");
+	});
+}
+
+// tweets dans wall
 function listTweets(json)
 {
 	var num_page = readCookie('num_page');
@@ -22,8 +78,9 @@ function listTweets(json)
    		if (json[i].tags.length > 0)
 			tags += json[i].tags[j].tagname;
    		$('#tableTweets tr:last #td-tags').html(tags);
-   		if (username === json[i].username || is_admin !== "false")
+   		if (username === json[i].username || is_admin === "true")
    		{
+   			// bouton delete
    			var $btn_del = $('<button />').attr({ type: 'button', id:'btn-delete-'+json[i].id });
    			$btn_del.button({ icons : { primary : "ui-icon-closethick" }, text : false });
    			$btn_del.click(function(event) {   
@@ -47,7 +104,14 @@ function listTweets(json)
    				});
    			});
    			
-   			$('#tableTweets tr:last #td-btn').html($btn_del);
+   			// bouton modif
+   			var $btn_mod = $('<button />').attr({ type: 'button', id:'btn-update-'+json[i].id });
+   			$btn_mod.button({ icons : { primary : "ui-icon-gear" }, text : false });
+   			attachTweetProp($btn_mod, json[i]);
+   			
+   			$('#tableTweets tr:last #td-btn').html('');
+   			$('#tableTweets tr:last #td-btn').append($btn_del);
+   			$('#tableTweets tr:last #td-btn').append($btn_mod);
    		}
    		else
    			$('#tableTweets tr:last #td-btn').html('');
@@ -63,6 +127,42 @@ function listTweets(json)
 	setRadioChecked();
 }
 
+/*$("#btn-test").click(function(event) {
+		var data = new FormData();
+		data.append('from_username',  readCookie('username'));
+		data.append('id',  '1');
+	
+		data.append('photofile', $('#formfield-photourl')[0].files[0]); // ok
+		data.append('photoloc',  'Istanbul');
+
+		$.ajax({
+			type : 'POST',
+			url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/update",
+			processData : false,
+			contentType : false,
+			data : data,
+			success : getTweets(),
+			error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être modifié.")
+		});
+	});
+	
+	$(".btn-tweetmodif").click(function(event) {
+		$id = $(this).attr('id').substr(10);
+		$.ajax({
+			type : 'POST',
+			url : "/tweetprop",
+			contentType : "application/json; charset=UTF-8",
+			data : JSON.stringify({
+				"id" : $id
+			}),
+			success : function(data) {
+				$("#dialogTweet").html(data);
+				$("#dialogTweet").dialog("open");
+			}
+		});
+	});*/
+
+// ajax get tweets
 function getTweets()
 {
 	var url = "http://localhost:9000/FMIN362-Tweeter/resources/tweets/get";
@@ -122,7 +222,11 @@ $(document).ready(function($) {
 		maxDate: "+0"
 	}).datepicker('setDate', new Date()); // pour mettre la date du jour par défaut
 	
-			
+	$("#dialogTweet").dialog({
+		autoOpen : false,
+		width: 500
+	});
+	
 	/* ================== */
 	/* affichage	     */
 	/* ================== */
@@ -226,11 +330,13 @@ $(document).ready(function($) {
 			processData : false,
 			contentType : false,
 			data : data,
-			success : function(resp) {
-				listTweets(resp); // listTweets dans wall.js
-				clearMsg();
-			},
-			error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être posté.")
+			statusCode: {
+				    201: getTweets(),
+					405: function(resp) {
+						clearMsg();
+						printMsg("Une erreur est survenue : "+resp.responseText);
+					}
+			}
 		});
 	});
 	
@@ -298,7 +404,9 @@ $(document).ready(function($) {
 			processData : false,
 			contentType : false,
 			data : data,
-			success : getTweets(),
+			success : function(resp) {
+				getTweets();
+			},
 			error : function(resp) {
 				clearMsg();
 				printMsg("Une erreur est survenue : "+resp.responseText);
@@ -318,37 +426,16 @@ $(document).ready(function($) {
 			processData : false,
 			contentType : false,
 			data : data,
-			success : getTweets(),
+			success : function(resp) {
+				getTweets();
+			},
 			error : function(resp) {
 				clearMsg();
 				printMsg("Une erreur est survenue : "+resp.responseText);
 			}	
 		});
 	});
-	
-	$("#btn-test").click(function(event) {
-	var data = new FormData();
-	data.append('from_username',  readCookie('username'));
-	data.append('id',  '16');
-	
-	data.append('username',  'mikasa'); // no reaction
-	data.append('photofile', $('#formfield-photourl')[0].files[0]); // ok
-	data.append('comment',   'hey'); 
-	data.append('photodate', '');
-	data.append('photoloc',  '');
-	data.append('tags', 	 'hello');
-
-	$.ajax({
-		type : 'POST',
-		url : "http://localhost:9000/FMIN362-Tweeter/resources/tweets/update",
-		processData : false,
-		contentType : false,
-		data : data,
-		success : getTweets(),
-		error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être modifié.")
-	});
-	});
-	
+		
 	/* ================== */
 	/* show map		      */
 	/* ================== */
