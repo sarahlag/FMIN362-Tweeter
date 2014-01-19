@@ -2,9 +2,6 @@
 -modification tweet, coté serveur
 -modification tweet, coté client
 -map: controler la limite ?
--cookies pour criteria/num_page/aff_by
-
--bug pagination -> reprendre solution du projet play
 
 -ajouter plus de test !
 -mettre client en interne aussi
@@ -14,6 +11,8 @@
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-bug pagination -> reprendre solution du projet play
+!-cookies pour criteria/num_page/aff_by
 !-map -> remplacer par google
 !-améliorer graphiques
 !-coté client, avoir ces **** de boutons dyn qui marchent -> sans icone

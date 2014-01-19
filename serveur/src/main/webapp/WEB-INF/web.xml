@@ -28,6 +28,10 @@
                 <param-name>cors.allowOrigin</param-name>
                 <param-value>*</param-value>
         </init-param>
+        <init-param>
+                <param-name>cors.exposedHeaders</param-name>
+                <param-value>num_page_max</param-value>
+        </init-param>
    </filter>
    
    <filter-mapping>

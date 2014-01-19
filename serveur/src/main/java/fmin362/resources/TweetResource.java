@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -19,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
@@ -45,22 +48,33 @@ public class TweetResource
     @GET
     @Path( "/get" )
     @Produces( MediaType.APPLICATION_JSON )
-    public List<Tweet> get(	@DefaultValue("1") 	@QueryParam("p") int page,
+    public Response get(	@DefaultValue("1") 	@QueryParam("p") int page,
     						@DefaultValue("0")	@QueryParam("by") int nbAffichage, 
     						@DefaultValue("current") @QueryParam("c") String criteria )
-    {               
-        List<Tweet> list = Tweet.findBy(criteria);
+    {
+    	long max_page = 1;
+		List<Tweet> list = Tweet.findBy(criteria);
+        
         if (nbAffichage==0)
-    		return list;
+        	return Response.ok().header("num_page_max", max_page).entity(list).build();
+               
+        int size = list.size();
+        max_page = size / nbAffichage + 1;
+        
+        if (page > max_page)
+        	page = (int) max_page;
         
         int step = (page-1)*nbAffichage;
         int limit = page*nbAffichage;
-        if (step >= list.size())
-        	step = list.size()-1;
-        if (limit >= list.size())
-        	limit = list.size()-1;
         
-        return list.subList(step, limit);
+        if (step >= size)
+        	step = (page-2)*nbAffichage;
+        if (limit >= size)
+        	limit = size;
+        
+        
+        
+        return Response.ok().header("num_page_max", max_page).entity(list.subList(step, limit)).build();
     }
         
     @GET

@@ -72,8 +72,10 @@ function getTweets()
 		return;
 	xmlHttpRequest.open("GET", url, true);
 	xmlHttpRequest.setRequestHeader("Accept", "application/json"); 
+	xmlHttpRequest.withCredentials = true;
 	xmlHttpRequest.onreadystatechange = function() {
             if (xmlHttpRequest.readyState === xmlHttpRequest.DONE && xmlHttpRequest.status === 200){      // completed && OK
+            	writeCookie("page_max", xmlHttpRequest.getResponseHeader("num_page_max"));
                 listTweets(JSON.parse(xmlHttpRequest.responseText));
                 clearMsg();
             }
@@ -136,7 +138,10 @@ $(document).ready(function($) {
 	$("#btn-next").click(function(event) {
 		var nb_affichage = readCookie('nb_affichage');
 		var num_page = readCookie('num_page');
+		var max_page = readCookie('page_max');
 		if (nb_affichage == 0)
+			return;
+		if (num_page >= max_page)
 			return;
 		num_page ++;
 		writeCookie("num_page", num_page);
