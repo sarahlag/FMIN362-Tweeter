@@ -8,6 +8,8 @@ var is_admin;
 var availableTags = new Array();
 var availableUsers = new Array();
 
+var init_table;
+
 /* ====================	*/
 /* Utils				*/
 /* ====================	*/
@@ -109,7 +111,7 @@ function WallLoaded()
 	username = readCookie('username');
 	if (typeof username == 'undefined' ||  username === '')
 		username = "anon";
-	document.getElementById('p-username').innerHTML = "@"+username;
+	document.getElementById('p-username').innerHTML = "TWEETER (@"+username+")";
 	getTweets();
 }
 

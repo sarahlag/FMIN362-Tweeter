@@ -5,13 +5,15 @@
 -map -> remplacer par google ?
 	-> passer info tweets en param, et vérifier les erreurs
 -bug pagination -> reprendre solution du projet play
+
 -ajouter plus de test !
 -mettre client en interne aussi
--améliorer graphiques
+
 
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-améliorer graphiques
 !-coté client, avoir ces **** de boutons dyn qui marchent -> sans icone
 !-coté client, avoir formulaires admin
 !-delete user/tag/tweet, coté serveur

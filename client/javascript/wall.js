@@ -1,8 +1,8 @@
 
 function listTweets(json)
 {
-	//var $ctrl = $('<input/>').attr({ type: 'checkbox', name:'chk'}).addClass("chk");
-	//$("#holder").append($ctrl);
+	document.getElementById('tableTweets').innerHTML = init_table;
+	
    	for (var i=json.length-1; i>=0; i--){
    		$('#tableTweets tr:last').clone(true).insertAfter('#tableTweets tr:last');
    		
@@ -22,8 +22,7 @@ function listTweets(json)
    		if (username === json[i].username || is_admin !== "false")
    		{
    			var $btn_del = $('<button />').attr({ type: 'button', id:'btn-delete-'+json[i].id });
-   			$btn_del.html("x");
-   			$btn_del.button();
+   			$btn_del.button({ icons : { primary : "ui-icon-closethick" }, text : false });
    			$btn_del.click(function(event) {   
    				var data = new FormData();
    				data.append('username',  readCookie('username'));
@@ -52,7 +51,12 @@ function listTweets(json)
    		
    	}
    	$('#tableTweets tr:eq(1)').remove();
-	document.getElementById('label-page').innerHTML = 'Page '+num_page;
+	$("#label-page").html("Page "+num_page);
+	if (criteria !== "" && criteria !== "current")
+		$("#label-search").html("Recherche: "+criteria);
+	else
+		$("#label-search").html("");
+	
 	setRadioChecked();
 }
 
@@ -76,14 +80,25 @@ function getTweets()
 	xmlHttpRequest.send("");
 }
 
+/* ================== */
+/* on load	          */
+/* ================== */
+
 $(document).ready(function($) { 
+	$("body").ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+		alert("ERROR : " + thrownError);
+		location.reload();
+	});
 	
+	init_table = document.getElementById('tableTweets').innerHTML;
 	WallLoaded();
 		
 	if (username === "anon")
 		$(".lvlUser").css("display", "none");
 	if (is_admin !== "true")
 		$(".lvlAdmin").css("display", "none");
+	
+	$("input[type=submit], button").button();
 	
 	$("#tabs").tabs({
 	      collapsible: true,
@@ -96,8 +111,6 @@ $(document).ready(function($) {
 		maxDate: "+0"
 	}).datepicker('setDate', new Date()); // pour mettre la date du jour par défaut
 	
-	//$("input[type=reset]").button();
-	//$("#radio").buttonset();
 			
 	/* ================== */
 	/* affichage	     */
@@ -109,13 +122,16 @@ $(document).ready(function($) {
 		getTweets();
 	});
 
+	
+	$("#btn-next").button({ icons : { primary : "ui-icon-circle-triangle-e" }, text : false });
 	$("#btn-next").click(function(event) {
 		if (nb_affichage == 0)
 			return;
 		num_page ++;
 		getTweets();
 	});
-
+	
+	$("#btn-prev").button({ icons : { primary : "ui-icon-circle-triangle-w" }, text : false });
 	$("#btn-prev").click(function(event) {
 		if (nb_affichage == 0)
 			return;
@@ -154,6 +170,20 @@ $(document).ready(function($) {
 	/* boutons		      */
 	/* ================== */
 		
+	$("#btn-return").button({ icons : { primary : "ui-icon-home" }, text : false 	});
+	$("#btn-return").click(function(event) {
+		num_page = 1;
+		criteria = '';
+		getTweets();
+	});
+	
+	$("#btn-deconnect").button({ icons : { primary : "ui-icon-extlink" }, text : false 	});
+	$("#btn-deconnect").click(function(event) {
+		writeCookie('is_admin', "false");
+		writeCookie('username', 'anon');
+		location.href="index.html";
+	});
+	
 	$("#btn-posttweet").click(function(event) {
 		var data = new FormData();
 		data.append('username',  readCookie('username'));
@@ -290,6 +320,21 @@ $(document).ready(function($) {
 		success : getTweets(),
 		error : printMsg("Une erreur est survenue. Le tweet n'a pas pu être modifié.")
 	});
+	});
+	
+	/* ================== */
+	/* show map		      */
+	/* ================== */
+	
+	$("#dialogMap").dialog({
+		autoOpen : false,
+		width: 600
+	});
+	
+	$("#showMap").click(function(event) {
+		$("#dialogMap").dialog("open");
+		google.maps.event.trigger(map, "resize");
+		showMap(criteria, nb_affichage, num_page);
 	});
 	
 	/* ================== */

@@ -13,28 +13,18 @@
     
     <body>
 
-<!--  <script>
-if (window.File && window.FileReader && window.FileList && window.Blob) 
-  document.write("<b>File API supported.</b>");
-else
-  document.write('<i>File API not supported by this browser.</i>');
-</script>  --> 
+<header>
+	<h1 id='p-username'></h1>
+</header>
 
-		<p id='p-username'></p>
-        <p>This is The Wall</p>
+<button id="btn-return" > </button>
+<button id="btn-deconnect" > </button>
+<div id="container" class="ui-widget-content ui-corner-all">
 
 		<div id='div-messages' ></div>
-
-	<p><a href="http://localhost:9000/FMIN362-Tweeter/resources/tweets/get"> And here are the tweets </a>, 
-		<a href="http://localhost:9000/FMIN362-Tweeter/resources/users/get"> ... users </a>,
-		<a href="http://localhost:9000/FMIN362-Tweeter/resources/tags/get"> ... tags </a>.
-		Also, <a href="map.html">the Map</a>.
-	</p>
-	<p>Retour à <a href="index.html">l'index</a>.</p>
-
-	<p>Test: </p><form id="form-test" enctype="multipart/form-data" >
+	<!--   <p>Test: </p><form id="form-test" enctype="multipart/form-data" >
 					<button id="btn-test" type="button">yohoho</button>
-				</form>
+				</form>-->
 
 	<div id="tabs">
 		 <ul>
@@ -91,8 +81,24 @@ else
    		</div>
 	</div>
 
-   	<table id="tableTweets">
-   		<tr>
+	<div id="table" class="ui-widget-content ui-corner-all">
+		<div class="ui-widget-header ui-corner-all">
+		<h3>This is The Wall</h3>
+		</div>
+		<div class="ui-widget-content">
+
+			<div id="affichageTweets" class="toolbar ui-widget-header ui-corner-all">
+				<span id="radio">
+	    			<input type="radio" id="sh5" value="5" />	<label for="sh5">	Affiche 5</label> 
+	    			<input type="radio" id="sh10" value="10"/>	<label for="sh10">	Affiche 10</label>
+	    			<input type="radio" id="sh0" value="0" />	<label for="sh0">	Affiche Tout</label>
+	    		</span>
+	    		<button id="showMap">Afficher sur la carte</button>
+	    		<label id='label-search'></label>
+			</div>
+
+   			<table id="tableTweets">
+   			<tr>
 				<th>Photo</th>
 				<th>Username</th>
 				<th>Tweet</th>
@@ -100,8 +106,8 @@ else
 				<th>Location</th>
 				<th>Tags</th>
 				<th class='lvlUser'>Admin</th>
-		</tr>
-		<tr class="alt">
+			</tr>
+			<tr class="alt">
 				<td id=td-photo></td>
 				<td id=td-username></td>
 				<td id=td-tweet></td>
@@ -109,16 +115,23 @@ else
 				<td id=td-loc></td>
 				<td id=td-tags></td>
 				<td id=td-btn class='lvlUser'></td>
-		</tr>
-   	</table>
+			</tr>
+   			</table>
 
-		<p><button id="btn-prev" type="button" ><</button> <label id='label-page'></label> <button id="btn-next" type="button" >></button></p>
-		<p><span id="radio">
-	    	<input type="radio" id="sh5" value="5" />	<label for="sh5">	Affiche 5</label> 
-	    	<input type="radio" id="sh10" value="10"/>	<label for="sh10">	Affiche 10</label>
-	    	<input type="radio" id="sh0" value="0" />	<label for="sh0">	Affiche Tout</label>
-	    </span></p>
+			<div id="pagination" class="toolbar ui-widget-header ui-corner-all">
+	  			<button id="btn-prev" type="button"> </button>
+	  			<label id='label-page'></label>
+	   			<button id="btn-next" type="button" ></button>
+			</div>
 
+		</div>
+	</div>
+	
+	<div id="dialogMap" title="Carte des Tweets">
+		<div id="map-canvas"></div>
+	</div>
+
+</div>
     </body>
 </html>
 
