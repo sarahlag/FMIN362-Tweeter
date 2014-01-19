@@ -7,8 +7,8 @@
 	<link rel="stylesheet" media="screen" href="stylesheets/jquery-ui-1.10.3.custom.css">
 	<script src="javascript/jquery-1.9.0.min.js"></script>
 	<script src="javascript/jquery-ui-1.10.3.custom.min.js"></script>
-	<script src="javascript/main.js"></script>
-	<script src="javascript/wall-jquery.js"></script>
+	<script src="javascript/utils.js"></script>
+	<script src="javascript/wall.js"></script>
     </head>
     
     <body>
@@ -91,7 +91,26 @@ else
    		</div>
 	</div>
 
-   	<table id="tableTweets"></table>
+   	<table id="tableTweets">
+   		<tr>
+				<th>Photo</th>
+				<th>Username</th>
+				<th>Tweet</th>
+				<th>Date</th>
+				<th>Location</th>
+				<th>Tags</th>
+				<th class='lvlUser'>Admin</th>
+		</tr>
+		<tr class="alt">
+				<td id=td-photo></td>
+				<td id=td-username></td>
+				<td id=td-tweet></td>
+				<td id=td-date></td>
+				<td id=td-loc></td>
+				<td id=td-tags></td>
+				<td id=td-btn class='lvlUser'></td>
+		</tr>
+   	</table>
 
 		<p><button id="btn-prev" type="button" ><</button> <label id='label-page'></label> <button id="btn-next" type="button" >></button></p>
 		<p><span id="radio">

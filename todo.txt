@@ -1,7 +1,7 @@
 -ren tag, coté serveur
 -modification tweet, coté serveur
+-popup ?
 
--coté client, avoir ces **** de boutons dyn qui marchent
 -map -> remplacer par google ?
 	-> passer info tweets en param, et vérifier les erreurs
 -bug pagination -> reprendre solution du projet play
@@ -12,6 +12,7 @@
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-coté client, avoir ces **** de boutons dyn qui marchent -> sans icone
 !-coté client, avoir formulaires admin
 !-delete user/tag/tweet, coté serveur
 !-avoir negociation de contenu en get

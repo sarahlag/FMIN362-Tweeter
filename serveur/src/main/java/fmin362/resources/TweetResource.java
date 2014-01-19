@@ -62,17 +62,7 @@ public class TweetResource
         
         return list.subList(step, limit);
     }
-    
-    /*@GET
-    @Path("/{image}")
-    @Produces("image/*")
-    public Response getImage(@PathParam("image") String image) {
-    	File f = new File(SERVER_UPLOAD_LOCATION_FOLDER + image);
-    	if (!f.exists())
-    		return Response.noContent().build();
-    	return Response.ok(f, CommonMediaTypes.getMediaTypeFromFile(f)).build();
-    }*/
-    
+        
     @GET
     @Path("/{req}")
     @Produces( {"image/*", MediaType.APPLICATION_JSON} )
@@ -172,7 +162,7 @@ public class TweetResource
     	if (tw == null)
     		return Response.status(404).entity("Tweet not found").build();
     	
-    	System.out.println("METHOD DELETE TWEET GRRR username="+username+"&admin="+admin.isIs_admin()+"&tweet_username="+tw.getUsername());
+    	//System.out.println("METHOD DELETE TWEET GRRR username="+username+"&admin="+admin.isIs_admin()+"&tweet_username="+tw.getUsername());
     	//username=admin&admin=true&tweet_username=annie
     	
     	if ( admin == null || (!admin.isIs_admin() && !tw.getUsername().equals(username)) )
