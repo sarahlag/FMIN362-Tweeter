@@ -1,10 +1,3 @@
-var nb_affichage;
-var num_page;
-var criteria;
-
-var username;
-var is_admin;
-
 var tweets_json;
 
 var availableTags = new Array();
@@ -28,12 +21,9 @@ function checkPhoto()
 
 function addParam(url)
 {
-	if (typeof nb_affichage == 'undefined')
-		nb_affichage = 0;
-	if (typeof num_page == 'undefined')
-		num_page = 1;
-	if (typeof criteria == 'undefined')
-		criteria = "current";
+	var nb_affichage = readCookie("nb_affichage");
+	var num_page = readCookie("num_page");
+	var criteria = readCookie("criteria");
 		
 	url += "?";
 	url += "by="+nb_affichage;
@@ -52,6 +42,8 @@ function extractLast(term) {
 
 function setRadioChecked()
 {
+	var nb_affichage = readCookie("nb_affichage");
+	
 	if (nb_affichage == 0)
 		document.getElementById('sh0').checked = true;
 	else
@@ -110,13 +102,46 @@ function readCookie (cookie_name)
 /* On Load				*/
 /* ====================	*/
 
-function WallLoaded()
+function setLvlAffichage()
 {
 	is_admin = readCookie('is_admin');
 	username = readCookie('username');
-	if (typeof username == 'undefined' ||  username === '')
+	
+	if (username === "anon")
+		$(".lvlUser").css("display", "none");
+	if (is_admin !== "true")
+		$(".lvlAdmin").css("display", "none");
+}
+
+function WallLoaded()
+{
+	var nb_affichage = readCookie('nb_affichage');
+	var num_page = readCookie('num_page');
+	var criteria = readCookie('criteria');
+	
+	if (nb_affichage === '')
+	{
+		nb_affichage = 0;
+		writeCookie("nb_affichage", 0);
+	}
+	if (num_page === '')
+	{
+		num_page = 1;
+		writeCookie("num_page", 1);
+	}
+	if (criteria === '')
+	{
+		criteria = "current";
+		writeCookie("criteria", "current");
+	}
+	
+	is_admin = readCookie('is_admin');
+	username = readCookie('username');
+	if (username === '')
 		username = "anon";
 	document.getElementById('p-username').innerHTML = "TWEETER (@"+username+")";
+	init_table = document.getElementById('tableTweets').innerHTML;
+	
 	getTweets();
 }
 

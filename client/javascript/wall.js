@@ -1,6 +1,8 @@
 
 function listTweets(json)
 {
+	var num_page = readCookie('num_page');
+	var criteria = readCookie('criteria');
 	tweets_json = json;
 	document.getElementById('tableTweets').innerHTML = init_table;
 	
@@ -101,14 +103,9 @@ $(document).ready(function($) {
 		};
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	});
-	
-	init_table = document.getElementById('tableTweets').innerHTML;
-	WallLoaded();
 		
-	if (username === "anon")
-		$(".lvlUser").css("display", "none");
-	if (is_admin !== "true")
-		$(".lvlAdmin").css("display", "none");
+	WallLoaded();
+	setLvlAffichage();
 	
 	$("input[type=submit], button").button();
 	
@@ -129,28 +126,34 @@ $(document).ready(function($) {
 	/* ================== */
 	
 	$("input[type='radio']").change(function(event) {
-		num_page = 1;
-		nb_affichage = $(this).val();
+		writeCookie("num_page", 1);
+		writeCookie("nb_affichage", $(this).val());
 		getTweets();
 	});
 
 	
 	$("#btn-next").button({ icons : { primary : "ui-icon-circle-triangle-e" }, text : false });
 	$("#btn-next").click(function(event) {
+		var nb_affichage = readCookie('nb_affichage');
+		var num_page = readCookie('num_page');
 		if (nb_affichage == 0)
 			return;
 		num_page ++;
+		writeCookie("num_page", num_page);
 		getTweets();
 	});
 	
 	$("#btn-prev").button({ icons : { primary : "ui-icon-circle-triangle-w" }, text : false });
 	$("#btn-prev").click(function(event) {
+		var nb_affichage = readCookie('nb_affichage');
+		var num_page = readCookie('num_page');
 		if (nb_affichage == 0)
 			return;
 		if(num_page <= 1) {
-			num_page = 1;
+			writeCookie("num_page", 1);
 		} else {
 			num_page--;
+			writeCookie("num_page", num_page);
 			getTweets();
 		}
 	});
@@ -160,11 +163,12 @@ $(document).ready(function($) {
 	/* ================== */
 	
 	$("#btn-search").click(function(event) {
+		var criteria = readCookie('criteria');
+		
 		var users = $("input[name=searchUsers]").val();
 		var tags = $("input[name=searchTags]").val();
 		if (users !== "" || tags !== "")
 		{	
-			num_page = 1;
 			if (users !== "")
 				criteria = "users:"+users;
 			if (tags !== "")
@@ -174,6 +178,9 @@ $(document).ready(function($) {
 				else
 					criteria = "tags:"+tags;
 			}
+			writeCookie("num_page", 1);
+			writeCookie("criteria", criteria);
+			
 			getTweets();
 		}
 	});
@@ -184,8 +191,8 @@ $(document).ready(function($) {
 		
 	$("#btn-return").button({ icons : { primary : "ui-icon-home" }, text : false 	});
 	$("#btn-return").click(function(event) {
-		num_page = 1;
-		criteria = '';
+		writeCookie("num_page", 1);
+		writeCookie("criteria", '');
 		getTweets();
 	});
 	
@@ -193,6 +200,9 @@ $(document).ready(function($) {
 	$("#btn-deconnect").click(function(event) {
 		writeCookie('is_admin', "false");
 		writeCookie('username', 'anon');
+		writeCookie("num_page", 1);
+		writeCookie("criteria", '');
+		writeCookie("nb_affichage", 0);
 		location.href="index.html";
 	});
 	
@@ -376,6 +386,10 @@ $(document).ready(function($) {
 	}
 	
 	function showMap() {
+		if (tweets_json.length > 11)
+			alert("Trop de tweets. Veuillez réduire le nombre.");
+		else
+		{
 		//Récupération des tweets
 		$(tweets_json).each(function(i) {
 			//Initialisation du geocoder
@@ -411,7 +425,8 @@ $(document).ready(function($) {
 				}
 				
 			});
-		});
+			});
+		}
 	}
 	
 	/* ================== */

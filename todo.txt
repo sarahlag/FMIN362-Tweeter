@@ -2,6 +2,7 @@
 -modification tweet, coté serveur
 -modification tweet, coté client
 -map: controler la limite ?
+-cookies pour criteria/num_page/aff_by
 
 -bug pagination -> reprendre solution du projet play
 
