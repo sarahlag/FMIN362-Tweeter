@@ -1,19 +1,111 @@
 ---
-username: mikasa
-comment: hello
-photo_url: testimages/image01.jpg
-photo_date: 25/11/2013
-photo_place: Tokyo, Japan
+username: auriane
+comment: cigogne
+photo_url: ImagesDeBase/cigogne.jpg
+photo_date: 03/05/2007
+photo_place: Colmar,France
 tags:
-- snk
-- aot
+- oiseau
+- cigogne
 ---
-username: annie
-comment: ...no
-photo_url: testimages/image02.jpg
-photo_date: 26/11/2013
-photo_place: Marseille, France
+username: pierre
+comment: cigogne
+photo_url: ImagesDeBase/cigogne2.jpg
+photo_date: 20/05/2007
+photo_place: Pontarlier,France
 tags:
-- aot
-- snk
+- oiseau
+- cigogne
+---
+username: paul
+comment: cigogne
+photo_url: ImagesDeBase/cigogne3.jpg
+photo_date: 12/06/2007
+photo_place: Roanne,France
+tags:
+- cigogne
+---
+username: sarah
+comment: cigogne
+photo_url: ImagesDeBase/cigogne4.jpg
+photo_date: 18/07/2007
+photo_place: Montauban,France
+tags:
+- cigogne
+---
+username: auriane
+comment: merle noir
+photo_url: ImagesDeBase/merle.jpg
+photo_date: 06/01/2007
+photo_place: Avignon,France
+tags:
+- merle
+---
+username: sarah
+comment: merle noir
+photo_url: ImagesDeBase/merle2.jpg
+photo_date: 18/01/2007
+photo_place: Montpellier,France
+tags:
+- merle
+---
+username: pierre
+comment: merle noir
+photo_url: ImagesDeBase/merle3.jpg
+photo_date: 20/01/2007
+photo_place: Nice,France
+tags:
+- merle
+---
+username: paul
+comment: merle noir
+photo_url: ImagesDeBase/merle4.jpg
+photo_date: 30/03/2013
+photo_place: Saint Rémi,France
+tags:
+- merle
+---
+username: jack
+comment: merle noir
+photo_url: ImagesDeBase/merle5.jpg
+photo_date: 05/04/2013
+photo_place: Bastia,Corse
+tags:
+- merle
+---
+username: toto
+comment: merle noir
+photo_url: ImagesDeBase/merle6.jpg
+photo_date: 15/05/2013
+photo_place: Dax,France
+tags:
+- merle
+- oiseau
+---
+username: titi
+comment: merle noir
+photo_url: ImagesDeBase/merle7.jpg
+photo_date: 20/05/2013
+photo_place: Bordeaux,France
+tags:
+- merle
+- oiseau
+---
+username: tutu
+comment: merle noir
+photo_url: ImagesDeBase/merle8.jpg
+photo_date: 15/06/2013
+photo_place: Agen,France
+tags:
+- merle
+- oiseau
+---
+username: tata
+comment: merle noir
+photo_url: ImagesDeBase/merle9.jpg
+photo_date: 17/06/2013
+photo_place: Nîmes,France
+tags:
+- merle
+- oiseau
 

@@ -138,7 +138,10 @@ function WallLoaded()
 	is_admin = readCookie('is_admin');
 	username = readCookie('username');
 	if (username === '')
-		username = "anon";
+	{
+		writeCookie('username', 'anon');
+		writeCookie('is_admin', 'false');
+	}
 	document.getElementById('p-username').innerHTML = "TWEETER (@"+username+")";
 	init_table = document.getElementById('tableTweets').innerHTML;
 	

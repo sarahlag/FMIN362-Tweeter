@@ -118,16 +118,16 @@ public class TweetResource
             newtweet.addTags(tags.getValueAs(String.class));
         
         if (!Tweet.save(newtweet))
-        	return Response.status(405).entity("Tweet not saved").build(); // 405 Method Not Allowed
+        	return Response.status(405).entity("Tweet not saved\n").build(); // 405 Method Not Allowed
         
         // ajout de l'url de l'image
         String photourl = uploadFile(photofile, newtweet);
         if (photourl.isEmpty())
-        	return Response.status(201).entity("Tweet saved").build(); // 201 Resource Created
+        	return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created
         newtweet.setPhoto_url(photourl);
         Tweet.update(newtweet);
           
-        return Response.status(201).entity("Tweet saved").build(); // 201 Resource Created  
+        return Response.status(201).entity("Tweet saved\n").build(); // 201 Resource Created  
     }
        
     @POST

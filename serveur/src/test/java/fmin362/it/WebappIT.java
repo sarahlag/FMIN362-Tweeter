@@ -116,5 +116,10 @@ public class WebappIT extends TestCase {
         result = webResource.accept(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, f);
         assertEquals(405, result.getStatus()); // interdit form doit au moins contenir username
         result.close();        
+
+	/*f.add("u", "test");
+        result = webResource.accept(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, f);
+        assertEquals(201, result.getStatus());
+        result.close();*/ 
     }
 }
