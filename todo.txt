@@ -1,7 +1,4 @@
 
--ajouter plus de test !
-
-
 -preparer nice base de données
 
 x-fusion tag, coté serveur
@@ -9,6 +6,7 @@ x-map: controler la limite ?
 x-rechercher config mvn / ant / autre pour parcourir h2 database
 	-> serveur mode de h2 database ?
 
+!-ajouter plus de test !
 !-mettre client en interne aussi
 !-modification (partielle) tweet, coté client
 !-modification (partielle) tweet, coté serveur

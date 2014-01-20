@@ -75,7 +75,7 @@ public class UserResource {
 		if (!User.save(user))
 			return Response.status(403).entity("Username "+username+" incorrect").build(); // 403: Forbidden
 		
-		return Response.status(200).entity("Successfully registered").build();
+		return Response.status(201).entity("Successfully registered").build();
     }
 	
 	@POST

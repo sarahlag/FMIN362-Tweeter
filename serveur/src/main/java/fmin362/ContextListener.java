@@ -36,7 +36,7 @@ public class ContextListener implements ServletContextListener {
     		// création de l'admin
     		User user = new User();
         	user.setUsername("admin");
-        	//user.setPasswd("admin");
+        	user.setPasswd("admin");
         	user.setIs_admin(true);
         	User.save(user);
         	System.out.println("Default user admin successfully created.");

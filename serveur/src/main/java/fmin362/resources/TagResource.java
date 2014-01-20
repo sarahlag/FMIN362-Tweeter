@@ -12,11 +12,9 @@ import javax.ws.rs.core.Response;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
-import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 import fmin362.models.Tag;
-import fmin362.models.Tweet;
 import fmin362.models.User;
 
 @Path( "/tags" ) // http://localhost:9000/FMIN362-Tweeter/resources/tags

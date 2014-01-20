@@ -134,7 +134,7 @@ public class TweetResource
     @Path( "/post" )
     @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
     public Response post(	@FormParam("u") String username,
-                                @FormParam("p") String passwd,
+                                //@FormParam("p") String passwd,
                                 @FormParam("c") String comment,
                                 @FormParam("url") String photourl,
                                 @FormParam("pdate") String photodate,
@@ -166,12 +166,13 @@ public class TweetResource
     	
     	Tweet tw = Ebean.find(Tweet.class, id);
     	User admin = User.findByName(username);
-    	if (tw == null)
-    		return Response.status(404).entity("Tweet not found").build();
-    	    	
+    	    	    	
     	if ( admin == null || (!admin.isIs_admin() && !tw.getUsername().equals(username)) )
     		return Response.status(403).entity("You are not allowed to do that").build();
      	
+    	if (tw == null)
+    		return Response.status(404).entity("Tweet not found").build();
+    	
     	Tweet.delete(tw);
         return Response.status(200).entity("Tweet "+id+" deleted").build();
     }
